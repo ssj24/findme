@@ -1,4 +1,5 @@
 import Signup from './views/user/Signup.vue'
+import Login from './views/user/Login.vue'
 
 export default [
   {
@@ -6,4 +7,9 @@ export default [
     name: 'Signup',
     component: Signup,
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  }
 ]
