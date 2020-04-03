@@ -1,6 +1,6 @@
 <template>
   <div class="signup">
-    <v-container fill-height>
+    <v-container fill-height class="justify-center">
       <v-row align="center" justify="center" style="background-color: white;">
         <v-col 
           justify="center"
@@ -151,32 +151,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .signup {
-   background-color: rgb(4, 12, 102);
-   width: 100vw;
-   height: 100vh;
-   font-family: 'Noto Sans KR', sans-serif;
- }
- .container {
-   max-width: 80%;
- }
- .row {
-  //  background-image: linear-gradient(130deg, #fff 10%, #292381 99%);
-   padding: 20px;
-   border-radius: 0px 150px 0px 150px;
-  //  border: 1px solid #999;
-   border-top: #fff;
-   box-shadow: 5px 5px rgb(205, 204, 228);
- }
- .form-header {
-   font-size: 30px;
-   text-align: center;
-   font-weight: 700;
- }
- .form-hr {
-  border-top: 3px solid #0e1670;
- }
- .v-btn {
-   border-radius: 100px;
- }
+
 </style>
