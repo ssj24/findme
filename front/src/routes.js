@@ -3,7 +3,7 @@ import Login from './views/user/Login.vue'
 
 export default [
   {
-    path: '/',
+    path: '/signup',
     name: 'Signup',
     component: Signup,
   },
