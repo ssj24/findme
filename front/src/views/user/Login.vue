@@ -45,7 +45,14 @@
               >
                 로그인
               </v-btn>
-
+              <v-btn
+                outlined
+                color="rgb(14, 22, 112)"
+                class="mr-2 text-center"
+                @click="kakaologin"
+              >
+                카카오로그인
+              </v-btn>
             </v-layout>
           </v-form>
         </v-col>
@@ -56,6 +63,7 @@
 </template>
 <script>
 import '@/assets/css/user.css'
+const axios = require('axios').default
 export default {
   data: () => ({
       valid: true,
@@ -78,6 +86,15 @@ export default {
       submit () {
         // 로그인 폼 제출
       },
+      kakaologin() {
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=4a376f2390fb3234cb522dbdf5d725dc&redirect_uri=http://localhost:8080/login/callback/&response_type=code")
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
 }
 </script>
