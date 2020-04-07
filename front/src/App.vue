@@ -19,10 +19,10 @@
       color="#fff"
       height="66"
       >
-      <span class="hidden-sm-and-up">
-        <v-toolbar-side-icon @click="sidebar = !sidebar">
-        </v-toolbar-side-icon>
-      </span>
+      <!-- <span class="hidden-sm-and-up">
+        <v-app-bar-nav-icon @click="sidebar = !sidebar">
+        </v-app-bar-nav-icon>
+      </span> -->
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
           {{ appTitle }}
