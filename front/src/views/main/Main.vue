@@ -6,23 +6,43 @@
     hide-delimiter-background
     show-arrows-on-hover
   >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
+    
+      <v-carousel-item
+        v-for="(slide, i) in slides"
+        :key="i"
+        class="w90 mx-auto"
+
       >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
+      <div id="leftside">
+        <v-sheet
+          :color="colors[i]"
+          height="100%"
         >
-          <div class="display-3">{{ slide }}</div>
-        </v-row>
-      </v-sheet>
-    </v-carousel-item>
+          <v-row
+            class="fill-height"
+          >
+            <div class="display-6 pa-4">이 쪽은 이미지?</div>
+          </v-row>
+        </v-sheet>
+        
+      </div>
+      <div id="rightside">
+        <v-sheet
+          color="indigo darken-3"
+          height="100%"
+        >
+          <v-row
+            class="fill-height"
+            align="center"
+            justify="end"
+          >
+            <div class="display-3 mr-12">{{ slide }}</div>
+          </v-row>
+        </v-sheet>
+        
+      </div>
+      
+      </v-carousel-item>
   </v-carousel>
   <v-row>
     <v-col cols=6>
