@@ -31,7 +31,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
-          flat
+          text
           color="#fff"
           v-for="item in menuItems"
           :key="item.title"
@@ -65,7 +65,7 @@ export default {
           { title: 'Home', path: '/', icon: 'home' },
           { title: 'Chart', path: '/', icon: 'insert_chart_outlined'},
           { title: 'Sign Up', path: '/signup', icon: 'face' },
-          { title: 'Sign Up', path: '/account', icon: 'face' },
+          { title: 'User', path: '/account', icon: 'face' },
           { title: 'LogIn', path: '/login', icon: 'lock_open' }
      ]
     }

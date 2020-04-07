@@ -1,5 +1,6 @@
 <template>
   <div class="signup">
+    
     <v-container fill-height class="justify-center">
       <v-row align="center" justify="center" style="background-color: white;">
         <v-col 
