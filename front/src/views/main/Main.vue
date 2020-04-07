@@ -24,20 +24,36 @@
       </v-sheet>
     </v-carousel-item>
   </v-carousel>
-  <v-sparkline
-    :value="value"
-    :gradient="gradient[2]"
-    :smooth="radius || false"
-    :padding="padding"
-    :line-width="width"
-    :stroke-linecap="lineCap"
-    :gradient-direction="gradientDirection"
-    :fill="fill"
-    :type="type"
-    :auto-line-width="autoLineWidth"
-    auto-draw
-    height="200"
-  ></v-sparkline>
+  <v-row>
+    <v-col cols=6>
+      <v-card>
+        <h1>차트 제목</h1>
+        <p>차트 설명을 이런 식으로 적어볼까? <br>
+            이렇게 반씩 나눠서 설명을 하는 건 어떨까
+        </p>
+      </v-card>
+    </v-col>
+    <v-col cols=6>
+      <v-card
+        class="ml-auto text-center">
+        <v-sparkline
+        :value="value"
+        :gradient="gradient[2]"
+        :smooth="radius || false"
+        :padding="padding"
+        :line-width="width"
+        :stroke-linecap="lineCap"
+        :gradient-direction="gradientDirection"
+        :fill="fill"
+        :type="type"
+        :auto-line-width="autoLineWidth"
+        auto-draw
+        height="300"
+        ></v-sparkline>
+      </v-card>
+    </v-col>
+    
+  </v-row>
   <v-sparkline
     :value="value"
     :gradient="gradient[5]"
@@ -70,6 +86,8 @@
 </template>
 
 <script>
+import '@/assets/css/main.css'
+
 const gradients = [
     ['#222'],
     ['#42b3f4'],
@@ -109,7 +127,7 @@ const gradients = [
         autoLineWidth: false,
       }
     },
-    
+
   }
 </script>
 
