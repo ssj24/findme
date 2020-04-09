@@ -115,8 +115,7 @@ export default {
       passwordConfirm: '',
       passwordConfirmRules: [
         v => !!v || '비밀번호를 입력해주세요',
-        v => v.length >= 8 || '8자 이상의 비밀번호를 입력해주세요',
-        v => v === this.password || '비밀번호가 일치하지 않습니다',
+        v => v.length >= 8 || '8자 이상의 비밀번호를 입력해주세요'
       ],
       select: [],
       items: [
@@ -130,14 +129,21 @@ export default {
         v => !!v || '선호 기업을 입력해주세요',
       ],
       position: '',
-      postionRules: [
+      positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
       ],
       checkbox: false,
     }),
-
+    watch: {
+      passwordConfirm: function() {
+        this.formCheck();
+      }
+    },
     methods: {
-      
+      formCheck () {
+        if (this.passwordConfirm !== this.password)
+          this.passwordConfirmRules[2] = '비밀번호가 일치하지 않습니다'
+      },
       reset () {
         this.$refs.form.reset()
       },

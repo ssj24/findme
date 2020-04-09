@@ -85,7 +85,7 @@ export default {
         // 로그인 폼 제출
       },
       kakaologin() {
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=4a376f2390fb3234cb522dbdf5d725dc&redirect_uri=http://localhost:8080/login/callback/&response_type=code")
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=4a376f2390fb3234cb522dbdf5d725dc&redirect_uri=http://localhost:8080/signmerge&response_type=code")
           .then(res => {
             console.log(res)
           })
