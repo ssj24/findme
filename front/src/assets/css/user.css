@@ -40,7 +40,7 @@ ol, ul {
   }
 /* } */
 
-.signup .row {
+.signup .row, .form .row {
   /* background-image: linear-gradient(130deg, #fff 10%, #292381 99%); */
   padding: 20px;
   border-radius: 0px 150px 0px 150px;
