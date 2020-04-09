@@ -2,7 +2,7 @@
 <div class="">
   <v-carousel
     cycle
-    height="400"
+    style="height: 40%;"
     hide-delimiter-background
     show-arrows-on-hover
   >

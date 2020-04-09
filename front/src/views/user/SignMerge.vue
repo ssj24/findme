@@ -11,18 +11,7 @@
         <span class="underline"></span>
       </button>
       <form class="form form-login">
-        <fieldset>
-          <legend>Please, enter your email and password for login.</legend>
-          <div class="input-block">
-            <label for="login-email">E-mail</label>
-            <input id="login-email" type="email" required>
-          </div>
-          <div class="input-block">
-            <label for="login-password">Password</label>
-            <input id="login-password" type="password" required>
-          </div>
-        </fieldset>
-        <button type="submit" class="btn-login">Login</button>
+        <login name="Login"></login>
       </form>
     </div>
     <div class="form-wrapper">
@@ -35,22 +24,7 @@
         <span class="underline"></span>
       </button>
       <form class="form form-signup">
-        <fieldset>
-          <legend>Please, enter your email, password and password confirmation for sign up.</legend>
-          <div class="input-block">
-            <label for="signup-email">E-mail</label>
-            <input id="signup-email" type="email" required>
-          </div>
-          <div class="input-block">
-            <label for="signup-password">Password</label>
-            <input id="signup-password" type="password" required>
-          </div>
-          <div class="input-block">
-            <label for="signup-password-confirm">Confirm password</label>
-            <input id="signup-password-confirm" type="password" required>
-          </div>
-        </fieldset>
-        <button type="submit" class="btn-signup">Continue</button>
+        <signup name="Signup"></signup>
       </form>
     </div>
   </div>
@@ -58,24 +32,28 @@
 </template>
 
 <script>
+import Signup from '@/views/user/Signup.vue'
+import Login from '@/views/user/Login.vue'
+
 export default {
+	components:{
+		Signup,
+		Login
+	},
+	mounted() {
+	},
   methods: {
     signupSwitch() {
-      
-      const signupSwitch = document.querySelectorAll('.switcher-signup')
-      const loginSwitch = document.querySelectorAll('.switcher-login')
-      console.log('Clicked'+signupSwitch.parentElement.classList)
-      
-      signupSwitch.parentElement.classList.remove('is-active')
-      loginSwitch.parentElement.classList.add('is-active')
-      console.log('Clicked'+signupSwitch.parentElement.classList)
-    },
-    loginSwitch() {
-      const signupSwitch = document.querySelectorAll('.switcher-signup')
-      const loginSwitch = document.querySelectorAll('.switcher-login')
+      const signupSwitch = document.querySelector('.switcher-signup')
+      const loginSwitch = document.querySelector('.switcher-login')
       loginSwitch.parentElement.classList.remove('is-active')
       signupSwitch.parentElement.classList.add('is-active')
-      console.log('loginClicked')
+    },
+    loginSwitch() {
+      const signupSwitch = document.querySelector('.switcher-signup')
+      const loginSwitch = document.querySelector('.switcher-login')
+      signupSwitch.parentElement.classList.remove('is-active')
+      loginSwitch.parentElement.classList.add('is-active')
     }
   },
 }
@@ -87,7 +65,7 @@ export default {
 	flex-direction: column;
 	justify-content: center;
   align-items: center;
-  background-color: #3b4465;
+  background-color: rgb(4, 12, 102);
 }
 
 .section-title {
@@ -146,15 +124,20 @@ export default {
 	transform: translateX(0);
 	transition: all .3s ease-out;
 }
-
+.switcher-login {
+	right: -100px;
+}
+.switcher-signup {
+	left: -100px;
+}
 .form-wrapper.is-active .switcher-login {
 	color: #fff;
-	transform: translateX(90px);
+	transform: translateX(50px);
 }
 
 .form-wrapper.is-active .switcher-signup {
 	color: #fff;
-	transform: translateX(-90px);
+	transform: translateX(-50px);
 }
 
 .underline {
@@ -193,7 +176,7 @@ export default {
 
 .form {
 	overflow: hidden;
-	min-width: 260px;
+	min-width: 600px;
 	margin-top: 50px;
 	padding: 30px 25px;
   border-radius: 5px;
@@ -208,30 +191,34 @@ export default {
 	animation: showLogin .3s ease-in forwards;
 }
 
+.form-wrapper:not(.is-active) .container {
+	background:rgb(4, 12, 102);
+	opacity: 0.2;
+}
 @keyframes showLogin {
 	0% {
-		background: #d7e7f1;
+		/* background: #d7e7f1; */
 		transform: translate(40%, 10px);
 	}
 	50% {
 		transform: translate(0, 0);
 	}
 	100% {
-		background-color: #fff;
+		/* background-color: #fff; */
 		transform: translate(35%, -20px);
 	}
 }
 
 @keyframes hideLogin {
 	0% {
-		background-color: #fff;
+		/* background-color: #fff; */
 		transform: translate(35%, -20px);
 	}
 	50% {
 		transform: translate(0, 0);
 	}
 	100% {
-		background: #d7e7f1;
+		/* background: #d7e7f1; */
 		transform: translate(40%, 10px);
 	}
 }
@@ -246,28 +233,28 @@ export default {
 
 @keyframes showSignup {
 	0% {
-		background: #d7e7f1;
+		/* background: #d7e7f1; */
 		transform: translate(-40%, 10px) scaleY(.8);
 	}
 	50% {
 		transform: translate(0, 0) scaleY(.8);
 	}
 	100% {
-		background-color: #fff;
+		/* background-color: #fff; */
 		transform: translate(-35%, -20px) scaleY(1);
 	}
 }
 
 @keyframes hideSignup {
 	0% {
-		background-color: #fff;
+		/* background-color: #fff; */
 		transform: translate(-35%, -20px) scaleY(1);
 	}
 	50% {
 		transform: translate(0, 0) scaleY(.8);
 	}
 	100% {
-		background: #d7e7f1;
+		/* background: #d7e7f1; */
 		transform: translate(-40%, 10px) scaleY(.8);
 	}
 }
@@ -355,5 +342,8 @@ export default {
 	background: #fbfdff;
 	box-shadow: inset 0 0 0 2px #a7e245;
 	transform: translateX(30%);
+}
+.v-form {
+	width: 100%;
 }
 </style>

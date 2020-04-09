@@ -3,13 +3,7 @@
     추천 스택
     <div class="example-3d">
     <swiper class="swiper" :options="swiperOption">
-      <swiper-slide>Slide 1</swiper-slide>
-      <swiper-slide>Slide 2</swiper-slide>
-      <swiper-slide>Slide 3</swiper-slide>
-      <swiper-slide>Slide 4</swiper-slide>
-      <swiper-slide>Slide 5</swiper-slide>
-      <swiper-slide>Slide 6</swiper-slide>
-      <swiper-slide>Slide 7</swiper-slide>
+      <swiper-slide v-for="(slide,i) in slides" :key="i" :style="{'background-color': slide.color}">{{ slide.title }}</swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
   </div>
@@ -21,6 +15,15 @@ export default {
   name: 'AccountStack',
   data() {
     return {
+      slides: [
+        {title: 'java', color: 'red'},
+        {title: 'js', color: 'orange'},
+        {title: 'python', color: 'yellow'},
+        {title: 'c', color: 'green'},
+        {title: 'c++', color: 'blue'},
+        {title: 'go', color: 'indigo'},
+        {title: 'ruby', color: 'purple'},
+      ],
       swiperOption: {
           effect: 'coverflow',
           grabCursor: true,

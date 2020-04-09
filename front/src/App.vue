@@ -64,9 +64,8 @@ export default {
       menuItems: [
           { title: 'Home', path: '/', icon: 'home' },
           { title: 'Chart', path: '/', icon: 'insert_chart_outlined'},
-          { title: 'Sign Up', path: '/signup', icon: 'face' },
           { title: 'User', path: '/account', icon: 'face' },
-          { title: 'LogIn', path: '/login', icon: 'lock_open' }
+          { title: 'SignIn', path: '/signmerge', icon: 'lock_open' }
      ]
     }
   },
