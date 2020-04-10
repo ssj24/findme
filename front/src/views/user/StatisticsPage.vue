@@ -5,7 +5,10 @@
         <v-flex d-flex style="height: 128px;">
           <v-flex d-flex class="pl-12 ml-12 pr-12 mr-12 justify-center text-center align-center">
             <v-divider vertical v-if="selectedLangList.length >= 1"></v-divider>
-            <v-flex d-flex v-if="selectedLangList.length >= 1">
+            <v-flex
+              d-flex
+              v-if="selectedLangList.length >= 1 && firstLang != '' && firstLang != null && firstLang != 'undefined'"
+            >
               <v-col>
                 <v-flex id="firstLang">
                   <v-autocomplete
@@ -22,7 +25,9 @@
               </v-col>
             </v-flex>
             <v-divider vertical v-if="selectedLangList.length >= 2"></v-divider>
-            <v-flex v-if="selectedLangList.length >= 2">
+            <v-flex
+              v-if="selectedLangList.length >= 2 && secondLang != '' && secondLang != null && secondLang != 'undefined'"
+            >
               <v-col>
                 <v-flex id="secondLang">
                   <v-autocomplete
@@ -39,7 +44,10 @@
               </v-col>
             </v-flex>
             <v-divider vertical v-if="selectedLangList.length >= 3"></v-divider>
-            <v-flex d-flex v-if="selectedLangList.length >= 3">
+            <v-flex
+              d-flex
+              v-if="selectedLangList.length >= 3 && thirdLang != '' && thirdLang != null && thirdLang != 'undefined'"
+            >
               <v-col>
                 <v-flex id="thirdLang">
                   <v-autocomplete
@@ -118,6 +126,8 @@
         justify-center
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
+        :key="componentKey"
+        v-if="selectedLangList.length >= 1"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">시간 흐름에 따른 관심도 변화</v-flex>
@@ -136,11 +146,17 @@
               :fifthValue="fifthBrushValue"
               :totalCnt="selectedLangList.length"
               :colors="colors"
-            />
+            ></BrushChart>
           </v-flex>
         </v-flex>
       </v-flex>
-      <v-flex d-flex xs8 class="ml-auto mr-auto mt-7" style="background-color: #ffffff">
+      <v-flex
+        d-flex
+        xs8
+        class="ml-auto mr-auto mt-7"
+        style="background-color: #ffffff"
+        v-if="selectedLangList.length >= 1"
+      >
         <v-flex>
           <v-flex d-flex class="ma-3">지역별 비교 분석</v-flex>
           <v-divider class="mb-3" />
@@ -165,7 +181,6 @@
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 1"
-        :key="firstGeoValue"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">{{ selectedLangList[0] }} 지역별 관심도</v-flex>
@@ -186,7 +201,6 @@
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 2"
-        :key="secondGeoValue"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">{{ selectedLangList[1] }} 지역별 관심도</v-flex>
@@ -207,7 +221,6 @@
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 3"
-        :key="thirdGeoValue"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">{{ selectedLangList[2] }} 지역별 관심도</v-flex>
@@ -228,7 +241,6 @@
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 4"
-        :key="fourthGeoValue"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">{{ selectedLangList[3] }} 지역별 관심도</v-flex>
@@ -249,7 +261,6 @@
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 5"
-        :key="fifthGeoValue"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">{{ selectedLangList[4] }} 지역별 관심도</v-flex>
@@ -309,7 +320,7 @@ export default {
       thirdBrushValue: [],
       fourthBrushValue: [],
       fifthBrushValue: [],
-      brushKey: null,
+      componentKey: 0,
       languageNameList: ["JAVA", "Python", "C++"],
       languages: [
         {
@@ -533,31 +544,41 @@ export default {
         window.sessionStorage.removeItem("firstGeoValue");
         window.sessionStorage.removeItem("firstBrushValue");
       } else if (e != "" && e != null && e != "undefined") {
-        this.selectedLangList.splice(0, 1, e);
         this.selectedLang = null;
+        this.selectedLang = "";
         this.search = null;
+        this.selectedLangList.splice(0, 1, e);
 
         if (e == "JAVA") {
           this.firstGeoValue = [];
           this.firstGeoValue = this.javaGeoValue;
           this.firstBrushValue = [];
-          this.firstBrushValue = this.javaBrushValue;
-          this.is;
+          this.firstBrushValue = this.javaBrushValue.slice(
+            0,
+            this.javaBrushValue.length
+          );
         } else if (e == "Python") {
           this.firstGeoValue = [];
           this.firstGeoValue = this.pythonGeoValue;
           this.firstBrushValue = [];
-          this.firstBrushValue = this.pythonBrushValue;
+          this.firstBrushValue = this.pythonBrushValue.slice(
+            0,
+            this.pythonBrushValue.length
+          );
         } else if (e == "C++") {
           this.firstGeoValue = [];
           this.firstGeoValue = this.cppGeoValue;
           this.firstBrushValue = [];
-          this.firstBrushValue = this.cppBrushValue;
+          this.firstBrushValue = this.cppBrushValue.slice(
+            0,
+            this.cppBrushValue.length
+          );
         }
         window.sessionStorage.setItem("firstLang", e);
         window.sessionStorage.setItem("firstGeoValue", this.firstGeoValue);
         window.sessionStorage.setItem("firstBrushValue", this.firstBrushValue);
       }
+      this.ForceRerender();
     },
     secondLang(e) {
       if (e == "" || e == null || e == "undefined") {
@@ -569,25 +590,35 @@ export default {
         window.sessionStorage.removeItem("secondGeoValue");
         window.sessionStorage.removeItem("secondBrushValue");
       } else if (e != "" && e != null && e != "undefined") {
-        this.selectedLangList.splice(1, 1, e);
         this.selectedLang = null;
+        this.selectedLang = "";
         this.search = null;
+        this.selectedLangList.splice(1, 1, e);
 
         if (e == "JAVA") {
           this.secondGeoValue = [];
           this.secondGeoValue = this.javaGeoValue;
           this.secondBrushValue = [];
-          this.secondBrushValue = this.javaBrushValue;
+          this.secondBrushValue = this.javaBrushValue.slice(
+            0,
+            this.javaBrushValue.length
+          );
         } else if (e == "Python") {
           this.secondGeoValue = [];
           this.secondGeoValue = this.pythonGeoValue;
           this.secondBrushValue = [];
-          this.secondBrushValue = this.pythonBrushValue;
+          this.secondBrushValue = this.pythonBrushValue.slice(
+            0,
+            this.pythonBrushValue.length
+          );
         } else if (e == "C++") {
           this.secondGeoValue = [];
           this.secondGeoValue = this.cppGeoValue;
           this.secondBrushValue = [];
-          this.secondBrushValue = this.cppBrushValue;
+          this.secondBrushValue = this.cppBrushValue.slice(
+            0,
+            this.cppBrushValue.length
+          );
         }
         window.sessionStorage.setItem("secondLang", e);
         window.sessionStorage.setItem("secondGeoValue", this.secondGeoValue);
@@ -596,6 +627,7 @@ export default {
           this.secondBrushValue
         );
       }
+      this.ForceRerender();
     },
     thirdLang(e) {
       if (e == "" || e == null || e == "undefined") {
@@ -607,30 +639,41 @@ export default {
         window.sessionStorage.removeItem("thirdGeoValue");
         window.sessionStorage.removeItem("thirdBrushValue");
       } else if (e != "" && e != null && e != "undefined") {
-        this.selectedLangList.splice(2, 1, e);
         this.selectedLang = null;
+        this.selectedLang = "";
         this.search = null;
+        this.selectedLangList.splice(2, 1, e);
 
         if (e == "JAVA") {
           this.thirdGeoValue = [];
           this.thirdGeoValue = this.javaGeoValue;
           this.thirdBrushValue = [];
-          this.thirdBrushValue = this.javaBrushValue;
+          this.thirdBrushValue = this.javaBrushValue.slice(
+            0,
+            this.javaBrushValue.length
+          );
         } else if (e == "Python") {
           this.thirdGeoValue = [];
           this.thirdGeoValue = this.pythonGeoValue;
           this.thirdBrushValue = [];
-          this.thirdBrushValue = this.pythonBrushValue;
+          this.thirdBrushValue = this.pythonBrushValue.slice(
+            0,
+            this.pythonBrushValue.length
+          );
         } else if (e == "C++") {
           this.thirdGeoValue = [];
           this.thirdGeoValue = this.cppGeoValue;
           this.thirdBrushValue = [];
-          this.thirdBrushValue = this.cppBrushValue;
+          this.thirdBrushValue = this.cppBrushValue.slice(
+            0,
+            this.cppBrushValue.length
+          );
         }
         window.sessionStorage.setItem("thirdLang", e);
         window.sessionStorage.setItem("thirdGeoValue", this.thirdGeoValue);
         window.sessionStorage.setItem("thirdBrushValue", this.thirdBrushValue);
       }
+      this.ForceRerender();
     },
     fourthLang(e) {
       if (e == "" || e == null || e == "undefined") {
@@ -649,17 +692,26 @@ export default {
           this.fourthGeoValue = [];
           this.fourthGeoValue = this.javaGeoValue;
           this.fourthBrushValue = [];
-          this.fourthBrushValue = this.javaBrushValue;
+          this.fourthBrushValue = this.javaBrushValue.slice(
+            0,
+            this.javaBrushValue.length
+          );
         } else if (e == "Python") {
           this.fourthGeoValue = [];
           this.fourthGeoValue = this.pythonGeoValue;
           this.fourthBrushValue = [];
-          this.fourthBrushValue = this.pythonBrushValue;
+          this.fourthBrushValue = this.pythonBrushValue.slice(
+            0,
+            this.pythonBrushValue.length
+          );
         } else if (e == "C++") {
           this.fourthGeoValue = [];
           this.fourthGeoValue = this.cppGeoValue;
           this.fourthBrushValue = [];
-          this.fourthBrushValue = this.cppBrushValue;
+          this.fourthBrushValue = this.cppBrushValue.slice(
+            0,
+            this.cppBrushValue.length
+          );
         }
         window.sessionStorage.setItem("fourthLang", e);
         window.sessionStorage.setItem("fourthGeoValue", this.fourthGeoValue);
@@ -668,6 +720,7 @@ export default {
           this.fourthBrushValue
         );
       }
+      this.ForceRerender();
     },
     fifthLang(e) {
       if (e == "" || e == null || e == "undefined") {
@@ -685,25 +738,38 @@ export default {
           this.fifthGeoValue = [];
           this.fifthGeoValue = this.javaGeoValue;
           this.firstBrushValue = [];
-          this.fifthBrushValue = this.javaBrushValue;
+          this.fifthBrushValue = this.javaBrushValue.slice(
+            0,
+            this.javaBrushValue.length
+          );
         } else if (e == "Python") {
           this.fifthGeoValue = [];
           this.fifthGeoValue = this.pythonGeoValue;
           this.firstBrushValue = [];
-          this.fifthBrushValue = this.pythonBrushValue;
+          this.fifthBrushValue = this.pythonBrushValue.slice(
+            0,
+            this.pythonBrushValue.length
+          );
         } else if (e == "C++") {
           this.fifthGeoValue = [];
           this.fifthGeoValue = this.cppGeoValue;
           this.firstBrushValue = [];
-          this.fifthBrushValue.push(this.cppBrushValue);
+          this.fifthBrushValue
+            .push(this.cppBrushValue)
+            .slice(0, this.cppBrushValue.length);
         }
         window.sessionStorage.setItem("fifthLang", e);
         window.sessionStorage.setItem("fifthGeoValue", this.fifthGeoValue);
         window.sessionStorage.setItem("fifthBrushValue", this.fifthBrushValue);
       }
+      this.ForceRerender();
     }
   },
-  methods: {},
+  methods: {
+    ForceRerender() {
+      this.componentKey += 1;
+    }
+  },
   created() {
     this.firstLang = window.sessionStorage.getItem("firstLang");
     this.firstGeoValue = window.sessionStorage.getItem("firstGeoValue");

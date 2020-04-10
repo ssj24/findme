@@ -1,34 +1,34 @@
-import Main from './views/main/Main'
-import Signup from './views/user/Signup.vue'
-import Login from './views/user/Login.vue'
-import SignMerge from './views/user/SignMerge.vue'
-import Account from './views/user/Account.vue'
-import StatisticsPage from './views/user/StatisticsPage.vue'
- 
+import Main from "./views/main/Main";
+import Signup from "./views/user/Signup.vue";
+import Login from "./views/user/Login.vue";
+import SignMerge from "./views/user/SignMerge.vue";
+import Account from "./views/user/Account.vue";
+import StatisticsPage from "./views/user/StatisticsPage.vue";
+
 export default [
   {
-    path: '/',
-    name: 'Main',
+    path: "/",
+    name: "Main",
     component: Main,
   },
   {
-    path: '/signup',
-    name: 'Signup',
+    path: "/signup",
+    name: "Signup",
     component: Signup,
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
   },
   {
-    path: '/signmerge',
-    name: 'SignMerge',
+    path: "/signmerge",
+    name: "SignMerge",
     component: SignMerge,
   },
   {
-    path: '/account',
-    name: 'Account',
+    path: "/account",
+    name: "Account",
     component: Account,
   },
   {

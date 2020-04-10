@@ -12,37 +12,26 @@
           <v-list-tile-content>{{ item.title }}</v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>-->
 
-    <v-app-bar 
-      fixed app
-      color="#fff"
-      height="66"
-      >
+    <v-app-bar fixed app color="#fff" height="66">
       <!-- <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar">
         </v-app-bar-nav-icon>
-      </span> -->
+      </span>-->
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
-          {{ appTitle }}
-        </router-link>
+        <router-link to="/" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn
-          text
-          color="#fff"
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path">
+        <v-btn text color="#fff" v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-icon color="indigo darken-3">{{item.icon}}</v-icon>
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
-    
+
     <v-content>
-        <router-view></router-view>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -50,23 +39,23 @@
 <script>
 // import Header from '@/views/main/Header.vue'
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     // appHeader: Header,
   },
 
-  data(){
+  data() {
     return {
-      appTitle: '나를 찾아줘',
+      appTitle: "나를 찾아줘",
       sidebar: false,
       menuItems: [
-          { title: 'Home', path: '/', icon: 'home' },
-          { title: 'Statistics', path: '/statistics', icon: 'insert_chart_outlined'},
-          { title: 'User', path: '/account', icon: 'face' },
-          { title: 'SignIn', path: '/signmerge', icon: 'lock_open' },
-     ]
-    }
-  },
+        { title: "Home", path: "/", icon: "home" },
+        { title: "Statistics", path: "/statistics", icon: "insert_chart_outlined" },
+        { title: "User", path: "/account", icon: "face" },
+        { title: "SignIn", path: "/signmerge", icon: "lock_open" },
+      ]
+    };
+  }
 };
 </script>
