@@ -3,7 +3,7 @@
     추천 스택
     <div class="example-3d">
     <swiper class="swiper" :options="swiperOption">
-      <swiper-slide v-for="(slide,i) in slides" :key="i" :style="{'background-color': slide.color}">{{ slide.title }}</swiper-slide>
+      <swiper-slide v-for="(slide,i) in slides" :key="i" :style="{'background-image': 'radial-gradient(white 1%,'+slide.color+')', 'color': slide.color}" style="font-size: 2rem; font-weight: 900; text-shadow: 1px 1px #000; box-shadow: 5px 5px 10px #ccc; border: 5px outset white;">{{ slide.title }}</swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
   </div>
@@ -68,10 +68,8 @@ export default {
       height: 300px;
       text-align: center;
       font-weight: bold;
-      background-color: #2C8DFB;
       background-position: center;
       background-size: cover;
-      color: white;
     }
 
     // .swiper-pagination {
