@@ -32,13 +32,13 @@ export default [
     component: Account,
   },
   {
-        path: '/statistics',
-        name: 'Statistics',
-        component: StatisticsPage
-      },
-      {
-        path: '/*',
-        name: '404Error',
-        redirect: {name: 'Main'}
-      }
+    path: '/statistics',
+    name: 'Statistics',
+    component: StatisticsPage
+  },
+  {
+    path: '/*',
+    name: '404Error',
+    redirect: {name: 'Main'}
+  }
 ]

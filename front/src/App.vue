@@ -44,8 +44,6 @@
     <v-content>
         <router-view></router-view>
     </v-content>
-    
->>>>>>> 81dc6b493fbd2173cb54c4c03fcc1334a4ec0abf
   </v-app>
 </template>
 
@@ -64,10 +62,9 @@ export default {
       sidebar: false,
       menuItems: [
           { title: 'Home', path: '/', icon: 'home' },
-          { title: 'Chart', path: '/', icon: 'insert_chart_outlined'},
+          { title: 'Statistics', path: '/statistics', icon: 'insert_chart_outlined'},
           { title: 'User', path: '/account', icon: 'face' },
           { title: 'SignIn', path: '/signmerge', icon: 'lock_open' },
-          { title: 'Statistics', path: '/statistics', icon: 'face'}
      ]
     }
   },
