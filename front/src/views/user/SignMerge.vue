@@ -125,10 +125,10 @@ export default {
 	transition: all .3s ease-out;
 }
 .switcher-login {
-	right: -100px;
+	right: -200px;
 }
 .switcher-signup {
-	left: -100px;
+	left: -200px;
 }
 .form-wrapper.is-active .switcher-login {
 	color: #fff;

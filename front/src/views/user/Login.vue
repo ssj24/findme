@@ -34,7 +34,7 @@
               label="로그인 유지...? 할 수 있을까 내가..?"
               required
             ></v-checkbox>
-            <v-layout justify-center>
+            <v-layout justify-center class="btnParent">
               
               <v-btn
                 outlined

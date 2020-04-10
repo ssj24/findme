@@ -69,7 +69,7 @@
               label="약관을 넣을까말까"
               required
             ></v-checkbox>
-            <v-layout justify-center>
+            <v-layout justify-center class="btnParent">
               <v-btn
                 outlined
                 color="e0d3d3"

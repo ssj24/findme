@@ -56,22 +56,22 @@ ol, ul {
 .form-hr {
  border-top: 3px solid #0e1670;
 }
-.signup .v-btn {
+.btnParent .v-btn {
   border-radius: 100px;
 }
-.signup .v-btn:before {
+.btnParent .v-btn:before {
   border-radius: 100px;
   opacity: 0;
 }
-.signup .v-btn:hover:before {
+.btnParent .v-btn:hover:before {
   background-color: #0f0d6d;
   opacity: 1 !important;
   transition: opacity 0.4s;
 }
-.signup .v-btn:hover .v-btn__content {
+.btnParent .v-btn:hover .v-btn__content {
   color: #fff;
   font-weight: bold;
 }
-.signup .v-btn .v-btn__content {
+.btnParent .v-btn .v-btn__content {
   font-size: 1.2em;
 }
