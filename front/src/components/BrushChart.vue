@@ -19,58 +19,76 @@ export default {
   components: {
     apexchart: VueApexCharts
   },
-  props: {
-    firstLang: {
-      type: String
-    },
-    firstValue: {
-      type: Array
-    },
-    secondLang: {
-      type: String
-    },
-    secondValue: {
-      type: Array
-    },
-    thirdLang: {
-      type: String
-    },
-    thirdValue: {
-      type: Array
-    },
-    fourthLang: {
-      type: String
-    },
-    fourthValue: {
-      type: Array
-    },
-    fifthLang: {
-      type: String
-    },
-    fifthValue: {
-      type: Array
-    },
-    totalCnt: {
-      type: Number
-    },
-    colors: {
-      type: Array
-    }
-  },
+  // props: {
+  //   firstLang: {
+  //     type: String
+  //   },
+  //   firstValue: {
+  //     type: String
+  //   },
+  //   secondLang: {
+  //     type: String
+  //   },
+  //   secondValue: {
+  //     type: String
+  //   },
+  //   thirdLang: {
+  //     type: String
+  //   },
+  //   thirdValue: {
+  //     type: String
+  //   },
+  //   fourthLang: {
+  //     type: String
+  //   },
+  //   fourthValue: {
+  //     type: String
+  //   },
+  //   fifthLang: {
+  //     type: String
+  //   },
+  //   fifthValue: {
+  //     type: String
+  //   },
+  //   totalCnt: {
+  //     type: Number
+  //   },
+  //   colors: {
+  //     type: Array
+  //   }
+  // },
+  props: [
+    "firstLang",
+    "firstValue",
+    "secondLang",
+    "secondValue",
+    "thirdLang",
+    "thirdValue",
+    "fourthLang",
+    "fourthValue",
+    "fifthLang",
+    "fifthValue",
+    "colors"
+  ],
   computed: {},
   data() {
     return {
-      tmpList: [],
+      tmpSeries: [],
       series: [],
       chartOptions: {
         chart: {
           id: "chart2",
           type: "line",
-          height: 250,
           toolbar: {
             autoSelected: "pan",
-            show: false
+            show: true
+          },
+          mounted: {
+            series: this.series,
           }
+        },
+        noData: {
+          text: "Loading..."
         },
         colors: this.colors,
         stroke: {
@@ -88,6 +106,7 @@ export default {
         xaxis: {
           type: "datetime"
         },
+        yaxis: {},
         legend: {
           offsetY: top,
           itemMargin: {
@@ -109,10 +128,15 @@ export default {
           selection: {
             enabled: true,
             xaxis: {
-              min: this.firstValue[0][0],
-              max: this.firstValue[this.firstValue.length - 1][0]
+              min: new Date(this.firstValue[0][0]).getTime(),
+              max: new Date(
+                this.firstValue[this.firstValue.length - 1][0]
+              ).getTime()
             }
           }
+        },
+        noData: {
+          text: "Loading..."
         },
         colors: this.colors,
         fill: {
@@ -129,7 +153,7 @@ export default {
           }
         },
         yaxis: {
-          tickAmount: 1
+          tickAmount: 2
         },
         legend: {
           show: false
@@ -137,11 +161,7 @@ export default {
       }
     };
   },
-  methods: {
-    forceUpdate() {
-      this.$forceUpdate();
-    }
-  },
+  methods: {},
   mounted() {
     if (
       this.firstLang != "" &&
@@ -198,6 +218,8 @@ export default {
       });
     }
     this.seriesLine = this.series;
+    console.log(this.firstValue[0][0]);
+    console.log(this.firstValue[this.firstValue.length - 1][0]);
   }
 };
 </script>
