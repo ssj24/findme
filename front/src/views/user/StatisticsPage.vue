@@ -150,7 +150,7 @@
           </v-flex>
         </v-flex>
       </v-flex>
-      <v-flex
+      <!-- <v-flex
         d-flex
         xs8
         class="ml-auto mr-auto mt-7"
@@ -169,12 +169,12 @@
                 :colors="colors"
               />
             </v-flex>
-            <v-flex d-flex xs6 justify-end>
+            <v-flex d-flex xs6 justify-end> -->
               <!-- <GeoTable :value="javaGeoValue"/> -->
-            </v-flex>
+            <!-- </v-flex>
           </v-flex>
         </v-flex>
-      </v-flex>
+      </v-flex> -->
       <v-flex
         d-flex
         xs8
@@ -281,7 +281,7 @@
 
 <script>
 import BrushChart from "../../components/BrushChart";
-import TotalGeoChart from "../../components/TotalGeoChart";
+// import TotalGeoChart from "../../components/TotalGeoChart";
 import GeoChart from "../../components/GeoChart";
 import GeoTable from "../../components/GeoTable";
 
@@ -289,7 +289,7 @@ export default {
   name: "StaticsPage",
   components: {
     BrushChart,
-    TotalGeoChart,
+    // TotalGeoChart,
     GeoChart,
     GeoTable
   },
