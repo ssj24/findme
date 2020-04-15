@@ -1,11 +1,14 @@
 package com.ssafy.findme.service;
 
-
-import java.util.List;
+import javax.mail.MessagingException;
 
 import com.ssafy.findme.dto.Users;
 
 public interface IAccountService {
-	List<Users> findAll();
-	void save(Users users);
+//	List<Users> findAll();
+	void signUp(Users user);
+
+	void mailSendWithUserKey(String email, String name) throws MessagingException;
+
+	void alterUserKey(String email, String key);
 }
