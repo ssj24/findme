@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>추천 공고</p>
     <v-container fluid>
       <v-layout wrap>
         <v-flex v-for="card in cards" :key="card.title" class="ma-0 pa-0" xs12 sm5 md4 lg3>
@@ -8,10 +7,10 @@
             <v-img
               :src="card.src"
               class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.3), rgba(0,0,0,.8)"
+              gradient="to bottom, rgba(0,0,0,.4), rgba(0,0,0,.8)"
               height="200px"
             >
-              <v-card-title class="font-weight-bold" v-text="card.company"></v-card-title>
+              <v-card-title class="font-weight-bold" style="text-shadow: 1px 1px 1px #000;">{{ card.company }}</v-card-title>
               <v-card-subtitle
                 class="white--text font-weight-black text-right mb-n6"
               >{{ card.position }}</v-card-subtitle>
