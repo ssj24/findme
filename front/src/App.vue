@@ -20,7 +20,7 @@
         </v-app-bar-nav-icon>
       </span>-->
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">{{ appTitle }}</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer; font-weight: 900;">{{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
