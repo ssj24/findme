@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.findme.dto.Users;
+import com.ssafy.findme.domain.Users;
 import com.ssafy.findme.repository.AccountRepository;
 
 @Service

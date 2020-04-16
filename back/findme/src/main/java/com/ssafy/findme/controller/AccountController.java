@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.findme.dto.Users;
+import com.ssafy.findme.domain.Users;
 import com.ssafy.findme.service.IAccountService;
 import com.ssafy.findme.service.UserMailSendService;
 import com.ssafy.findme.service.UserSha256;
@@ -65,6 +65,18 @@ public class AccountController {
 		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
 
 	}
+
+	//	@PostMapping("/insert")
+//	@ApiOperation(value = "사용자추가")
+//	public void insert(@RequestBody Users user) {
+//	    try {
+//	    	accountservice.save(users);
+//	    } catch (DataIntegrityViolationException e) {
+//	        System.out.println("insert fail");
+//	    }
+//	}
+	
+	
 	
 	@GetMapping("/user/key_alter")
 	@ApiOperation(value = "이메일 인증하기")
