@@ -1,6 +1,5 @@
 <template>
   <div>
-    추천 스택
     <div class="example-3d">
       <swiper class="swiper" :options="swiperOption">
         <swiper-slide
