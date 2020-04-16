@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.findme.dto.Users;
+import com.ssafy.findme.domain.Users;
 import com.ssafy.findme.service.IAccountService;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,17 +39,16 @@ public class AccountController {
 	    }
 	    return null;
 	}
-	
-	@PostMapping("/insert")
-	@ApiOperation(value = "사용자추가")
-	public void insert(@RequestBody Users user) {
-	    try {
-	    	Users users = Users.builder().user_email(user.getUser_email()).user_pwd(user.getUser_pwd()).user_name(user.getUser_name()).build();
-	    	accountservice.save(users);
-	    } catch (DataIntegrityViolationException e) {
-	        System.out.println("insert fail");
-	    }
-	}
+
+	//	@PostMapping("/insert")
+//	@ApiOperation(value = "사용자추가")
+//	public void insert(@RequestBody Users user) {
+//	    try {
+//	    	accountservice.save(users);
+//	    } catch (DataIntegrityViolationException e) {
+//	        System.out.println("insert fail");
+//	    }
+//	}
 	
 }
 

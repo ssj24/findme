@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.findme.dto.Users;
+import com.ssafy.findme.domain.Users;
 import com.ssafy.findme.repository.AccountRepository;
 @Service
 public class AccountServiceImpl implements IAccountService {

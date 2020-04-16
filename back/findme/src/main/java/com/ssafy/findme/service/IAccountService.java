@@ -3,7 +3,7 @@ package com.ssafy.findme.service;
 
 import java.util.List;
 
-import com.ssafy.findme.dto.Users;
+import com.ssafy.findme.domain.Users;
 
 public interface IAccountService {
 	List<Users> findAll();
