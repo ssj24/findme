@@ -21,8 +21,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name="reviews")
-public class Reviews {
+@Table(name="review")
+public class Review {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +44,5 @@ public class Reviews {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@NotNull
-	private Users user;
+	private User user;
 }

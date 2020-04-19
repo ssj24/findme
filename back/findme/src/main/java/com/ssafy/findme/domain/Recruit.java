@@ -21,10 +21,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "recruits")
+@Table(name = "recruit")
 @Getter
 @Setter
-public class Recruits {
+public class Recruit {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

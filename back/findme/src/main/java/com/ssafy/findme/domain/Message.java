@@ -38,10 +38,10 @@ public class Message {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@NotNull
-	private Users user;
+	private User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "recruit_id")
 	@NotNull
-	private Recruits recruit;
+	private Recruit recruit;
 }
