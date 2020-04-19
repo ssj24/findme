@@ -24,10 +24,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity //아래 변수들을 JPA를 사용해서 Entity로 설정
-@Table(name="users")
+@Table(name="user")
 @Getter
 @Setter
-public class Users {
+public class User {
 	
 	@Id
 	@Column(name = "id")
@@ -61,17 +61,21 @@ public class Users {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Reviews> reviews = new ArrayList<>();
+	private List<Review> reviewList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Symp> symp = new ArrayList<>();
+	private List<Symp> sympList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Unsymp> unsymp = new ArrayList<>();
+	private List<Unsymp> unsympList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
-	private List<Message> message = new ArrayList<>();
+	private List<Message> messageList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Survey> surveyList = new ArrayList<>();
 }

@@ -26,12 +26,12 @@ public class Unsymp {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@NotNull
-	private Users user;
+	private User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "review_id")
 	@NotNull
-	private Reviews review;
+	private Review review;
 	
 }
 

@@ -1,5 +1,7 @@
 package com.ssafy.findme.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,31 +10,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import lombok.Setter;
-import lombok.ToString;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Table(name = "survey")
 @Getter
 @Setter
-@ToString
-@Table(name = "symp")
-public class Symp {
+public class Survey {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
+	
+	private int use_reason;
+	private int advantage;
+	private int disadvantage;
+	private String total_review;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created_at;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@NotNull
 	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name = "review_id")
-	@NotNull
-	private Review review;
-	
 }

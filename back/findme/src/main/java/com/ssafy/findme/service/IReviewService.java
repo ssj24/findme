@@ -1,19 +1,26 @@
 package com.ssafy.findme.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.ssafy.findme.domain.Reviews;
-import com.ssafy.findme.domain.Symp;
-import com.ssafy.findme.domain.Unsymp;
+import com.ssafy.findme.dto.ReviewDTO;
+import com.ssafy.findme.dto.SympDTO;
+import com.ssafy.findme.dto.UnsympDTO;
 
 public interface IReviewService {
-	void save(Reviews review);
-	void delete(int review_seq);
-	Optional<Reviews> findById(int review_seq);
-	List<Reviews> findAll();
-	void saveReviewSymp(Symp reviewSymp);
-	void saveReviewUnsymp(Unsymp reviewUnsymp);
-	Symp findOneSymp(int symp_seq);
-	Unsymp findOneUnsymp(int unsymp_seq);
+	void save(Long user_id, String content);
+	void update(Long review_id, String content);
+	void delete(Long review_id);
+	ReviewDTO findById(Long review_id);
+	List<ReviewDTO> findAll();
+	List<ReviewDTO> findReviewByUserId(Long user_id);
+	
+	List<SympDTO> findAllSymp();
+	void saveSymp(Long review_id, Long user_id);
+	List<SympDTO> findSympByUserId(Long user_id);
+	void deleteSymp(Long review_id, Long user_id);
+	
+	List<UnsympDTO> findAllUnsymp();
+	void saveUnsymp(Long review_id, Long user_id);
+	List<UnsympDTO> findUnsympByUserId(Long user_id);
+	void deleteUnsymp(Long review_id, Long user_id);
 }
