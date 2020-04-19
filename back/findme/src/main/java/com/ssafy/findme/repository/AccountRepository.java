@@ -1,18 +1,21 @@
 package com.ssafy.findme.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ssafy.findme.domain.Users;
+import com.ssafy.findme.domain.User;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Users, Integer> {
+public interface AccountRepository extends JpaRepository<User, Integer> {
 
-	public List<Users> findByEmail(String email);
+	public Optional<User> findByEmail(String email);
+	
+	public Optional<User> findByEmailAndAuthKey(String email, String key);
 
-	public List<Users> findByEmailAndKey(String email, String key);
+	public List<User> findByNameLike(String keyword);
 
-	public List<Users> findByNameLike(String keyword);
+	public int countByEmail(String email);
 }

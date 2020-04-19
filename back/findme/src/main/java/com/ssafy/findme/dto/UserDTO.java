@@ -16,11 +16,11 @@ public class UserDTO {
 	private String eamil;
 	private String password;
 	private String name;
-	private String tech_stack;
-	private String wish_hope;
-	private String wish_job;
+	private String techStack;
+	private String wishHope;
+	private String wishJob;
 	private boolean utility;
-	private String auth_key;
+	private String authKey;
 	private RoleType roleType;
 	private Date created_at;
 	public enum RoleType {

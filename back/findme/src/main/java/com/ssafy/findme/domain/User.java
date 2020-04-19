@@ -23,58 +23,59 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity //아래 변수들을 JPA를 사용해서 Entity로 설정
-@Table(name="user")
+@Entity // 아래 변수들을 JPA를 사용해서 Entity로 설정
+@Table(name = "user")
 @Getter
 @Setter
 public class User {
-	
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(length = 100, nullable=false, unique = true)
+
+	@Column(length = 100, nullable = false, unique = true)
 	private String email;
-	
-	@JsonIgnore
+
+//	@JsonIgnore
 	@NotNull
 	private String password;
-	
+
 	private String name;
-	private String tech_stack;
-	private String wish_hope;
-	private String wish_job;
+	private String techStack;
+	private String wishHope;
+	private String wishJob;
 	private boolean utility = true;
-	private String auth_key;
-	
-	@Enumerated(EnumType.STRING) //enum이름을 DB에 저장
+	private String authKey;
+
+	@Enumerated(EnumType.STRING) // enum이름을 DB에 저장
 	private RoleType roleType;
-	
-	//DB date 설정 어노테이션으로 datetime과의 차이점은  time_zone시스템 변수에 입력된 시간대 정보를 기반으로 데이터를 입력받는다.
+
+	// DB date 설정 어노테이션으로 datetime과의 차이점은 time_zone시스템 변수에 입력된 시간대 정보를 기반으로 데이터를
+	// 입력받는다.
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;
-	
+
 	public enum RoleType {
 		USER, ADMIN
 	}
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Review> reviewList = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Symp> sympList = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Unsymp> unsympList = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Message> messageList = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Survey> surveyList = new ArrayList<>();
