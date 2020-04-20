@@ -63,8 +63,11 @@
                 </v-flex>
               </v-col>
             </v-flex>
-            <!-- <v-divider vertical v-if="selectedLangList.length >= 4"></v-divider>
-            <v-flex d-flex v-if="selectedLangList.length >= 4">
+            <v-divider vertical v-if="selectedLangList.length >= 4"></v-divider>
+            <v-flex
+              d-flex
+              v-if="selectedLangList.length >= 4 && fourthLang != '' && fourthLang != null && fourthLang != 'undefined'"
+            >
               <v-col>
                 <v-flex id="fourthLang">
                   <v-autocomplete
@@ -81,7 +84,10 @@
               </v-col>
             </v-flex>
             <v-divider vertical v-if="selectedLangList.length >= 5"></v-divider>
-            <v-flex d-flex v-if="selectedLangList.length >= 5">
+            <v-flex
+              d-flex
+              v-if="selectedLangList.length >= 5 && fifthLang != '' && fifthLang != null && fifthLang != 'undefined'"
+            >
               <v-col>
                 <v-flex id="fifthLang">
                   <v-autocomplete
@@ -96,9 +102,9 @@
                   ></v-autocomplete>
                 </v-flex>
               </v-col>
-            </v-flex>-->
-            <v-divider vertical v-if="selectedLangList.length < 3"></v-divider>
-            <v-flex d-flex v-if="selectedLangList.length < 3">
+            </v-flex>
+            <v-divider vertical v-if="selectedLangList.length < 5"></v-divider>
+            <v-flex d-flex v-if="selectedLangList.length < 5">
               <v-col>
                 <v-flex>
                   <v-autocomplete
@@ -108,6 +114,8 @@
                     hide-details
                     placeholder="비교 추가"
                     prepend-icon="mdi-plus"
+                    no-data-text="해당하는 언어가 없습니다"
+                    open-on-clear
                     :append-icon="null"
                     color="white"
                     solo
@@ -122,12 +130,12 @@
       </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         justify-center
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
-        :key="brushComponentKey"
         v-if="selectedLangList.length >= 1"
+        :key="brushComponentKey"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">시간 흐름에 따른 관심도 변화</v-flex>
@@ -144,40 +152,63 @@
               :fourthValue="fourthBrushValue"
               :fifthLang="fifthLang"
               :fifthValue="fifthBrushValue"
-              :totalCnt="selectedLangList.length"
               :colors="colors"
             ></BrushChart>
           </v-flex>
         </v-flex>
       </v-flex>
-      <!-- <v-flex
+      <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
-        v-if="selectedLangList.length >= 1"
+        v-if="selectedLangList.length >= 2"
+        :key="totalComponentKey"
       >
         <v-flex>
           <v-flex d-flex class="ma-3">지역별 비교 분석</v-flex>
           <v-divider class="mb-3" />
           <v-flex d-flex>
-            <v-flex d-flex xs6 justify-start>
+            <v-flex d-flex xs6 justify-start class="pr-3">
               <TotalGeoChart
-                :javaValue="javaGeoValue"
-                :pythonValue="pythonGeoValue"
-                :cppValue="cppGeoValue"
+                :firstLang="firstLang"
+                :secondLang="secondLang"
+                :thirdLang="thirdLang"
+                :fourthLang="fourthLang"
+                :fifthLang="fifthLang"
+                :sortValue="sortValue"
+                :totalGeoValue="totalGeoValue"
+                :selectedCnt="selectedLangList.length"
                 :colors="colors"
               />
             </v-flex>
-      <v-flex d-flex xs6 justify-end>-->
-      <!-- <GeoTable :value="javaGeoValue"/> -->
-      <!-- </v-flex>
+            <v-flex xs6 justify-end class="pl-3 ml-3">
+              <v-flex>
+                <v-flex d-flex>
+                  <v-select v-model="sortValue" :items="selectedLangList" solo flat hide-details></v-select>
+                </v-flex>
+              </v-flex>
+              <v-flex class="pr-3">
+                <v-divider />
+                <TotalGeoTable
+                  :firstLang="firstLang"
+                  :secondLang="secondLang"
+                  :thirdLang="thirdLang"
+                  :fourthLang="fourthLang"
+                  :fifthLang="fifthLang"
+                  :sortValue="sortValue"
+                  :totalGeoValue="totalGeoValue"
+                  :selectedCnt="selectedLangList.length"
+                  :colors="colors"
+                />
+              </v-flex>
+            </v-flex>
           </v-flex>
         </v-flex>
-      </v-flex>-->
+      </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 1"
@@ -188,7 +219,7 @@
           <v-divider class="mb-3" />
           <v-flex d-flex>
             <v-flex d-flex xs6 justify-start class="pr-3">
-              <GeoChart :value="firstGeoValue" colors="#4285f4" />
+              <GeoChart :value="firstGeoValue" colors="#258df2" />
             </v-flex>
             <v-flex d-flex xs6 justify-end class="pl-3">
               <GeoTable :value="firstGeoValue" />
@@ -198,7 +229,7 @@
       </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 2"
@@ -209,7 +240,7 @@
           <v-divider class="mb-3" />
           <v-flex d-flex>
             <v-flex d-flex xs6 justify-start class="pr-3">
-              <GeoChart :value="secondGeoValue" colors="#f44336" />
+              <GeoChart :value="secondGeoValue" colors="#ff4560" />
             </v-flex>
             <v-flex d-flex xs6 justify-end class="pl-3">
               <GeoTable :value="secondGeoValue" />
@@ -219,7 +250,7 @@
       </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 3"
@@ -230,7 +261,7 @@
           <v-divider class="mb-3" />
           <v-flex d-flex>
             <v-flex d-flex xs6 justify-start class="pr-3">
-              <GeoChart :value="thirdGeoValue" colors="#ffca28" />
+              <GeoChart :value="thirdGeoValue" colors="#fdba2c" />
             </v-flex>
             <v-flex d-flex xs6 justify-end class="pl-3">
               <GeoTable :value="thirdGeoValue" />
@@ -240,7 +271,7 @@
       </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 4"
@@ -251,7 +282,7 @@
           <v-divider class="mb-3" />
           <v-flex d-flex>
             <v-flex d-flex xs6 justify-start class="pr-3">
-              <GeoChart :value="fourthGeoValue" colors="#ffca28" />
+              <GeoChart :value="fourthGeoValue" colors="#40c741" />
             </v-flex>
             <v-flex d-flex xs6 justify-end class="pl-3">
               <GeoTable :value="fourthGeoValue" />
@@ -261,7 +292,7 @@
       </v-flex>
       <v-flex
         d-flex
-        xs8
+        xs10
         class="ml-auto mr-auto mt-7"
         style="background-color: #ffffff"
         v-if="selectedLangList.length >= 5"
@@ -272,7 +303,7 @@
           <v-divider class="mb-3" />
           <v-flex d-flex>
             <v-flex d-flex xs6 justify-start class="pr-3">
-              <GeoChart :value="fifthGeoValue" colors="#ffca28" />
+              <GeoChart :value="fifthGeoValue" colors="#745af2" />
             </v-flex>
             <v-flex d-flex xs6 justify-end class="pl-3">
               <GeoTable :value="fifthGeoValue" />
@@ -286,7 +317,8 @@
 
 <script>
 import BrushChart from "../../components/BrushChart";
-// import TotalGeoChart from "../../components/TotalGeoChart";
+import TotalGeoChart from "../../components/TotalGeoChart";
+import TotalGeoTable from "../../components/TotalGeoTable";
 import GeoChart from "../../components/GeoChart";
 import GeoTable from "../../components/GeoTable";
 
@@ -294,14 +326,16 @@ export default {
   name: "StaticsPage",
   components: {
     BrushChart,
-    // TotalGeoChart,
+    TotalGeoChart,
+    TotalGeoTable,
     GeoChart,
     GeoTable
   },
   computed: {},
   data() {
     return {
-      colors: ["#4285f4", "#f44336", "#ffca28", "#43a047", "#9c27b0"],
+      // colors: ["#4285f4", "#f44336", "#ffca28", "#43a047", "#9c27b0"],
+      colors: ["#258df2", "#ff4560", "#fdba2c", "#40c741", "#ab47bc"],
       selectedLangList: [],
       firstLang: "",
       secondLang: "",
@@ -309,6 +343,7 @@ export default {
       fourthLang: "",
       fifthLang: "",
       selectedLang: "",
+      sortValue: "",
       firstSearch: null,
       secondSearch: null,
       thirdSearch: null,
@@ -325,6 +360,7 @@ export default {
       thirdBrushValue: [],
       fourthBrushValue: [],
       fifthBrushValue: [],
+      totalGeoValue: [["State", "관심도"]],
       brushComponentKey: 0,
       totalComponentKey: 200,
       firstComponentKey: 400,
@@ -332,7 +368,7 @@ export default {
       thirdComponentKey: 800,
       fourthComponentKey: 1000,
       fifthComponentKey: 1200,
-      languageNameList: ["JAVA", "Python", "C++"],
+      languageNameList: ["JAVA", "Python", "C", "C++", "C#", "JavaScript"],
       languages: [
         {
           languageId: 0,
@@ -344,167 +380,338 @@ export default {
         },
         {
           languageId: 2,
+          languageName: "C"
+        },
+        {
+          languageId: 3,
           languageName: "C++"
+        },
+        {
+          languageId: 4,
+          languageName: "C#"
+        },
+        {
+          languageId: 5,
+          languageName: "JavaScript"
         }
       ],
-      pythonBrushValue: [
-        ["2019-09-01", 89],
-        ["2019-09-08", 61],
-        ["2019-09-15", 84],
-        ["2019-09-22", 91],
-        ["2019-09-25", 80],
-        ["2019-10-06", 87],
-        ["2019-10-13", 90],
-        ["2019-10-20", 81],
-        ["2019-10-27", 83],
-        ["2019-11-03", 86],
-        ["2019-11-10", 94],
-        ["2019-11-17", 89],
-        ["2019-11-24", 82],
-        ["2019-12-01", 85],
-        ["2019-12-08", 88],
-        ["2019-12-15", 76],
-        ["2019-12-22", 62],
-        ["2019-12-29", 61],
-        ["2020-01-05", 86],
-        ["2020-01-12", 83],
-        ["2020-01-19", 67],
-        ["2020-01-26", 75],
-        ["2020-02-02", 91],
-        ["2020-02-09", 86],
-        ["2020-02-16", 81],
-        ["2020-02-23", 74],
-        ["2020-03-01", 83],
-        ["2020-03-08", 83],
-        ["2020-03-15", 84],
-        ["2020-03-22", 90],
-        ["2020-03-29", 100],
-        ["2020-04-05", 100]
-      ],
       javaBrushValue: [
-        ["2019-09-01", 83],
-        ["2019-09-08", 54],
-        ["2019-09-15", 86],
-        ["2019-09-22", 80],
-        ["2019-09-25", 72],
-        ["2019-10-06", 77],
-        ["2019-10-13", 85],
-        ["2019-10-20", 75],
+        ["2019-09-01", 78],
+        ["2019-09-08", 60],
+        ["2019-09-15", 84],
+        ["2019-09-22", 89],
+        ["2019-09-25", 76],
+        ["2019-10-06", 70],
+        ["2019-10-13", 90],
+        ["2019-10-20", 85],
         ["2019-10-27", 78],
-        ["2019-11-03", 78],
-        ["2019-11-10", 80],
-        ["2019-11-17", 83],
-        ["2019-11-24", 83],
-        ["2019-12-01", 84],
-        ["2019-12-08", 82],
-        ["2019-12-15", 71],
-        ["2019-12-22", 59],
-        ["2019-12-29", 47],
-        ["2020-01-05", 70],
+        ["2019-11-03", 89],
+        ["2019-11-10", 83],
+        ["2019-11-17", 84],
+        ["2019-11-24", 90],
+        ["2019-12-01", 97],
+        ["2019-12-08", 88],
+        ["2019-12-15", 87],
+        ["2019-12-22", 47],
+        ["2019-12-29", 53],
+        ["2020-01-05", 73],
         ["2020-01-12", 77],
-        ["2020-01-19", 59],
-        ["2020-01-26", 61],
-        ["2020-02-02", 73],
-        ["2020-02-09", 60],
-        ["2020-02-16", 47],
-        ["2020-02-23", 39],
-        ["2020-03-01", 50],
-        ["2020-03-08", 46],
-        ["2020-03-15", 47],
+        ["2020-01-19", 61],
+        ["2020-01-26", 68],
+        ["2020-02-02", 77],
+        ["2020-02-09", 77],
+        ["2020-02-16", 76],
+        ["2020-02-23", 66],
+        ["2020-03-01", 69],
+        ["2020-03-08", 76],
+        ["2020-03-15", 86],
+        ["2020-03-22", 83],
+        ["2020-03-29", 82],
+        ["2020-04-05", 86]
+      ],
+      pythonBrushValue: [
+        ["2019-09-01", 64],
+        ["2019-09-08", 55],
+        ["2019-09-15", 70],
+        ["2019-09-22", 68],
+        ["2019-09-25", 73],
+        ["2019-10-06", 77],
+        ["2019-10-13", 74],
+        ["2019-10-20", 70],
+        ["2019-10-27", 69],
+        ["2019-11-03", 73],
+        ["2019-11-10", 75],
+        ["2019-11-17", 78],
+        ["2019-11-24", 75],
+        ["2019-12-01", 80],
+        ["2019-12-08", 70],
+        ["2019-12-15", 68],
+        ["2019-12-22", 56],
+        ["2019-12-29", 52],
+        ["2020-01-05", 63],
+        ["2020-01-12", 69],
+        ["2020-01-19", 61],
+        ["2020-01-26", 58],
+        ["2020-02-02", 63],
+        ["2020-02-09", 69],
+        ["2020-02-16", 61],
+        ["2020-02-23", 58],
+        ["2020-03-01", 58],
+        ["2020-03-08", 63],
+        ["2020-03-15", 69],
+        ["2020-03-22", 84],
+        ["2020-03-29", 86],
+        ["2020-04-05", 97]
+      ],
+      cBrushValue: [
+        ["2019-09-01", 53],
+        ["2019-09-08", 50],
+        ["2019-09-15", 71],
+        ["2019-09-22", 74],
+        ["2019-09-25", 75],
+        ["2019-10-06", 82],
+        ["2019-10-13", 84],
+        ["2019-10-20", 69],
+        ["2019-10-27", 70],
+        ["2019-11-03", 79],
+        ["2019-11-10", 75],
+        ["2019-11-17", 74],
+        ["2019-11-24", 67],
+        ["2019-12-01", 82],
+        ["2019-12-08", 75],
+        ["2019-12-15", 58],
+        ["2019-12-22", 36],
+        ["2019-12-29", 36],
+        ["2020-01-05", 42],
+        ["2020-01-12", 47],
+        ["2020-01-19", 41],
+        ["2020-01-26", 42],
+        ["2020-02-02", 44],
+        ["2020-02-09", 35],
+        ["2020-02-16", 37],
+        ["2020-02-23", 36],
+        ["2020-03-01", 39],
+        ["2020-03-08", 40],
+        ["2020-03-15", 48],
         ["2020-03-22", 51],
-        ["2020-03-29", 73],
-        ["2020-04-05", 74]
+        ["2020-03-29", 67],
+        ["2020-04-05", 79]
       ],
       cppBrushValue: [
-        ["2019-09-01", 28],
-        ["2019-09-08", 21],
-        ["2019-09-15", 33],
-        ["2019-09-22", 37],
-        ["2019-09-25", 27],
-        ["2019-10-06", 27],
-        ["2019-10-13", 29],
-        ["2019-10-20", 28],
-        ["2019-10-27", 27],
-        ["2019-11-03", 31],
-        ["2019-11-10", 26],
-        ["2019-11-17", 31],
-        ["2019-11-24", 28],
-        ["2019-12-01", 33],
-        ["2019-12-08", 27],
-        ["2019-12-15", 25],
-        ["2019-12-22", 20],
-        ["2019-12-29", 18],
-        ["2020-01-05", 24],
-        ["2020-01-12", 25],
-        ["2020-01-19", 17],
-        ["2020-01-26", 20],
-        ["2020-02-02", 23],
-        ["2020-02-09", 23],
-        ["2020-02-16", 27],
-        ["2020-02-23", 17],
-        ["2020-03-01", 25],
-        ["2020-03-08", 24],
-        ["2020-03-15", 25],
-        ["2020-03-22", 28],
-        ["2020-03-29", 29],
-        ["2020-04-05", 26]
+        ["2019-09-01", 60],
+        ["2019-09-08", 44],
+        ["2019-09-15", 75],
+        ["2019-09-22", 75],
+        ["2019-09-25", 67],
+        ["2019-10-06", 63],
+        ["2019-10-13", 75],
+        ["2019-10-20", 65],
+        ["2019-10-27", 59],
+        ["2019-11-03", 69],
+        ["2019-11-10", 65],
+        ["2019-11-17", 60],
+        ["2019-11-24", 64],
+        ["2019-12-01", 72],
+        ["2019-12-08", 64],
+        ["2019-12-15", 58],
+        ["2019-12-22", 41],
+        ["2019-12-29", 43],
+        ["2020-01-05", 56],
+        ["2020-01-12", 55],
+        ["2020-01-19", 44],
+        ["2020-01-26", 48],
+        ["2020-02-02", 55],
+        ["2020-02-09", 54],
+        ["2020-02-16", 58],
+        ["2020-02-23", 44],
+        ["2020-03-01", 52],
+        ["2020-03-08", 50],
+        ["2020-03-15", 60],
+        ["2020-03-22", 66],
+        ["2020-03-29", 63],
+        ["2020-04-05", 72]
+      ],
+      cSharpBrushValue: [
+        ["2019-09-01", 72],
+        ["2019-09-08", 42],
+        ["2019-09-15", 67],
+        ["2019-09-22", 80],
+        ["2019-09-25", 54],
+        ["2019-10-06", 65],
+        ["2019-10-13", 68],
+        ["2019-10-20", 75],
+        ["2019-10-27", 72],
+        ["2019-11-03", 77],
+        ["2019-11-10", 67],
+        ["2019-11-17", 72],
+        ["2019-11-24", 72],
+        ["2019-12-01", 77],
+        ["2019-12-08", 75],
+        ["2019-12-15", 77],
+        ["2019-12-22", 60],
+        ["2019-12-29", 58],
+        ["2020-01-05", 80],
+        ["2020-01-12", 75],
+        ["2020-01-19", 63],
+        ["2020-01-26", 59],
+        ["2020-02-02", 77],
+        ["2020-02-09", 70],
+        ["2020-02-16", 82],
+        ["2020-02-23", 72],
+        ["2020-03-01", 76],
+        ["2020-03-08", 76],
+        ["2020-03-15", 66],
+        ["2020-03-22", 73],
+        ["2020-03-29", 73],
+        ["2020-04-05", 73]
+      ],
+      jsBrushValue: [
+        ["2019-09-01", 63],
+        ["2019-09-08", 41],
+        ["2019-09-15", 65],
+        ["2019-09-22", 69],
+        ["2019-09-25", 51],
+        ["2019-10-06", 53],
+        ["2019-10-13", 57],
+        ["2019-10-20", 57],
+        ["2019-10-27", 59],
+        ["2019-11-03", 60],
+        ["2019-11-10", 59],
+        ["2019-11-17", 58],
+        ["2019-11-24", 64],
+        ["2019-12-01", 63],
+        ["2019-12-08", 64],
+        ["2019-12-15", 64],
+        ["2019-12-22", 47],
+        ["2019-12-29", 50],
+        ["2020-01-05", 65],
+        ["2020-01-12", 60],
+        ["2020-01-19", 54],
+        ["2020-01-26", 54],
+        ["2020-02-02", 72],
+        ["2020-02-09", 66],
+        ["2020-02-16", 69],
+        ["2020-02-23", 61],
+        ["2020-03-01", 68],
+        ["2020-03-08", 67],
+        ["2020-03-15", 61],
+        ["2020-03-22", 62],
+        ["2020-03-29", 59],
+        ["2020-04-05", 61]
       ],
       javaGeoValue: [
         ["State", "관심도"],
-        ["서울", 44],
-        ["광주광역시", 42],
-        ["대구광역시", 42],
-        ["강원도", 42],
-        ["전라남도", 42],
-        ["부산광역시", 41],
-        ["경상남도", 40],
-        ["제주도", 39],
-        ["충청북도", 39],
-        ["전라북도", 39],
-        ["인천광역시", 38],
-        ["충청남도", 37],
-        ["경기도", 35],
-        ["울산광역시", 35],
-        ["대전광역시", 34],
-        ["경상북도", 30]
+        ["서울", 100],
+        ["대전광역시", 92],
+        ["경기도", 60],
+        ["광주광역시", 54],
+        ["대구광역시", 51],
+        ["충청남도", 48],
+        ["인천광역시", 47],
+        ["부산광역시", 45],
+        ["강원도", 43],
+        ["충청북도", 41],
+        ["경상북도", 41],
+        ["전라북도", 37],
+        ["울산광역시", 33],
+        ["전라남도", 31],
+        ["제주도", 30],
+        ["경상남도", 30]
       ],
       pythonGeoValue: [
         ["State", "관심도"],
-        ["대전광역시", 53],
-        ["울산광역시", 52],
-        ["경상북도", 51],
-        ["제주도", 48],
-        ["광주광역시", 47],
-        ["경기도", 47],
-        ["강원도", 46],
-        ["전라북도", 46],
-        ["경상남도", 45],
-        ["충청북도", 45],
-        ["인천광역시", 45],
-        ["충청남도", 45],
-        ["서울", 44],
-        ["전라남도", 44],
+        ["대전광역시", 100],
+        ["서울", 83],
+        ["경기도", 64],
+        ["경상북도", 54],
+        ["광주광역시", 52],
+        ["충청남도", 49],
+        ["인천광역시", 47],
+        ["울산광역시", 46],
+        ["대구광역시", 44],
         ["부산광역시", 42],
-        ["대구광역시", 40]
+        ["강원도", 40],
+        ["제주도", 37],
+        ["충청북도", 36],
+        ["전라북도", 33],
+        ["전라남도", 30],
+        ["경상남도", 28]
+      ],
+      cGeoValue: [
+        ["State", "관심도"],
+        ["대전광역시", 100],
+        ["경기도", 85],
+        ["서울", 82],
+        ["경상북도", 73],
+        ["충청남도", 69],
+        ["대구광역시", 64],
+        ["충청북도", 59],
+        ["강원도", 55],
+        ["부산광역시", 52],
+        ["광주광역시", 50],
+        ["인천광역시", 48],
+        ["전라북도", 42],
+        ["울산광역시", 39],
+        ["경상남도", 37],
+        ["전라남도", 32],
+        ["제주도", 30]
       ],
       cppGeoValue: [
         ["State", "관심도"],
-        ["경상북도", 19],
-        ["경기도", 18],
-        ["충청남도", 18],
-        ["대구광역시", 18],
-        ["인천광역시", 17],
-        ["부산광역시", 17],
-        ["충청북도", 16],
-        ["전라북도", 15],
-        ["경상남도", 15],
-        ["전라남도", 14],
-        ["대전광역시", 13],
-        ["울산광역시", 13],
-        ["제주도", 13],
-        ["강원도", 12],
-        ["서울", 12],
-        ["광주광역시", 11]
+        ["대전광역시", 100],
+        ["경기도", 98],
+        ["서울", 89],
+        ["경상북도", 57],
+        ["인천광역시", 54],
+        ["충청남도", 52],
+        ["대구광역시", 46],
+        ["부산광역시", 41],
+        ["제주도", 38],
+        ["울산광역시", 37],
+        ["강원도", 36],
+        ["충청북도", 33],
+        ["광주광역시", 28],
+        ["전라북도", 26],
+        ["전라남도", 23],
+        ["경상남도", 21]
+      ],
+      cSharpGeoValue: [
+        ["State", "관심도"],
+        ["경기도", 100],
+        ["대전광역시", 91],
+        ["서울", 89],
+        ["울산광역시", 68],
+        ["충청남도", 57],
+        ["인천광역시", 50],
+        ["경상남도", 49],
+        ["대구광역시", 49],
+        ["전라북도", 49],
+        ["부산광역시", 46],
+        ["경상북도", 45],
+        ["광주광역시", 36],
+        ["충청북도", 35],
+        ["전라남도", 25],
+        ["제주도", 22],
+        ["강원도", 17]
+      ],
+      jsGeoValue: [
+        ["State", "관심도"],
+        ["서울", 100],
+        ["대전광역시", 65],
+        ["경기도", 51],
+        ["대구광역시", 43],
+        ["부산광역시", 40],
+        ["인천광역시", 38],
+        ["광주광역시", 36],
+        ["제주도", 35],
+        ["충청남도", 31],
+        ["충청북도", 28],
+        ["강원도", 26],
+        ["울산광역시", 24],
+        ["전라남도", 23],
+        ["경상북도", 20],
+        ["경상남도", 19],
+        ["전라북도", 19]
       ]
     };
   },
@@ -548,9 +755,22 @@ export default {
       if (e == "" || e == null || e == "undefined") {
         this.selectedLangList.splice(0, 1);
         this.firstLang = this.secondLang;
+        this.firstGeoValue =
+          this.secondGeoValue == null || this.secondGeoValue == "undefined"
+            ? []
+            : this.secondGeoValue.slice(0, this.secondGeoValue);
         this.secondLang = this.thirdLang;
+        this.secondGeoValue =
+          this.thirdGeoValue == null || this.thirdGeoValue == "undefined"
+            ? []
+            : this.thirdGeoValue.slice(0, this.thirdGeoValue);
         this.thirdLang = this.fourthLang;
+        this.thirdGeoValue =
+          this.fourthGeoValue == null || this.fourthGeoValue == "undefined"
+            ? []
+            : this.fourthGeoValue.slice(0, this.fourthGeoValue);
         this.fourthLang = "";
+        this.fourthGeoValue = [];
         window.sessionStorage.removeItem("firstLang");
         window.sessionStorage.removeItem("firstGeoValue");
         window.sessionStorage.removeItem("firstBrushValue");
@@ -559,6 +779,7 @@ export default {
         this.selectedLang = "";
         this.search = null;
         this.selectedLangList.splice(0, 1, e);
+        this.sortValue = e;
 
         if (e == "JAVA") {
           this.firstGeoValue = [];
@@ -570,19 +791,52 @@ export default {
           );
         } else if (e == "Python") {
           this.firstGeoValue = [];
-          this.firstGeoValue = this.pythonGeoValue;
+          this.firstGeoValue = this.pythonGeoValue.slice(
+            0,
+            this.pythonGeoValue.length
+          );
           this.firstBrushValue = [];
           this.firstBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
           );
+        } else if (e == "C") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "C++") {
           this.firstGeoValue = [];
-          this.firstGeoValue = this.cppGeoValue;
+          this.firstGeoValue = this.cppGeoValue.slice(
+            0,
+            this.cppGeoValue.length
+          );
           this.firstBrushValue = [];
           this.firstBrushValue = this.cppBrushValue.slice(
             0,
             this.cppBrushValue.length
+          );
+        } else if (e == "C#") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.cSharpGeoValue.slice(
+            0,
+            this.cSharpGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.cSharpBrushValue.slice(
+            0,
+            this.cSharpBrushValue.length
+          );
+        } else if (e == "JavaScript") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.jsBrushValue.slice(
+            0,
+            this.jsBrushValue.length
           );
         }
         window.sessionStorage.setItem("firstLang", e);
@@ -595,8 +849,17 @@ export default {
       if (e == "" || e == null || e == "undefined") {
         this.selectedLangList.splice(1, 1);
         this.secondLang = this.thirdLang;
+        this.secondGeoValue =
+          this.thirdGeoValue == null || this.thirdGeoValue == "undefined"
+            ? []
+            : this.thirdGeoValue.slice(0, this.thirdGeoValue);
         this.thirdLang = this.fourthLang;
+        this.thirdGeoValue =
+          this.fourthGeoValue == null || this.fourthGeoValue == "undefined"
+            ? []
+            : this.fourthGeoValue.slice(0, this.fourthGeoValue);
         this.fourthLang = "";
+        this.fourthGeoValue = [];
         window.sessionStorage.removeItem("secondLang");
         window.sessionStorage.removeItem("secondGeoValue");
         window.sessionStorage.removeItem("secondBrushValue");
@@ -608,7 +871,10 @@ export default {
 
         if (e == "JAVA") {
           this.secondGeoValue = [];
-          this.secondGeoValue = this.javaGeoValue;
+          this.secondGeoValue = this.javaGeoValue.slice(
+            0,
+            this.javaGeoValue.length
+          );
           this.secondBrushValue = [];
           this.secondBrushValue = this.javaBrushValue.slice(
             0,
@@ -616,19 +882,55 @@ export default {
           );
         } else if (e == "Python") {
           this.secondGeoValue = [];
-          this.secondGeoValue = this.pythonGeoValue;
+          this.secondGeoValue = this.pythonGeoValue.slice(
+            0,
+            this.pythonGeoValue.length
+          );
           this.secondBrushValue = [];
           this.secondBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
           );
+        } else if (e == "C") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "C++") {
           this.secondGeoValue = [];
-          this.secondGeoValue = this.cppGeoValue;
+          this.secondGeoValue = this.cppGeoValue.slice(
+            0,
+            this.cppGeoValue.length
+          );
           this.secondBrushValue = [];
           this.secondBrushValue = this.cppBrushValue.slice(
             0,
             this.cppBrushValue.length
+          );
+        } else if (e == "C#") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.cSharpGeoValue.slice(
+            0,
+            this.cSharpGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.cSharpBrushValue.slice(
+            0,
+            this.cSharpBrushValue.length
+          );
+        } else if (e == "JavaScript") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.jsGeoValue.slice(
+            0,
+            this.jsGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.jsBrushValue.slice(
+            0,
+            this.jsBrushValue.length
           );
         }
         window.sessionStorage.setItem("secondLang", e);
@@ -644,8 +946,17 @@ export default {
       if (e == "" || e == null || e == "undefined") {
         this.selectedLangList.splice(2, 1);
         this.thirdLang = this.fourthLang;
+        this.thirdGeoValue =
+          this.fourthGeoValue == null || this.fourthGeoValue == "undefined"
+            ? []
+            : this.fourthGeoValue.slice(0, this.fourthGeoValue);
         this.fourthLang = this.fifthLang;
+        this.fourthGeoValue =
+          this.fifthGeoValue == null || this.fifthGeoValue == "undefined"
+            ? []
+            : this.fifthGeoValue.slice(0, this.fifthGeoValue);
         this.fifthLang = "";
+        this.fifthGeoValue = [];
         window.sessionStorage.removeItem("thirdLang");
         window.sessionStorage.removeItem("thirdGeoValue");
         window.sessionStorage.removeItem("thirdBrushValue");
@@ -657,7 +968,10 @@ export default {
 
         if (e == "JAVA") {
           this.thirdGeoValue = [];
-          this.thirdGeoValue = this.javaGeoValue;
+          this.thirdGeoValue = this.javaGeoValue.slice(
+            0,
+            this.javaGeoValue.length
+          );
           this.thirdBrushValue = [];
           this.thirdBrushValue = this.javaBrushValue.slice(
             0,
@@ -665,19 +979,52 @@ export default {
           );
         } else if (e == "Python") {
           this.thirdGeoValue = [];
-          this.thirdGeoValue = this.pythonGeoValue;
+          this.thirdGeoValue = this.pythonGeoValue.slice(
+            0,
+            this.pythonGeoValue.length
+          );
           this.thirdBrushValue = [];
           this.thirdBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
           );
+        } else if (e == "C") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "C++") {
           this.thirdGeoValue = [];
-          this.thirdGeoValue = this.cppGeoValue;
+          this.thirdGeoValue = this.cppGeoValue.slice(
+            0,
+            this.cppGeoValue.length
+          );
           this.thirdBrushValue = [];
           this.thirdBrushValue = this.cppBrushValue.slice(
             0,
             this.cppBrushValue.length
+          );
+        } else if (e == "C#") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.cSharpGeoValue.slice(
+            0,
+            this.cSharpGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.cSharpBrushValue.slice(
+            0,
+            this.cSharpBrushValue.length
+          );
+        } else if (e == "JavaScript") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.jsBrushValue.slice(
+            0,
+            this.jsBrushValue.length
           );
         }
         window.sessionStorage.setItem("thirdLang", e);
@@ -690,6 +1037,10 @@ export default {
       if (e == "" || e == null || e == "undefined") {
         this.selectedLangList.splice(3, 1);
         this.fourthLang = this.fifthLang;
+        this.fourthGeoValue =
+          this.fifthGeoValue == null || this.fifthGeoValue == "undefined"
+            ? []
+            : this.fifthGeoValue.slice(0, this.fifthGeoValue);
         this.fifthLang = "";
         window.sessionStorage.removeItem("fourthLang");
         window.sessionStorage.removeItem("fourthGeoValue");
@@ -701,7 +1052,10 @@ export default {
 
         if (e == "JAVA") {
           this.fourthGeoValue = [];
-          this.fourthGeoValue = this.javaGeoValue;
+          this.fourthGeoValue = this.javaGeoValue.slice(
+            0,
+            this.javaGeoValue.length
+          );
           this.fourthBrushValue = [];
           this.fourthBrushValue = this.javaBrushValue.slice(
             0,
@@ -709,19 +1063,55 @@ export default {
           );
         } else if (e == "Python") {
           this.fourthGeoValue = [];
-          this.fourthGeoValue = this.pythonGeoValue;
+          this.fourthGeoValue = this.pythonGeoValue.slice(
+            0,
+            this.pythonGeoValue.length
+          );
           this.fourthBrushValue = [];
           this.fourthBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
           );
+        } else if (e == "C") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "C++") {
           this.fourthGeoValue = [];
-          this.fourthGeoValue = this.cppGeoValue;
+          this.fourthGeoValue = this.cppGeoValue.slice(
+            0,
+            this.cppGeoValue.length
+          );
           this.fourthBrushValue = [];
           this.fourthBrushValue = this.cppBrushValue.slice(
             0,
             this.cppBrushValue.length
+          );
+        } else if (e == "C#") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.cSharpGeoValue.slice(
+            0,
+            this.cSharpGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.cSharpBrushValue.slice(
+            0,
+            this.cSharpBrushValue.length
+          );
+        } else if (e == "JavaScript") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.jsGeoValue.slice(
+            0,
+            this.jsGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.jsBrushValue.slice(
+            0,
+            this.jsBrushValue.length
           );
         }
         window.sessionStorage.setItem("fourthLang", e);
@@ -736,6 +1126,7 @@ export default {
     fifthLang(e) {
       if (e == "" || e == null || e == "undefined") {
         this.selectedLangList.splice(4, 1);
+        this.fifthGeoValue = [];
         this.fifthLang = "";
         window.sessionStorage.removeItem("fifthLang");
         window.sessionStorage.removeItem("fifthGeoValue");
@@ -747,32 +1138,146 @@ export default {
 
         if (e == "JAVA") {
           this.fifthGeoValue = [];
-          this.fifthGeoValue = this.javaGeoValue;
-          this.firstBrushValue = [];
+          this.fifthGeoValue = this.javaGeoValue.slice(
+            0,
+            this.javaGeoValue.length
+          );
+          this.fifthBrushValue = [];
           this.fifthBrushValue = this.javaBrushValue.slice(
             0,
             this.javaBrushValue.length
           );
         } else if (e == "Python") {
           this.fifthGeoValue = [];
-          this.fifthGeoValue = this.pythonGeoValue;
-          this.firstBrushValue = [];
+          this.fifthGeoValue = this.pythonGeoValue.slice(
+            0,
+            this.pythonGeoValue.length
+          );
+          this.fifthBrushValue = [];
           this.fifthBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
           );
+        } else if (e == "C") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "C++") {
           this.fifthGeoValue = [];
-          this.fifthGeoValue = this.cppGeoValue;
-          this.firstBrushValue = [];
-          this.fifthBrushValue
-            .push(this.cppBrushValue)
-            .slice(0, this.cppBrushValue.length);
+          this.fifthGeoValue = this.cppGeoValue.slice(
+            0,
+            this.cppGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.cppBrushValue.slice(
+            0,
+            this.cppBrushValue.length
+          );
+        } else if (e == "C#") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.cSharpGeoValue.slice(
+            0,
+            this.cSharpGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.cSharpBrushValue.slice(
+            0,
+            this.cSharpBrushValue.length
+          );
+        } else if (e == "JavaScript") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.jsBrushValue.slice(
+            0,
+            this.jsBrushValue.length
+          );
         }
         window.sessionStorage.setItem("fifthLang", e);
         window.sessionStorage.setItem("fifthGeoValue", this.fifthGeoValue);
         window.sessionStorage.setItem("fifthBrushValue", this.fifthBrushValue);
       }
+      this.forceRerender();
+    },
+    totalComponentKey() {
+      this.totalGeoValue = [];
+      var tmpValue = [];
+
+      if (this.firstGeoValue != null && this.firstGeoValue != "undefined") {
+        tmpValue = [];
+        tmpValue = JSON.parse(JSON.stringify(this.firstGeoValue));
+        this.totalGeoValue = tmpValue.slice(1, tmpValue.length).sort();
+      }
+
+      if (this.secondGeoValue != null && this.secondGeoValue != "undefined") {
+        tmpValue = [];
+        tmpValue = this.secondGeoValue;
+        tmpValue = tmpValue.slice(1, tmpValue.length).sort();
+
+        for (let i = 0; i < this.totalGeoValue.length; i++) {
+          for (let j = 0; j < tmpValue.length; j++) {
+            if (this.totalGeoValue[i][0] == tmpValue[j][0]) {
+              this.totalGeoValue[i].push(tmpValue[j][1]);
+            }
+          }
+        }
+      }
+
+      if (this.thirdGeoValue != null && this.thirdGeoValue != "undefined") {
+        tmpValue = [];
+        tmpValue = this.thirdGeoValue;
+        tmpValue = tmpValue.slice(1, tmpValue.length).sort();
+
+        for (let i = 0; i < this.totalGeoValue.length; i++) {
+          for (let j = 0; j < tmpValue.length; j++) {
+            if (this.totalGeoValue[i][0] == tmpValue[j][0]) {
+              this.totalGeoValue[i].push(tmpValue[j][1]);
+            }
+          }
+        }
+      }
+
+      if (this.fourthGeoValue != null && this.fourthGeoValue != "undefined") {
+        tmpValue = [];
+        tmpValue = this.fourthGeoValue;
+        tmpValue = tmpValue.slice(1, tmpValue.length).sort();
+
+        for (let i = 0; i < this.totalGeoValue.length; i++) {
+          for (let j = 0; j < tmpValue.length; j++) {
+            if (this.totalGeoValue[i][0] == tmpValue[j][0]) {
+              this.totalGeoValue[i].push(tmpValue[j][1]);
+            }
+          }
+        }
+      }
+
+      if (this.fifthGeoValue != null && this.fifthGeoValue != "undefined") {
+        tmpValue = [];
+        tmpValue = this.fifthGeoValue;
+        tmpValue = tmpValue.slice(1, tmpValue.length).sort();
+
+        for (let i = 0; i < this.totalGeoValue.length; i++) {
+          for (let j = 0; j < tmpValue.length; j++) {
+            if (this.totalGeoValue[i][0] == tmpValue[j][0]) {
+              this.totalGeoValue[i].push(tmpValue[j][1]);
+            }
+          }
+        }
+      }
+
+      for (let i = 0; i < this.totalGeoValue.length; i++) {
+        if (this.totalGeoValue[i][0] == "서울") {
+          this.totalGeoValue[i][0] = "서울특별시";
+        } else if (this.totalGeoValue[i][0] == "제주도") {
+          this.totalGeoValue[i][0] = "제주특별자치도";
+        }
+      }
+    },
+    sortValue() {
       this.forceRerender();
     }
   },
@@ -785,6 +1290,14 @@ export default {
       this.thirdComponentKey += 1;
       this.fourthComponentKey += 1;
       this.fifthComponentKey += 1;
+    },
+    clone(obj) {
+      var output = [];
+
+      for (let i = 0; i < obj.length; i++) {
+        output[i] = obj[i];
+      }
+      return output;
     }
   },
   created() {
@@ -803,6 +1316,7 @@ export default {
     this.fifthLang = window.sessionStorage.getItem("fifthLang");
     this.fifthGeoValue = window.sessionStorage.getItem("fifthGeoValue");
     this.fifthBrushValue = window.sessionStorage.getItem("fifthBrushValue");
+
     this.brushComponentKey = 0;
     this.totalComponentKey = 200;
     this.firstComponentKey = 400;
@@ -810,6 +1324,7 @@ export default {
     this.thirdComponentKey = 800;
     this.fourthComponentKey = 1000;
     this.fifthComponentKey = 1200;
+    this.sortValue = this.selectedLangList[0];
   }
 };
 </script>
@@ -819,34 +1334,38 @@ div#firstLang
   > div.v-input__prepend-outer
   > div.v-input__icon.v-input__icon--prepend
   > i.v-icon.notranslate.mdi.mdi-checkbox-blank-circle.theme--light {
-  color: #4285f4;
+  color: #258df2;
 }
+
 div#secondLang
   > div.v-input.v-input--hide-details.v-input--is-label-active.v-input--is-dirty.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--solo-flat.v-text-field--is-booted.v-text-field--enclosed.v-select.v-autocomplete
   > div.v-input__prepend-outer
   > div.v-input__icon.v-input__icon--prepend
   > i.v-icon.notranslate.mdi.mdi-checkbox-blank-circle.theme--light {
-  color: #f44336;
+  color: #ff4560;
 }
+
 div#thirdLang
   > div.v-input.v-input--hide-details.v-input--is-label-active.v-input--is-dirty.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--solo-flat.v-text-field--is-booted.v-text-field--enclosed.v-select.v-autocomplete
   > div.v-input__prepend-outer
   > div.v-input__icon.v-input__icon--prepend
   > i.v-icon.notranslate.mdi.mdi-checkbox-blank-circle.theme--light {
-  color: #ffca28;
+  color: #fdba2c;
 }
+
 div#fourthLang
   > div.v-input.v-input--hide-details.v-input--is-label-active.v-input--is-dirty.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--solo-flat.v-text-field--is-booted.v-text-field--enclosed.v-select.v-autocomplete
   > div.v-input__prepend-outer
   > div.v-input__icon.v-input__icon--prepend
   > i.v-icon.notranslate.mdi.mdi-checkbox-blank-circle.theme--light {
-  color: #43a047;
+  color: #40c741;
 }
+
 div#fifthLang
   > div.v-input.v-input--hide-details.v-input--is-label-active.v-input--is-dirty.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--solo-flat.v-text-field--is-booted.v-text-field--enclosed.v-select.v-autocomplete
   > div.v-input__prepend-outer
   > div.v-input__icon.v-input__icon--prepend
   > i.v-icon.notranslate.mdi.mdi-checkbox-blank-circle.theme--light {
-  color: #9c27b0;
+  color: #ab47bc;
 }
 </style>
