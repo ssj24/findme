@@ -5,7 +5,7 @@
         <v-col cols="12" sm="6">
           <v-card-title style="font-size: 1.1rem; font-weight: 900; border-bottom: 2px solid navy; padding: 10px 20px;">최근 활동</v-card-title>
 
-          <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown">
+          <v-timeline align-top :dense="$vuetify.breakpoint.smAndDown" style="margin: 5px;">
             <v-timeline-item
               v-for="(item, i) in items"
               :key="i"
@@ -25,24 +25,37 @@
             </v-timeline-item>
           </v-timeline>
         </v-col>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm="6" style="position: relative;">
           
-          <v-card-title style="font-size: 1.1rem; font-weight: 900; border-bottom: 2px solid navy; padding: 10px 20px;">해야 할 일 <v-chip color="indigo darken-3" style="color: white;">{{todoCount}}</v-chip></v-card-title>
-          <div class="container" id="vue-app">
+          <v-card-title style="font-size: 1.1rem; font-weight: 900; border-bottom: 2px solid navy; padding: 10px 20px;">
+              해야 할 일 
+            <v-badge
+              v-if="todoCount"
+              class="ml-2"
+              color="indigo darken-3"
+              :content="todoCount"
+            >
+              <!-- <v-chip color="indigo darken-3" style="color: white;">{{todoCount}}</v-chip> -->
+            </v-badge>
+          </v-card-title>
+          <div class="container scBar" id="vue-app" style="height: 200px; overflow-y:scroll;">
             <div class="row">
               <div class="col-sm-12">
                 
                 <ul class="list-group" v-if="todos.length > 0">
                   <li class="list-group-item" 
-                      v-bind:class="{ 'completed' : todo.completed }"
                       v-for="(todo, i) in todos"
                       :key="todo">
                     <v-icon :color="ballonColor[i%3]">mdi-balloon</v-icon>
+                    <span
+                      v-bind:class="{ 'completed' : todo.completed }"
+                    >
                     {{todo.title}}
-                    <button class="ml-2 btn-delete" v-on:click="deleteTodo(todo)">삭제</button>
+                    </span>
+                    <button class="ml-2 btn-delete" v-on:click="deleteTodo(i)">삭제</button>
                     <button class="ml-2" 
                       v-bind:class="{'btn-success' : todo.completed, 'btn-danger' : !todo.completed}"
-                      v-on:click="todoCompleted(todo)">{{todo.completed ? '완료' : '진행'}}</button>
+                      v-on:click="todoCompleted(todo)">{{todo.completed ? '진행' : '완료'}}</button>
                   </li>
                 </ul>
                 
@@ -50,26 +63,22 @@
               </div>
             </div>
             
-            <div class="row">
-              <div class="col-sm-12">
+            <div class="todo-input" style="position: absolute; bottom: 0; width: 100%;">
                 <form v-on:submit.prevent="addNewTodo(newTodo)">
-                  <div class="form-group todo-input">
                     <input 
                       type="text" 
                       v-model="newTodo.title"
-                      class="ml-10" 
+                      class="ml-10 mt-2 mb-2"
+                      style="width: 80%; border-bottom: 1px solid navy;" 
                       placeholder="할 일을 작성해주세요">
-                    <button class="btn-add">더하기</button>
-                  </div>
-                  
+                    <button><v-icon color="indigo darken-3">mdi-card-plus-outline</v-icon></button>
                 </form>
-              </div>
             </div>
           </div>
         </v-col>
       </v-row>
     </v-card>
-    <v-card>
+    <v-card class="mt-2">
     <v-tabs vertical>
       <v-tab>
         <v-icon left>mdi-account-box-outline</v-icon>
@@ -183,8 +192,8 @@ export default {
       this.newTodo = {id: null, title: '', completed: false}
     },
     
-    deleteTodo(todo) {
-      this.todos.$remove(todo)
+    deleteTodo(i) {
+      this.todos.splice(i, 1)
     },
     
     todoCompleted(todo) {
@@ -209,7 +218,7 @@ export default {
 .v-tab {
   justify-content: start !important;
 }
-.v-item-group.theme--light.v-slide-group.v-tabs-bar.v-tabs-bar--is-mobile.primary--text {
+.v-item-group.theme--light.v-slide-group.v-tabs-bar.primary--text {
   color: navy !important;
   /* caret-color: #ff0000 !important; */
 }
@@ -220,7 +229,7 @@ export default {
   /* text-shadow: 0px 0px 1px navy; */
 }
 
-li.completed {
+span.completed {
   text-decoration: line-through;
 }
 .margin-right-10 {
@@ -229,14 +238,24 @@ li.completed {
 .btn-success {
   color: green;
 }
+.btn-success:hover {
+  background-color: rgba(0, 128, 0, 0.082);
+}
 .btn-danger {
-  color: orange;
+  color: rgb(255, 94, 0);
+}
+.btn-danger:hover {
+  background-color: rgba(255, 94, 0, 0.099);
 }
 .btn-delete {
   color: red;
 }
+.btn-delete:hover {
+  background-color: rgba(255, 0, 0, 0.101);
+}
 .todo-input {
   border-top: 1px dotted navy;
+  width: 100%;
 }
 .btn-add {
   color: blue;
@@ -244,9 +263,13 @@ li.completed {
   font-weight: 900;
 }
 .btn-success:hover, .btn-danger:hover, .btn-delete:hover, .btn-add:hover {
-  background-color: rgba(238, 247, 165, 0.288);
+  border-radius: 20px;
+  text-shadow: 0px 0px 1px #999;
 }
 .btn-add:hover {
   text-decoration: underline;
+}
+.scBar::-webkit-scrollbar {
+  display: none;
 }
 </style>

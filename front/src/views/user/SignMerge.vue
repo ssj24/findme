@@ -7,7 +7,7 @@
         class="switcher switcher-login"
         @click="loginSwitch()"
         >
-        Login
+        로그인
         <span class="underline"></span>
       </button>
       <form class="form form-login">
@@ -20,7 +20,7 @@
         class="switcher switcher-signup"
         @click="signupSwitch()"
         >
-        Sign Up
+        회원가입
         <span class="underline"></span>
       </button>
       <form class="form form-signup">

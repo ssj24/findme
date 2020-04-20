@@ -49,6 +49,7 @@
               <div style="color: #000;"><a :href="slide.page" style="color: #000;">>>>채용공고 보러가기</a></div>
             </v-col>
           </v-row>
+
         </v-sheet>
         
       </div>
@@ -159,6 +160,8 @@ const gradients = [
   }
 </script>
 
-<style>
-
+<style scoped>
+/* .v-carousel__controls .v-btn--round .v-btn__content .v-icon {
+  color: red !important;
+} */
 </style>
