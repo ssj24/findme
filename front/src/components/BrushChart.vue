@@ -19,44 +19,6 @@ export default {
   components: {
     apexchart: VueApexCharts
   },
-  // props: {
-  //   firstLang: {
-  //     type: String
-  //   },
-  //   firstValue: {
-  //     type: String
-  //   },
-  //   secondLang: {
-  //     type: String
-  //   },
-  //   secondValue: {
-  //     type: String
-  //   },
-  //   thirdLang: {
-  //     type: String
-  //   },
-  //   thirdValue: {
-  //     type: String
-  //   },
-  //   fourthLang: {
-  //     type: String
-  //   },
-  //   fourthValue: {
-  //     type: String
-  //   },
-  //   fifthLang: {
-  //     type: String
-  //   },
-  //   fifthValue: {
-  //     type: String
-  //   },
-  //   totalCnt: {
-  //     type: Number
-  //   },
-  //   colors: {
-  //     type: Array
-  //   }
-  // },
   props: [
     "firstLang",
     "firstValue",
@@ -73,7 +35,6 @@ export default {
   computed: {},
   data() {
     return {
-      tmpSeries: [],
       series: [],
       chartOptions: {
         chart: {
@@ -81,10 +42,10 @@ export default {
           type: "line",
           toolbar: {
             autoSelected: "pan",
-            show: true
+            show: false
           },
-          mounted: {
-            series: this.series,
+          animations: {
+            enabled: false
           }
         },
         noData: {
@@ -121,6 +82,9 @@ export default {
           id: "chart1",
           height: 130,
           type: "area",
+          animations: {
+            enabled: false
+          },
           brush: {
             target: "chart2",
             enabled: true
@@ -218,8 +182,6 @@ export default {
       });
     }
     this.seriesLine = this.series;
-    console.log(this.firstValue[0][0]);
-    console.log(this.firstValue[this.firstValue.length - 1][0]);
   }
 };
 </script>
