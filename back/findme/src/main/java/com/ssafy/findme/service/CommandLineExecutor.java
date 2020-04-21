@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommandLineExecutor {
 
-//	@Scheduled(cron="0 0 4 * * *")	//매일 4시 수행
-	@Scheduled(cron="0 36 15 * * *")	//매일 4시 수행
+	@Scheduled(cron="0 0 4 * * *")	//매일 4시 수행
 //	@Scheduled(fixedRate = 2000) // 수행 시작 기점, 2초후 실행
 	public static void scheduleTest() {
 		System.out.println("scheduleTest: " + new Date());

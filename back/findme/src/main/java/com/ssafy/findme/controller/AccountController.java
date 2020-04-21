@@ -59,19 +59,15 @@ public class AccountController {
 	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
 		accountservice.alterUserKey(email, key);
 	}
-	
-//	@PostMapping("/user/sendpassword")
-//	@ApiOperation(value = "임시 비밀번호 전송")
-//	public void sendpassword(@RequestParam String email) throws MessagingException {
-//		// 비밀번호 암호화
-//		User user=accountservice.info(email);
-//		String encryPassword = UserSha256.encrypt(user.getPassword());
-//		user.setPassword(encryPassword);
-//		// 회원가입
-//		accountservice.signUp(user);
-//		// 인증메일
-//		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
-//	}
+
+	@GetMapping("/user/sendpassword")
+	@ApiOperation(value = "임시 비밀번호 전송")
+	public void sendpassword(@RequestParam String email) throws MessagingException {
+		User user = accountservice.changePassword(email);
+		accountservice.mailSend(user.getEmail(), user.getPassword(), user.getName());
+		user.setPassword(UserSha256.encrypt(user.getPassword()));
+		accountservice.updateProfile(user);
+	}
 
 	@PostMapping("/user/login")
 	@ApiOperation(value = "로그인")
@@ -100,7 +96,7 @@ public class AccountController {
 
 //	@PostMapping("/user/{id}/info")
 //	@ApiOperation(value = "회원정보 조회")
-//	public ResponseEntity<Map<String, Object>> info(@PathVariable int id, HttpServletRequest req) {
+//	public ResponseEntity<Map<String, Object>> info(@PathVariable long id, HttpServletRequest req) {
 //		Map<String, Object> resultMap = new HashMap<String, Object>();
 //		HttpStatus status = null;
 //		try {
@@ -115,7 +111,7 @@ public class AccountController {
 //		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 //	}
 
-	@PostMapping("/user/kakao_oauth")
+	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
 	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code, HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();

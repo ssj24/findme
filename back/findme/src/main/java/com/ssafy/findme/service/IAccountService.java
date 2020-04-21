@@ -19,8 +19,13 @@ public interface IAccountService {
 
 	String getToken(User user);
 
-	User info(int id);
+//	User info(long id);
 
 	User info(String email, String password);
 
+	User changePassword(String email);
+
+	void mailSend(String email, String password, String name) throws MessagingException;
+
+	void updateProfile(User user);
 }
