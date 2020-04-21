@@ -29,11 +29,11 @@
               @click:append="show1 = !show1"
             ></v-text-field>
         
-            <v-checkbox
+            <!-- <v-checkbox
               v-model="checkbox"
               label="로그인 유지...? 할 수 있을까 내가..?"
               required
-            ></v-checkbox>
+            ></v-checkbox> -->
             <v-layout justify-center class="btnParent">
               
               <v-btn
@@ -50,8 +50,11 @@
                 class="mr-2 text-center"
                 @click="kakaologin"
               >
-                카카오로그인
+              카카오
               </v-btn>
+              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/user/kakao_oauth&response_type=code">
+                로그인
+              </a>
             </v-layout>
           </v-form>
         </v-col>
@@ -60,6 +63,7 @@
   <!-- </div> -->
 </template>
 <script>
+import baseURL from '@/base-url.js'
 import '@/assets/css/user.css'
 const axios = require('axios').default
 export default {
@@ -68,7 +72,7 @@ export default {
       id: '',
       idRules: [
         v => !!v || 'ID를 입력해주세요',
-        v => (v && v.length <= 10) || '10자 이내의 ID를 입력해주세요',
+        v => (v && v.length >= 10) || '10자 이상의 ID를 입력해주세요',
       ],
       show1: false,
       password: '',
@@ -82,12 +86,19 @@ export default {
     methods: {
       
       submit () {
-        // 로그인 폼 제출
-      },
-      kakaologin() {
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=4a376f2390fb3234cb522dbdf5d725dc&redirect_uri=http://localhost:8080/signmerge&response_type=code")
+        baseURL.post('/user/login?email='+this.id+'&password='+this.password)
           .then(res => {
             console.log(res)
+          })
+      },
+      kakaologin() {
+        console.log('sdlfsdjkl;dfj;klsd')
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/user/kakao_oauth&response_type=code")
+          .then(() => {
+            // console.log(res)
+            this.$router.push({
+                name: "Main",
+            });
           })
           .catch(err => {
             console.log(err)

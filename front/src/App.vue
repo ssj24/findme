@@ -50,7 +50,6 @@ export default {
       appTitle: "나를 찾아줘",
       sidebar: false,
       menuItems: [
-        { title: "Home", path: "/", icon: "home" },
         { title: "Statistics", path: "/statistics", icon: "insert_chart_outlined" },
         { title: "User", path: "/account", icon: "face" },
         { title: "SignIn", path: "/signmerge", icon: "lock_open" },
