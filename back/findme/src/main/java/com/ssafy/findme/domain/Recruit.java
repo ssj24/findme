@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,7 +34,6 @@ public class Recruit {
 	private Long id;
 	
 	private String comp_name;
-	private String number;
 	private String title;
 	
 	@Lob
@@ -52,5 +54,14 @@ public class Recruit {
 	
 	@OneToMany(mappedBy = "recruit")
 	@JsonIgnore
-	private List<Message> message = new ArrayList<>();
+	private List<Message> messageList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "recruit")
+	@JsonIgnore
+	private List<Recommend> recommendList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "recruit")
+	@JsonIgnore
+	private List<Pick> pickList = new ArrayList<>();
+
 }

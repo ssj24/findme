@@ -12,7 +12,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -80,4 +84,17 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Survey> surveyList = new ArrayList<>();
+	
+
+	@OneToMany(mappedBy = "parent")
+	@JsonIgnore
+	private List<Similar> similarList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Recommend> recommendList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Pick> pickList = new ArrayList<>();
 }
