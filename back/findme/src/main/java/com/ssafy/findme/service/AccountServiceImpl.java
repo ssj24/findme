@@ -40,8 +40,17 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public void signUp(User user) {
-		accountrepo.save(user);
+	public boolean accountDuplicateCheck(String email, String password) {
+		int check = accountrepo.countByEmailAndPassword(email, password);
+		if (check == 0)
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public User signUp(User user) {
+		return accountrepo.save(user);
 	}
 
 	// 이메일 난수 만드는 메서드
@@ -110,15 +119,31 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public String login(User trial) {
+	public User login(User trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
-		if (!UserSha256.encrypt(trial.getPassword()).equals(member.getPassword()))
+		if (!trial.getPassword().equals(member.getPassword()))
 			throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-		String token = jwtService.create(member.getName());
+		return member;
+
+	}
+
+	@Override
+	public String getToken(User user) {
+		String token = jwtService.create(user);
 		return token;
+	}
+
+	@Override
+	public User info(int id) {
+		return accountrepo.getOne(id);
+	}
+
+	@Override
+	public User info(String email, String password) {
+		return accountrepo.findByEmailAndPassword(email, password);
 	}
 
 }

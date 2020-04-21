@@ -5,7 +5,7 @@ import javax.mail.MessagingException;
 import com.ssafy.findme.domain.User;
 
 public interface IAccountService {
-	void signUp(User user);
+	User signUp(User user);
 
 	void mailSendWithUserKey(String email, String name) throws MessagingException;
 
@@ -13,6 +13,14 @@ public interface IAccountService {
 
 	boolean emailDuplicateCheck(String email);
 
-	String login(User user);
+	boolean accountDuplicateCheck(String email, String password);
+
+	User login(User user);
+
+	String getToken(User user);
+
+	User info(int id);
+
+	User info(String email, String password);
 
 }

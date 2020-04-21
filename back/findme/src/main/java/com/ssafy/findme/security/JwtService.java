@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ssafy.findme.domain.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
@@ -29,26 +31,23 @@ public class JwtService {
 	 * @param user
 	 * @return
 	 */
-	public String create(final String user_nickname) {
-//    	 log.trace("time: {}", expireMin);
+	public String create(final User user) {
 		final JwtBuilder builder = Jwts.builder();
 		// JWT Token = Header + Payload + Signagure
 		// Header 설정
 		builder.setHeaderParam("typ", "JWT");// 토큰의 타입으로 고정 값
+		
 		// Payload 설정 - claim 정보 포함
 		builder.setSubject("로그인토큰")// 토큰 제목 설정
-				// .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 *
-				// expireMin))// 유효기간
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))// 유효기간
-				.claim("user_nickname", user_nickname);// 담고 싶은 정보 설정
-		// .claim("User", user).claim("second", "더 담고 싶은거 있어?");// 담고 싶은 정보 설정
+				.claim("user_nickname", user);// 담고 싶은 정보 설정
+//				.claim("second", "더 담고 싶은거 있어?");// 담고 싶은 정보 설정
 
 		// signature - secret key를 이용한 암호화
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
 
 		// 마지막 직렬화 처리
 		final String jwt = builder.compact();
-//         log.debug("토큰 발행: {}", jwt);
 		return jwt;
 	}
 
@@ -59,7 +58,6 @@ public class JwtService {
 	 */
 	public void checkValid(final String jwt) {
 		// 별 문제 없었는지 즉 예외가 발생하지 않으면 OK
-		// log.trace("토큰 점검: {}", jwt);
 		Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
 	}
 
@@ -77,7 +75,6 @@ public class JwtService {
 			throw new RuntimeException();
 		}
 
-		// log.trace("claims: {}", claims);
 		// Claims는 Map의 구현체이다.
 		return claims.getBody();
 	}
