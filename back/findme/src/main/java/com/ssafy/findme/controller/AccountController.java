@@ -59,6 +59,19 @@ public class AccountController {
 	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
 		accountservice.alterUserKey(email, key);
 	}
+	
+//	@PostMapping("/user/sendpassword")
+//	@ApiOperation(value = "임시 비밀번호 전송")
+//	public void sendpassword(@RequestParam String email) throws MessagingException {
+//		// 비밀번호 암호화
+//		User user=accountservice.info(email);
+//		String encryPassword = UserSha256.encrypt(user.getPassword());
+//		user.setPassword(encryPassword);
+//		// 회원가입
+//		accountservice.signUp(user);
+//		// 인증메일
+//		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
+//	}
 
 	@PostMapping("/user/login")
 	@ApiOperation(value = "로그인")
