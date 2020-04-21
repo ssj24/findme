@@ -12,10 +12,15 @@ import com.ssafy.findme.domain.User;
 public interface AccountRepository extends JpaRepository<User, Integer> {
 
 	public Optional<User> findByEmail(String email);
-	
+
 	public Optional<User> findByEmailAndAuthKey(String email, String key);
 
 	public List<User> findByNameLike(String keyword);
 
 	public int countByEmail(String email);
+
+	public int countByEmailAndPassword(String email, String password);
+
+	public User findByEmailAndPassword(String email, String password);
+
 }

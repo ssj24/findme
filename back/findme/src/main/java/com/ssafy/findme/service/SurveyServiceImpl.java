@@ -13,7 +13,7 @@ import com.ssafy.findme.dto.SurveyDTO;
 import com.ssafy.findme.repository.SurveyRepository;
 
 @Service
-public class SurveyService implements ISurveyService {
+public class SurveyServiceImpl implements ISurveyService {
 	@Autowired
 	private SurveyRepository surveyrepo;
 	

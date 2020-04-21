@@ -103,6 +103,12 @@
 			<version>0.9.1</version>
 		</dependency>
 
+		<!-- json 객체 파싱 -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
