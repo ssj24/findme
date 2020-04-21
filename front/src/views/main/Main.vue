@@ -56,6 +56,13 @@
       </v-carousel-item>
   </v-carousel>
   <survey></survey>
+  <router-link 
+    v-for="(lang, i) in langs"
+    :key="i"
+    :to="{name:'Lang', params:{langSeq:i}}">
+    {{lang}} 
+  </router-link>
+  
   <v-row>
     <v-col cols=6>
       <v-card>
@@ -154,6 +161,28 @@ const gradients = [
         fill: false,
         type: 'trend',
         autoLineWidth: false,
+        langs: [
+          'Java',
+          'C',
+          'Python',
+          'C++',
+          'C#',
+          'VB.NET',
+          'JavaScript',
+          'PHP',
+          'SQL',
+          'Go',
+          'R',
+          'Assembly',
+          'Swift',
+          'Ruby',
+          'MATLAB',
+          'PL/SQL',
+          'Perl',
+          'Visual Basic',
+          'Objective-C',
+          'Delphi'
+        ]
       }
     },
 

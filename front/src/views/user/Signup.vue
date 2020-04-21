@@ -10,17 +10,24 @@
             ref="form"
             v-model="valid"
             lazy-validation
+            class="survey"
           >
             <p class="form-header">회원가입</p>
             <hr class="form-hr">
             <br>
             <v-text-field
               v-model="id"
-              :counter="10"
               :rules="idRules"
-              label="ID"
+              label="Email"
               required
             ></v-text-field>
+            <v-text-field
+              v-model="name"
+              label="이름"
+              required
+            >
+              
+            </v-text-field>
             <v-text-field
               v-model="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -42,10 +49,21 @@
             ></v-text-field>
 
             <v-select
-              v-model="select"
+              v-model="langSelect"
               :items="items"
               :rules="[v => !!v || 'Item is required']"
               label="기술 스택 선택"
+              attach
+              chips
+              multiple
+              required
+            ></v-select>
+            <v-select
+              v-model="positionSelect"
+              :items="positions"
+              :rules="positionRules"
+              label="선호 직무"
+              color="indigo darken-3"
               attach
               chips
               multiple
@@ -57,18 +75,6 @@
               label="선호 기업"
               required
             ></v-text-field>
-            <v-text-field
-              v-model="position"
-              :rules="positionRules"
-              label="선호 직무"
-              required
-            ></v-text-field>
-            <v-checkbox
-              v-model="checkbox"
-              :rules="[v => !!v || '약관에 동의해야 합니다']"
-              label="약관을 넣을까말까"
-              required
-            ></v-checkbox>
             <v-layout justify-center class="btnParent">
               <v-btn
                 outlined
@@ -97,6 +103,8 @@
 </template>
 
 <script>
+import baseURL from '@/base-url.js'
+import * as EmailValidator from 'email-validator'
 import '@/assets/css/user.css'
 export default {
   data: () => ({
@@ -104,8 +112,9 @@ export default {
       id: '',
       idRules: [
         v => !!v || 'ID를 입력해주세요',
-        v => (v && v.length <= 10) || '10자 이내의 ID를 입력해주세요',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다.',
       ],
+      name: '',
       show1: false,
       show2: false,
       password: '',
@@ -118,43 +127,98 @@ export default {
         v => !!v || '비밀번호를 입력해주세요',
         v => v.length >= 8 || '8자 이상의 비밀번호를 입력해주세요'
       ],
-      select: [],
+      langSelect: [],
       items: [
-        'java',
-        'c',
-        'python',
-        'javascript',
+        'Java',
+        'C',
+        'Python',
+        'C++',
+        'C#',
+        'VB.NET',
+        'JavaScript',
+        'PHP',
+        'SQL',
+        'Go',
+        'R',
+        'Assembly',
+        'Swift',
+        'Ruby',
+        'MATLAB',
+        'PL/SQL',
+        'Perl',
+        'Visual Basic',
+        'Objective-C',
+        'Delphi'
       ],
       firm: '',
       firmRules: [
         v => !!v || '선호 기업을 입력해주세요',
       ],
       position: '',
+      positionSelect: [],
+      positions: [
+        '웹',
+        '응용프로그램',
+        'Q/A',
+        'tester',
+        '인공지능',
+        '빅데이터',
+        '블록체인',
+        '보안',
+        'DB',
+        '네트워크',
+        'PM',
+        'ERP',
+        '분석/설계'
+      ],
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
       ],
       checkbox: false,
     }),
     watch: {
-      passwordConfirm: function() {
-        this.formCheck();
+      passwordConfirm: function(e) {
+        // console.log(e)
+        if (e != this.password) {
+          this.passwordConfirmRules[2] = '비밀번호가 일치하지 않습니다'
+        } else {
+          this.passwordConfirmRules.pop()
+        }
+        // this.formCheck(e);
       }
     },
     methods: {
-      formCheck () {
-        if (this.passwordConfirm !== this.password)
-          this.passwordConfirmRules[2] = '비밀번호가 일치하지 않습니다'
-      },
       reset () {
         this.$refs.form.reset()
       },
       submit () {
-        // 회원가입 폼 제출
+
+        let data = {
+          email: this.id,
+          name: this.name,
+          password: this.password,
+          techStack: this.langSelect.join(),
+          wishHope: this.firm,
+          wishJob: this.positionSelect.join()
+        }
+        baseURL.post('user/signup', data)
+          .then(() => {
+            alert("이메일로 인증 코드를 보냈습니다.")
+            this.$router.push({
+                name: "Main",
+            });
+          })
       },
     },
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+.theme--light.v-chip:not(.v-chip--active) {
+  /* background: linear-gradient(180deg, #002ae4, transparent) !important; */
+            /* radial-gradient(ellipse at bottom, #002ae4, transparent) !important; */
+  /* color: white; */
+  border: 1px solid navy;
+  background-color: white !important;
+}
 </style>
