@@ -4,11 +4,26 @@
       <!-- <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
       </template> -->
-      <v-card>
+      <v-card class="pa-3">
+        <v-select
+          :items="[
+            'python',
+            'java',
+            'c++'
+          ]"
+          label="언어를 선택해주세요"
+          v-model="lang"
+          style="width: 50%; font-size: 1.2rem; font-weight: 900; line-height: 100px;"
+          class="mx-auto lang-select"
+          >
+        </v-select>
         <v-card-title>
-          <span class="headline" style="font-family: Cafe24Dangdanghae !important;">'언어'를 알려줘!</span>
-          <small style="color: #999; font-family: Cafe24Dangdanghae !important;">'사용자'님의 답변이 <span style="font-size: 1.1rem; font-family: Cafe24Dangdanghae !important;">나를 찾아줘</span>의 모든 이용자에게 큰 도움이 됩니다.</small>
+          <span class="headline" style="font-family: Cafe24Dangdanghae !important;">
+            '{{lang}}'를 알려줘!
+          </span>
+          <br>
         </v-card-title>
+          <small style="margin-left: 30px; color: #999; font-family: Cafe24Dangdanghae !important;">'사용자'님의 답변이 <span style="font-size: 1.1rem; font-family: Cafe24Dangdanghae !important;">나를 찾아줘</span>의 모든 이용자에게 큰 도움이 됩니다.</small>
         <v-card-text>
           <v-container>
             <v-row class="survey">
@@ -22,7 +37,7 @@
                   '취업에 필요하다',
                   '특정 프레임워크를 사용하는 데 필요하다'
                   ]"
-                  label="'언어'를 사용하는 이유는 무엇입니까?"
+                  :label= "lang + '을 사용하는 이유는 무엇입니까?'"
                   required multiple
                 ></v-select>
               </v-col>
@@ -36,7 +51,7 @@
                   '개발속도가 빠르다',
                   '실행속도가 빠르다'
                   ]"
-                  label="'언어'의 장점은 무엇입니까?"
+                  :label="lang + '의 장점은 무엇입니까?'"
                   required multiple
                 ></v-select>
               </v-col>
@@ -50,16 +65,16 @@
                   '개발속도가 느리다',
                   '실행속도가 느리다'
                   ]"
-                  label="'언어'의 단점은 무엇입니까?"
+                  :label="lang + '의 단점은 무엇입니까?'"
                   required multiple
                 ></v-select>
               </v-col>
               <v-col cols="12">
-                <v-text-field 
+                <v-textarea
                   color="indigo darken-3"
                   :messages="['ex)프로그래밍을 처음 하는 사람에게 강추']"
-                  label="'언어'에 대해 하고 싶은 말을 적어주세요." 
-                  required></v-text-field>
+                  :label="lang + '에 대해 하고 싶은 말을 적어주세요.'" 
+                  required></v-textarea>
               </v-col>
             </v-row>
           </v-container>
@@ -77,6 +92,7 @@
 export default {
   data: () => ({
       dialog: true,
+      lang: '언어',
     }),
   mounted() {
   
@@ -88,7 +104,11 @@ export default {
 /* .v-select__slot label, .v-select__selection, .v-select__selections input, .v-input__append-inner{
   font-family: Cafe24Dangdanghae !important;
 } */
-.survey .v-icon::before, .v-list .v-icon::before{
+.survey .v-icon::before, .v-list .v-icon::before, .lang-select .v-icon::before{
   color: navy;
+}
+.v-select__selection--comma {
+  margin: 0 !important;
+  line-height: 30px;
 }
 </style>
