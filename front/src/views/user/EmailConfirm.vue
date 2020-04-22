@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import baseURL from '@/base-url.js'
 export default {
-
+  mounted: {
+    emainConfirm: function() {
+      baseURL('user/key_alter')
+    }
+  }
 }
 </script>
 
