@@ -8,12 +8,14 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.findme.domain.User;
+import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.security.JwtService;
 
@@ -26,6 +28,8 @@ public class AccountServiceImpl implements IAccountService {
 	private JavaMailSender mailSender;
 	@Autowired
 	private JwtService jwtService;
+	@Autowired
+	private ModelMapper modelMapper;
 
 	private String IP = "http://localhost:8888";
 
@@ -48,8 +52,10 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public User signUp(User user) {
-		return accountrepo.save(user);
+	public UserDTO signUp(UserDTO user) {
+		User member = modelMapper.map(user, User.class);
+		CommandLineExecutor.execute("python src/main/python/similarAnalysis.py " + member.getId() + "");
+		return modelMapper.map(accountrepo.save(member), UserDTO.class);
 	}
 
 	// 이메일 난수 만드는 메서드
@@ -118,20 +124,20 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public User login(User trial) {
+	public UserDTO login(UserDTO trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
 		if (!trial.getPassword().equals(member.getPassword()))
 			throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-		return member;
+		return modelMapper.map(member, UserDTO.class);
 
 	}
 
 	@Override
-	public String getToken(User user) {
-		String token = jwtService.create(user);
+	public String getToken(UserDTO user) {
+		String token = jwtService.create(modelMapper.map(user, User.class));
 		return token;
 	}
 
@@ -141,16 +147,16 @@ public class AccountServiceImpl implements IAccountService {
 //	}
 
 	@Override
-	public User info(String email, String password) {
-		return accountrepo.findByEmailAndPassword(email, password);
+	public UserDTO info(String email, String password) {
+		return modelMapper.map(accountrepo.findByEmailAndPassword(email, password), UserDTO.class);
 	}
 
 	@Override
-	public User changePassword(String email) {
+	public UserDTO changePassword(String email) {
 		User user = accountrepo.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다"));
 		String randomPassword = getRamdomPassword(10);
 		user.setPassword(randomPassword);
-		return user;
+		return modelMapper.map(user, UserDTO.class);
 	}
 
 	private static String getRamdomPassword(int len) {
@@ -184,8 +190,13 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public void updateProfile(User user) {
-		accountrepo.save(user);
+	public void updateProfile(UserDTO user) {
+		accountrepo.save(modelMapper.map(user, User.class));
+	}
+
+	@Override
+	public UserDTO findById(Long user_id) {
+		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
 	}
 
 }

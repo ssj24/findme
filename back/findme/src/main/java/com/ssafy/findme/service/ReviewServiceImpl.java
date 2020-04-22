@@ -15,34 +15,36 @@ import com.ssafy.findme.dto.ReviewDTO;
 import com.ssafy.findme.dto.SympDTO;
 import com.ssafy.findme.dto.UnsympDTO;
 import com.ssafy.findme.mapper.EntityMapper;
+import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.repository.ReviewRepository;
 import com.ssafy.findme.repository.SympRepository;
 import com.ssafy.findme.repository.UnsympRepository;
 
 @Service
 public class ReviewServiceImpl implements IReviewService {
-	
+
 	@Autowired
 	private ReviewRepository reviewrepo;
 	@Autowired
 	private SympRepository symprepo;
 	@Autowired
 	private UnsympRepository unsymprepo;
-	
+	@Autowired
+	private AccountRepository accountrepo;
+
 	@Autowired
 	private EntityMapper entityMapper;
-	
+
 	public boolean checkUserId(Long user_id) {
-		//존재하는 유저 아이디라면 true를
-		//존재하지 않는 유저 아이디라면 false를 return
+		// 존재하는 유저 아이디라면 true를
+		// 존재하지 않는 유저 아이디라면 false를 return
 		return false;
 	}
-	
+
 	@Override
 	public void save(Long user_id, String content) {
 		try {
-			User user = new User(); //UserService에서 user 찾는 메서드 만들면 그걸로 바꾸기
-			user.setId(user_id);
+			User user = accountrepo.findById(user_id);
 			Review review = new Review();
 			review.setContent(content);
 			review.setUser(user);
@@ -53,11 +55,11 @@ public class ReviewServiceImpl implements IReviewService {
 			System.out.println("ReviewServiceImpl save error");
 		}
 	}
-	
+
 	@Override
 	public void update(Long review_id, String content) {
 		try {
-			if(content != "" && content != null) {
+			if (content != "" && content != null) {
 				Review review = reviewrepo.findById(review_id).get();
 				review.setContent(content);
 				review.setUpdated_at(new Date());
@@ -70,44 +72,37 @@ public class ReviewServiceImpl implements IReviewService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void delete(Long review_id) {
 		Review reivew = reviewrepo.findById(review_id).get();
 		reviewrepo.delete(reivew);
 	}
-	
+
 	@Override
 	public ReviewDTO findById(Long review_id) {
 		Review review = reviewrepo.findById(review_id).get();
 		ReviewDTO reviewDTO = entityMapper.convertToDomain(review, ReviewDTO.class);
 		return reviewDTO;
 	}
-	
+
 	@Override
-	//전체 리뷰 가져오기
+	// 전체 리뷰 가져오기
 	public List<ReviewDTO> findAll() {
-		return reviewrepo.findAll()
-				.stream()
-				.map(e->entityMapper.convertToDomain(e, ReviewDTO.class))
+		return reviewrepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ReviewDTO> findReviewByUserId(Long user_id) {
-		return reviewrepo.findByUserId(user_id)
-				.stream()
-				.map(e->entityMapper.convertToDomain(e, ReviewDTO.class))
+		return reviewrepo.findByUserId(user_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
 				.collect(Collectors.toList());
 	}
-	
-	
-	// 리뷰 공감
+
+// 리뷰 공감
 	@Override
 	public List<SympDTO> findAllSymp() {
-		return symprepo.findAll()
-				.stream()
-				.map(e-> entityMapper.convertToDomain(e, SympDTO.class))
+		return symprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
 				.collect(Collectors.toList());
 	}
 
@@ -118,8 +113,7 @@ public class ReviewServiceImpl implements IReviewService {
 			Review review = reviewrepo.findById(review_id).get();
 			int symp_cnt = review.getSymp_cnt();
 			review.setSymp_cnt(symp_cnt + 1);
-			User user = new User(); //UserService에서 user 찾는 메서드 만들면 그걸로 바꾸기
-			user.setId(user_id);
+			User user = accountrepo.findById(user_id);
 			symp.setReview(review);
 			symp.setUser(user);
 			symprepo.save(symp);
@@ -130,11 +124,9 @@ public class ReviewServiceImpl implements IReviewService {
 
 	@Override
 	public List<SympDTO> findSympByUserId(Long user_id) {
-		return symprepo.findByUser_Id(user_id)
-				.stream()
-				.map(e->entityMapper.convertToDomain(e, SympDTO.class))
+		return symprepo.findByUser_Id(user_id).stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
 				.collect(Collectors.toList());
-	}  
+	}
 
 	@Override
 	public void deleteSymp(Long review_id, Long user_id) {
@@ -142,12 +134,10 @@ public class ReviewServiceImpl implements IReviewService {
 		symprepo.delete(symp);
 	}
 
-	// 리뷰 비공감
+// 리뷰 비공감
 	@Override
 	public List<UnsympDTO> findAllUnsymp() {
-		return unsymprepo.findAll()
-				.stream()
-				.map(e->entityMapper.convertToDomain(e, UnsympDTO.class))
+		return unsymprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
 				.collect(Collectors.toList());
 	}
 
@@ -158,21 +148,18 @@ public class ReviewServiceImpl implements IReviewService {
 			Review review = reviewrepo.findById(review_id).get();
 			int unsymp_cnt = review.getSymp_cnt();
 			review.setSymp_cnt(unsymp_cnt - 1);
-			User user = new User(); //UserService에서 user 찾는 메서드 만들면 그걸로 바꾸기
-			user.setId(user_id);
+			User user = accountrepo.findById(user_id);
 			unsymp.setReview(review);
 			unsymp.setUser(user);
 			unsymprepo.save(unsymp);
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl saveUnsymp error");
-		}		
+		}
 	}
 
 	@Override
 	public List<UnsympDTO> findUnsympByUserId(Long user_id) {
-		return unsymprepo.findByUser_Id(user_id)
-				.stream()
-				.map(e->entityMapper.convertToDomain(e, UnsympDTO.class))
+		return unsymprepo.findByUser_Id(user_id).stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
 				.collect(Collectors.toList());
 	}
 

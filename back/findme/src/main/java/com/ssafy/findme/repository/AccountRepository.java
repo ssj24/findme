@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.findme.domain.User;
+import com.ssafy.findme.dto.UserDTO;
 
 @Repository
 public interface AccountRepository extends JpaRepository<User, Integer> {
@@ -22,5 +23,7 @@ public interface AccountRepository extends JpaRepository<User, Integer> {
 	public int countByEmailAndPassword(String email, String password);
 
 	public User findByEmailAndPassword(String email, String password);
+	
+	public User findById(Long user_id);
 
 }
