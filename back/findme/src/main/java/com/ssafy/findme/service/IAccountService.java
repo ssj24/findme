@@ -19,15 +19,15 @@ public interface IAccountService {
 
 	String getToken(UserDTO user);
 
-//	User info(long id);
-
 	UserDTO info(String email, String password);
 
 	UserDTO changePassword(String email);
 
 	void mailSend(String email, String password, String name) throws MessagingException;
 
-	void updateProfile(UserDTO user);
+	UserDTO updateProfile(UserDTO user);
 
 	UserDTO findById(Long user_id);
+
+	UserDTO findbyEmail(String email);
 }
