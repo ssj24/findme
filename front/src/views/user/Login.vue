@@ -17,7 +17,7 @@
             <v-text-field
               v-model="id"
               :rules="idRules"
-              label="ID"
+              label="Email"
               required
             ></v-text-field>
             <v-text-field
@@ -56,6 +56,34 @@
                 로그인
               </a>
             </v-layout>
+              <v-dialog v-model="dialog" persistent max-width="600px">
+                <template v-slot:activator="{ on }">
+                  <v-btn color="indigo darken-3" dark v-on="on">비밀번호를 잊어버렸습니다</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span>
+                      비밀번호를 잊어버린 이메일 주소를 입력해주세요 
+                      <br>
+                      임시 비밀번호를 보내드립니다
+                    </span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-text-field
+                        v-model="email"
+                        :rules="emailRules"
+                        required>
+                      </v-text-field>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                    <v-btn color="blue darken-1" text @click="dialog = false; sendPassword();">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
           </v-form>
         </v-col>
       </v-row>
@@ -64,15 +92,17 @@
 </template>
 <script>
 import baseURL from '@/base-url.js'
+import * as EmailValidator from 'email-validator'
 import '@/assets/css/user.css'
 const axios = require('axios').default
 export default {
   data: () => ({
+      dialog: false,
       valid: true,
       id: '',
       idRules: [
-        v => !!v || 'ID를 입력해주세요',
-        v => (v && v.length >= 10) || '10자 이상의 ID를 입력해주세요',
+        v => !!v || '이메일을 입력해주세요',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
       ],
       show1: false,
       password: '',
@@ -81,14 +111,21 @@ export default {
         v => v.length >= 8 || '8자 이상의 비밀번호를 입력해주세요',
       ],
       checkbox: false,
+      email: '',
+      emailRules: [
+        v => !!v || '이메일을 입력해주세요',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
+      ],
     }),
 
     methods: {
       
       submit () {
         baseURL.post('/user/login?email='+this.id+'&password='+this.password)
-          .then(res => {
-            console.log(res)
+          .then(() => {
+            this.$router.push({
+              name: "Main"
+            })
           })
       },
       kakaologin() {
@@ -102,6 +139,12 @@ export default {
           })
           .catch(err => {
             console.log(err)
+          })
+      },
+      sendPassword() {
+        baseURL('user/sendpassword?email='+this.email)
+          .then(res => {
+            console.log(res)
           })
       }
     },

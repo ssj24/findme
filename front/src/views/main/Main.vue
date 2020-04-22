@@ -56,13 +56,27 @@
       </v-carousel-item>
   </v-carousel>
   <survey></survey>
-  <router-link 
+  <v-container>
+    <div
     v-for="(lang, i) in langs"
     :key="i"
-    :to="{name:'Lang', params:{langSeq:i}}">
-    {{lang}} 
-  </router-link>
+    :style="'background:'+lang.bgs"
+    style="background-size: contain; background-repeat: no-repeat;"
+    class="toLang"
+  >
+    <v-chip
+      
+    >
+      <router-link 
+        :to="{name:'Lang', params:{langSeq:i}}">
+        {{lang.title}} 
+      </router-link>
+    </v-chip>
+  </div>
+  </v-container>
   
+  
+  <langs-grid class="mx-auto"></langs-grid>
   <v-row>
     <v-col cols=6>
       <v-card>
@@ -91,41 +105,13 @@
         ></v-sparkline>
       </v-card>
     </v-col>
-    
   </v-row>
-  <v-sparkline
-    :value="value"
-    :gradient="gradient[5]"
-    :smooth="radius || false"
-    :padding="padding"
-    :line-width="width"
-    :stroke-linecap="lineCap"
-    :gradient-direction="gradientDirection"
-    :fill="fill"
-    :type="type"
-    :auto-line-width="autoLineWidth"
-    auto-draw
-    height="200"
-  ></v-sparkline>
-  <v-sparkline
-    :value="value"
-    :gradient="gradient[4]"
-    :smooth="radius || false"
-    :padding="padding"
-    :line-width="width"
-    :stroke-linecap="lineCap"
-    :gradient-direction="gradientDirection"
-    :fill="fill"
-    :type="type"
-    :auto-line-width="autoLineWidth"
-    auto-draw
-    height="200"
-  ></v-sparkline>
 </div>
 </template>
 
 <script>
 import Survey from '@/views/main/Survey.vue'
+import LangsGrid from '@/views/main/LangsGrid.vue'
 import '@/assets/css/main.css'
 
 const gradients = [
@@ -139,6 +125,7 @@ const gradients = [
   export default {
     components: {
       Survey,
+      LangsGrid,
     },
     data () {
       return {
@@ -162,26 +149,105 @@ const gradients = [
         type: 'trend',
         autoLineWidth: false,
         langs: [
-          'Java',
-          'C',
-          'Python',
-          'C++',
-          'C#',
-          'VB.NET',
-          'JavaScript',
-          'PHP',
-          'SQL',
-          'Go',
-          'R',
-          'Assembly',
-          'Swift',
-          'Ruby',
-          'MATLAB',
-          'PL/SQL',
-          'Perl',
-          'Visual Basic',
-          'Objective-C',
-          'Delphi'
+          {
+            title: 'Java',
+            color: '#f72047',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971517-5fe28980-84cf-11ea-89dc-ce41e684064d.png")',
+          },
+          {
+            title: 'C',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971545-653fd400-84cf-11ea-8501-70cf9dc894c1.png")',
+          },
+          {
+            title: 'Python',
+            color: '#ffd200',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971532-6244e380-84cf-11ea-915e-3b4768f234af.jpg")',
+          },
+          {
+            title: 'C++',
+            color: '#0000ff',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971547-653fd400-84cf-11ea-972a-e580e2249c1c.png")',
+          },
+          {
+            title: 'C#',
+            color: '#f72047',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971548-65d86a80-84cf-11ea-9b8a-292850f1b03c.png")',
+          },
+          {
+            title: 'VB.NET',
+            color: '#999999',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971540-640ea700-84cf-11ea-9de3-f985833d7cff.jpg")',
+          },
+          {
+            title: 'JavaScript',
+            color: '#ffd200',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971519-5fe28980-84cf-11ea-92ca-a1bfc46b9f71.png")',
+          },
+          {
+            title: 'PHP',
+            color: '#0000ff',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971528-61ac4d00-84cf-11ea-8745-c8dd122efbe9.png")',
+          },
+          {
+            title: 'SQL',
+            color: '#f72047',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971536-63761080-84cf-11ea-9e66-59ac4802bdd8.jpg")',
+          },
+          {
+            title: 'Go',
+            color: '#999999',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971515-5eb15c80-84cf-11ea-8285-ccefdc5950dc.png")',
+          },
+          {
+            title: 'R',
+            color: '#ffd200',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971533-62dd7a00-84cf-11ea-9ab3-d25667316594.png")',
+          },
+          {
+            title: 'Assembly',
+            color: '#0000ff',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971543-64a73d80-84cf-11ea-8d2c-1c823eae9699.png")',
+          },
+          {
+            title: 'Swift',
+            color: '#f72047',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971538-640ea700-84cf-11ea-9dff-bfb2bdcf51fb.png")',
+          },
+          {
+            title: 'Ruby',
+            color: '#999999',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971534-62dd7a00-84cf-11ea-8edc-b58c0a93dd79.png")',
+          },
+          {
+            title: 'MATLAB',
+            color: '#ffd200',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971521-607b2000-84cf-11ea-98c5-5c2d851e8eb9.jpg")',
+          },
+          {
+            title: 'PL/SQL',
+            color: '#0000ff',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971530-6244e380-84cf-11ea-885a-357af701d09e.jpg")',
+          },
+          {
+            title: 'Perl',
+            color: '#f72047',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971525-6113b680-84cf-11ea-99e4-f3c09d023a51.jpg")',
+          },
+          {
+            title: 'Visual Basic',
+            color: '#999999',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971541-64a73d80-84cf-11ea-9162-0d34eac9d818.jpg")',
+          },
+          {
+            title: 'Objective-C',
+            color: '#ffd200',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971523-6113b680-84cf-11ea-8329-15109924203e.png")',
+          },
+          {
+            title: 'Delphi',
+            color: '#0000ff',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971550-66710100-84cf-11ea-80d5-085d4f861b83.png")',
+          },
         ]
       }
     },
@@ -193,4 +259,9 @@ const gradients = [
 /* .v-carousel__controls .v-btn--round .v-btn__content .v-icon {
   color: red !important;
 } */
+.toLang {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+}
 </style>
