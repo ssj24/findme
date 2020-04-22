@@ -1,6 +1,5 @@
 package com.ssafy.findme.service;
 
-import java.util.Map;
 import java.util.Random;
 
 import javax.mail.Message.RecipientType;
@@ -10,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +35,18 @@ public class AccountServiceImpl implements IAccountService {
 	public boolean emailDuplicateCheck(String email) {
 		int check = accountrepo.countByEmail(email);
 		if (check == 0)
-			return true;
-		else
 			return false;
+		else
+			return true;
 	}
 
 	@Override
 	public boolean accountDuplicateCheck(String email, String password) {
 		int check = accountrepo.countByEmailAndPassword(email, password);
 		if (check == 0)
-			return true;
-		else
 			return false;
+		else
+			return true;
 	}
 
 	@Override
@@ -130,7 +128,7 @@ public class AccountServiceImpl implements IAccountService {
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
 		if (!trial.getPassword().equals(member.getPassword()))
-			throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+			throw new IllegalArgumentException("잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.");
 		return modelMapper.map(member, UserDTO.class);
 
 	}
@@ -140,11 +138,6 @@ public class AccountServiceImpl implements IAccountService {
 		String token = jwtService.create(modelMapper.map(user, User.class));
 		return token;
 	}
-
-//	@Override
-//	public User info(int id) {
-//		return accountrepo.getOne(id);
-//	}
 
 	@Override
 	public UserDTO info(String email, String password) {
@@ -190,13 +183,18 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public void updateProfile(UserDTO user) {
-		accountrepo.save(modelMapper.map(user, User.class));
+	public UserDTO updateProfile(UserDTO user) {
+		return modelMapper.map(accountrepo.save(modelMapper.map(user, User.class)), UserDTO.class);
 	}
 
 	@Override
 	public UserDTO findById(Long user_id) {
 		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
+	}
+
+	@Override
+	public UserDTO findbyEmail(String email) {
+		return modelMapper.map(accountrepo.findByEmail(email).get(), UserDTO.class);
 	}
 
 }
