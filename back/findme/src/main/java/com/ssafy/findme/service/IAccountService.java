@@ -2,10 +2,10 @@ package com.ssafy.findme.service;
 
 import javax.mail.MessagingException;
 
-import com.ssafy.findme.domain.User;
+import com.ssafy.findme.dto.UserDTO;
 
 public interface IAccountService {
-	User signUp(User user);
+	UserDTO signUp(UserDTO user);
 
 	void mailSendWithUserKey(String email, String name) throws MessagingException;
 
@@ -15,17 +15,19 @@ public interface IAccountService {
 
 	boolean accountDuplicateCheck(String email, String password);
 
-	User login(User user);
+	UserDTO login(UserDTO user);
 
-	String getToken(User user);
+	String getToken(UserDTO user);
 
 //	User info(long id);
 
-	User info(String email, String password);
+	UserDTO info(String email, String password);
 
-	User changePassword(String email);
+	UserDTO changePassword(String email);
 
 	void mailSend(String email, String password, String name) throws MessagingException;
 
-	void updateProfile(User user);
+	void updateProfile(UserDTO user);
+
+	UserDTO findById(Long user_id);
 }

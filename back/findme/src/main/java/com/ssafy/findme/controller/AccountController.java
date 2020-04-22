@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.findme.domain.User;
+import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.service.IAccountService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
@@ -44,7 +44,7 @@ public class AccountController {
 
 	@PostMapping("/user/signup")
 	@ApiOperation(value = "가입하기")
-	public void signup(@RequestBody User user) throws MessagingException {
+	public void signup(@RequestBody UserDTO user) throws MessagingException {
 		// 비밀번호 암호화
 		String encryPassword = UserSha256.encrypt(user.getPassword());
 		user.setPassword(encryPassword);
@@ -63,7 +63,7 @@ public class AccountController {
 	@GetMapping("/user/sendpassword")
 	@ApiOperation(value = "임시 비밀번호 전송")
 	public void sendpassword(@RequestParam String email) throws MessagingException {
-		User user = accountservice.changePassword(email);
+		UserDTO user = accountservice.changePassword(email);
 		accountservice.mailSend(user.getEmail(), user.getPassword(), user.getName());
 		user.setPassword(UserSha256.encrypt(user.getPassword()));
 		accountservice.updateProfile(user);
@@ -76,7 +76,7 @@ public class AccountController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			User user = new User();
+			UserDTO user = new UserDTO();
 			String encryPassword = UserSha256.encrypt(password);
 			user.setEmail(email);
 			user.setPassword(encryPassword);
@@ -94,22 +94,11 @@ public class AccountController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-//	@PostMapping("/user/{id}/info")
-//	@ApiOperation(value = "회원정보 조회")
-//	public ResponseEntity<Map<String, Object>> info(@PathVariable long id, HttpServletRequest req) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		HttpStatus status = null;
-//		try {
-//			User user = accountservice.info(id);
-//			resultMap.put("status", true);
-//			resultMap.put("info", user);
-//			status = HttpStatus.ACCEPTED;
-//		} catch (RuntimeException e) {
-//			resultMap.put("message", e.getMessage());
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//		}
-//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-//	}
+	@GetMapping("/user/find/{user_id}")
+	@ApiOperation(value = "사용자 정보 조회")
+	public UserDTO findById(@PathVariable Long user_id) {
+		return accountservice.findById(user_id);
+	}
 
 	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
@@ -124,7 +113,7 @@ public class AccountController {
 		String password = "kakao";
 
 		try {
-			User user = new User();
+			UserDTO user = new UserDTO();
 			user.setName(name);
 			user.setEmail(email);
 			user.setPassword(password);
@@ -152,7 +141,7 @@ public class AccountController {
 
 	@PostMapping("/user/kakao_signup")
 	@ApiOperation(value = "카카오 계정으로 가입하기 및 로그인")
-	public ResponseEntity<Map<String, Object>> kakaosignup(@RequestBody User user, HttpServletRequest req) {
+	public ResponseEntity<Map<String, Object>> kakaosignup(@RequestBody UserDTO user, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
