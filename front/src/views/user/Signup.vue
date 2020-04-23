@@ -20,7 +20,18 @@
               :rules="idRules"
               label="Email"
               required
-            ></v-text-field>
+              style="width: 80%; display: inline-block;"
+            >
+            </v-text-field>
+            <v-btn @click="emailCheck()"
+              class="ml-2"
+              style="width: 18%; display: inline-block;"
+              outlined
+              small
+              color="indigo darken-3"
+            >
+              중복 확인
+            </v-btn>
             <v-text-field
               v-model="name"
               label="이름"
@@ -89,7 +100,9 @@
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-6 text-center"
+                id="signUp"
                 @click="submit"
+                :disabled="enableSwitch"
               >
                 회원가입
               </v-btn>
@@ -112,7 +125,7 @@ export default {
       id: '',
       idRules: [
         v => !!v || 'ID를 입력해주세요',
-        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다.',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
       ],
       name: '',
       show1: false,
@@ -174,7 +187,7 @@ export default {
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
       ],
-      checkbox: false,
+      enableSwitch: true,
     }),
     watch: {
       passwordConfirm: function(e) {
@@ -185,7 +198,7 @@ export default {
           this.passwordConfirmRules.pop()
         }
         // this.formCheck(e);
-      }
+      },
     },
     methods: {
       reset () {
@@ -209,7 +222,24 @@ export default {
             });
           })
       },
+      emailCheck() {
+        baseURL('user/'+this.id+'/email-duplicate')
+          .then(res => {
+            if (res.data) {
+              alert("등록되지 않은 이메일입니다")
+              this.enableSwitch = false;
+            }
+            else {
+              alert("이미 등록된 이메일입니다")
+              this.id = '';
+
+            }
+          })
+      },
+      
     },
+    mounted() {
+    }
 }
 </script>
 

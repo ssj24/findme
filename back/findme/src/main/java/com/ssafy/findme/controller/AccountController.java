@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +40,7 @@ public class AccountController {
 	@GetMapping("/user/{email}/email-duplicate")
 	@ApiOperation(value = "이메일 중복체크")
 	public boolean emailduplicate(@PathVariable String email) {
-		return accountservice.emailDuplicateCheck(email);
+		return !accountservice.emailDuplicateCheck(email);
 	}
 
 	@PostMapping("/user/signup")
@@ -60,7 +61,7 @@ public class AccountController {
 		accountservice.alterUserKey(email, key);
 	}
 
-	@GetMapping("/user/sendpassword")
+	@PutMapping("/user/sendpassword")
 	@ApiOperation(value = "임시 비밀번호 전송")
 	public void sendpassword(@RequestParam String email) throws MessagingException {
 		UserDTO user = accountservice.changePassword(email);
@@ -70,7 +71,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/user/login")
-	@ApiOperation(value = "로그인")
+	@ApiOperation(value = "일반계정 로그인")
 	public ResponseEntity<Map<String, Object>> login(@RequestParam String email, @RequestParam String password,
 			HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -110,7 +111,7 @@ public class AccountController {
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
 		String name = userInfo.get("nickname").toString();
 		String email = userInfo.get("email").toString();
-		String password = "kakao";
+		String password = UserSha256.encrypt("kakao");
 
 		try {
 			UserDTO user = new UserDTO();
@@ -119,18 +120,27 @@ public class AccountController {
 			user.setPassword(password);
 			// db에 이메일이 없으면 singup
 			res.setHeader("jwt-auth-token", access_Token);
-			if (accountservice.accountDuplicateCheck(email, password)) {
+
+			if (accountservice.emailDuplicateCheck(email)) {
+				if (accountservice.accountDuplicateCheck(email, password)) { // 로그인
+					user = accountservice.info(email, password);
+					resultMap.put("status", true);
+					resultMap.put("info", user);
+					status = HttpStatus.ACCEPTED;
+				} else { // 일반계정을 카카오 계정으로 전환
+					resultMap.put("status", false);
+					resultMap.put("log", "카카오 계정으로 전환하시겠습니까? > 앞으로 카카오로만 로그인 가능 일반으로 로그인 불가");
+					resultMap.put("info", user);
+					status = HttpStatus.ACCEPTED;
+					return new ResponseEntity<Map<String, Object>>(resultMap, status);
+				}
+			} else { // 카카오 계정으로 회원가입
 				resultMap.put("status", false);
 				resultMap.put("log", "회원가입이 필요합니다.");
 				resultMap.put("info", user);
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			user = accountservice.info(email, password);
-			resultMap.put("status", true);
-			resultMap.put("info", user);
-			status = HttpStatus.ACCEPTED;
-
 		} catch (RuntimeException e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -146,6 +156,7 @@ public class AccountController {
 		HttpStatus status = null;
 		try {
 			user.setAuthKey("Y");
+			user.setPassword(UserSha256.encrypt("kakao"));
 			user = accountservice.signUp(user);
 
 			resultMap.put("status", true);
@@ -159,4 +170,27 @@ public class AccountController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
+	@PutMapping("/user/tokakao")
+	@ApiOperation(value = "카카오 계정으로 전환")
+	public ResponseEntity<Map<String, Object>> tokakao(@RequestParam String email, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			UserDTO user = accountservice.findbyEmail(email);
+			user.setPassword(UserSha256.encrypt("kakao"));
+			user = accountservice.updateProfile(user);
+
+			resultMap.put("status", true);
+			resultMap.put("info", user);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 }
