@@ -33,7 +33,7 @@ public class Message {
 	private String content;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
+	private Date createdAt;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

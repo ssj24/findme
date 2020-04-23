@@ -10,10 +10,10 @@ import lombok.Setter;
 public class ReviewDTO {
 	private Long id;
 	private String content;
-	private Date created_at;
-	private Date updated_at;
-	private int symp_cnt;
-	private int unsymp_cnt;
+	private Date createdAt;
+	private Date updatedAt;
+	private Long sympCnt;
+	private Long unsympCnt;
 	private Long userId;
-	
+	private Long languageId;
 }

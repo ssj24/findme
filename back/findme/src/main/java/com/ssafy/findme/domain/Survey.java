@@ -27,13 +27,14 @@ public class Survey {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private int use_reason;
-	private int advantage;
-	private int disadvantage;
-	private String total_review;
+	private Long languageId;
+	private Long useReason;
+	private Long advantage;
+	private Long disadvantage;
+	private String totalReview;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
+	private Date createdAt;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

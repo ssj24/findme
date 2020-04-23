@@ -12,10 +12,11 @@ import lombok.Getter;
 @ToString
 public class SurveyDTO {
 	private Long id;
-	private int useReason;
-	private int advantage;
-	private int disadvantage;
+	private Long useReason;
+	private Long advantage;
+	private Long disadvantage;
 	private String totalReview;
-	private Date created_at;
+	private Date createdAt;
 	private Long userId;
+	private Long languageId;
 }

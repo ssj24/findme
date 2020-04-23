@@ -22,7 +22,7 @@ public class UserDTO {
 	private boolean utility;
 	private String authKey;
 	private RoleType roleType;
-	private Date created_at;
+	private Date createdAt;
 	public enum RoleType {
 		USER, ADMIN
 	}

@@ -23,7 +23,7 @@ public class Symp {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

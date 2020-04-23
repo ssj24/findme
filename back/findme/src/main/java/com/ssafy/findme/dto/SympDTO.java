@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SympDTO {
-	private int id;
+	private Long id;
 	private Long userId;
 	private Long reviewId;
 }

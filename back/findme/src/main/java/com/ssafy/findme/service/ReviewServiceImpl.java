@@ -48,8 +48,8 @@ public class ReviewServiceImpl implements IReviewService {
 			Review review = new Review();
 			review.setContent(content);
 			review.setUser(user);
-			review.setCreated_at(new Date());
-			review.setUpdated_at(new Date());
+			review.setCreatedAt(new Date());
+			review.setUpdatedAt(new Date());
 			reviewrepo.save(review);
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl save error");
@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements IReviewService {
 			if (content != "" && content != null) {
 				Review review = reviewrepo.findById(review_id).get();
 				review.setContent(content);
-				review.setUpdated_at(new Date());
+				review.setUpdatedAt(new Date());
 				reviewrepo.save(review);
 			} else {
 				System.out.println("ReviewServiceImpl update fail!! No content");
@@ -111,8 +111,8 @@ public class ReviewServiceImpl implements IReviewService {
 		try {
 			Symp symp = new Symp();
 			Review review = reviewrepo.findById(review_id).get();
-			int symp_cnt = review.getSymp_cnt();
-			review.setSymp_cnt(symp_cnt + 1);
+			Long symp_cnt = review.getSympCnt();
+			review.setSympCnt(symp_cnt + 1);
 			User user = accountrepo.findById(user_id);
 			symp.setReview(review);
 			symp.setUser(user);
@@ -146,8 +146,8 @@ public class ReviewServiceImpl implements IReviewService {
 		try {
 			Unsymp unsymp = new Unsymp();
 			Review review = reviewrepo.findById(review_id).get();
-			int unsymp_cnt = review.getSymp_cnt();
-			review.setSymp_cnt(unsymp_cnt - 1);
+			Long unsymp_cnt = review.getSympCnt();
+			review.setSympCnt(unsymp_cnt - 1);
 			User user = accountrepo.findById(user_id);
 			unsymp.setReview(review);
 			unsymp.setUser(user);
