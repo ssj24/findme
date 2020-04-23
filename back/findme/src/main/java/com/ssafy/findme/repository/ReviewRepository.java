@@ -12,4 +12,6 @@ import com.ssafy.findme.domain.Review;
 public interface ReviewRepository extends JpaRepository<Review, Integer>{
 	Optional<Review> findById(Long review_id);
 	List<Review> findByUserId(Long user_id);
+	List<Review> findByLanguageId(Long language_id);
+	
 }

@@ -45,12 +45,12 @@ public class Recruit {
 	private String url;
 	private boolean utility;
 	
-	private String post_date;
-	private String start_date;
-	private String due_date; //채용 시 마감인 경우도 있어서 String으로
+	private String postDate;
+	private String startDate;
+	private String dueDate; //채용 시 마감인 경우도 있어서 String으로
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
+	private Date createdAt;
 	
 	@OneToMany(mappedBy = "recruit")
 	@JsonIgnore

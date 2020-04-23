@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnsympDTO {
-	private int id;
+	private Long id;
 	private Long userId;
 	private Long reviewId;
 }

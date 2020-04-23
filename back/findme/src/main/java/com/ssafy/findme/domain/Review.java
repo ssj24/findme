@@ -33,13 +33,14 @@ public class Review {
 	private String content;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
+	private Date createdAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated_at;
+	private Date updatedAt;
 	
-	private int symp_cnt;
-	private int unsymp_cnt;
+	private Long sympCnt;
+	private Long unsympCnt;
+	private Long languageId;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
