@@ -12,11 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,7 +20,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -59,7 +54,7 @@ public class User {
 	// DB date 설정 어노테이션으로 datetime과의 차이점은 time_zone시스템 변수에 입력된 시간대 정보를 기반으로 데이터를
 	// 입력받는다.
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date created_at;
+	private Date createdAt;
 
 	public enum RoleType {
 		USER, ADMIN
