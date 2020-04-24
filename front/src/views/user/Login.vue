@@ -52,13 +52,13 @@
               >
               카카오
               </v-btn>
-              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/user/kakao_oauth&response_type=code">
+              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code">
                 로그인
               </a>
             </v-layout>
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
-                  <v-btn color="indigo darken-3" dark v-on="on">비밀번호를 잊어버렸습니다</v-btn>
+                  <v-btn class="mx-auto" style="display: block;" text v-on="on">비밀번호를 잊어버렸습니다</v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
@@ -79,8 +79,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false; sendPassword();">Save</v-btn>
+                    <v-btn style="font-weight: 900;" text large @click="dialog = false">닫기</v-btn>
+                    <v-btn style="font-weight: 900;" color="indigo darken-3" text large @click="dialog = false; sendPassword();">보내기</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -93,6 +93,7 @@
 <script>
 import baseURL from '@/base-url.js'
 import * as EmailValidator from 'email-validator'
+import cookie from '@/cookie.js'
 import '@/assets/css/user.css'
 const axios = require('axios').default
 export default {
@@ -122,15 +123,53 @@ export default {
       
       submit () {
         baseURL.post('/user/login?email='+this.id+'&password='+this.password)
-          .then(() => {
-            this.$router.push({
-              name: "Main"
-            })
+          .then(res => {
+            if (res.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
+              alert("로그인에 실패하셨습니다")
+              this.id = ''
+              this.password = ''
+            }
+            else if (res.data.info.roleType) {
+              this.$router.push({
+                name: "Admin"
+              })
+            }
+            else if (res.data.message == "인증되지 않은 계정입니다") {
+              alert("인증되지 않은 계정입니다")
+            }
+            else if (res.data.utility == false) {
+              alert("탈퇴한 회원입니다")
+              this.id = ''
+              this.password = ''
+            }
+            else {
+              let loginData = {
+                id: res.data.info.id,
+                token: res.headers["jwt-auth-token"],
+                email: res.data.info.email,
+                name: res.data.info.name,
+                techStack: res.data.info.techStack,
+                wishHope: res.data.info.wishHope,
+                wishJob: res.data.info.wishJob,
+              }
+              this.$store.commit('startLogin', loginData)
+              this.$store.commit('isLogin')
+              cookie.cookieCreate(loginData)
+              this.$router.push({
+                name: "Main"
+              })
+            }
           })
+          // error => {
+          //   this.id = ''
+          //   this.password = ''
+          //   this.checkbox = false
+          // }
+          
       },
       kakaologin() {
         console.log('sdlfsdjkl;dfj;klsd')
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/user/kakao_oauth&response_type=code")
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code")
           .then(() => {
             // console.log(res)
             this.$router.push({
