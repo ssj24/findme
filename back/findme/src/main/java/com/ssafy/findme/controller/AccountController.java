@@ -1,5 +1,6 @@
 package com.ssafy.findme.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -183,6 +184,30 @@ public class AccountController {
 
 			resultMap.put("status", true);
 			resultMap.put("info", user);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/kakao_message")
+	@ApiOperation(value = "카카오 메세지 보내기")
+	public ResponseEntity<Map<String, Object>> sendMessage(@RequestParam String tmp, HttpServletRequest req) throws IOException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			String token = tmp;
+//			String token = req.getHeader("jwt-auth-token");
+			System.out.println("token");
+			HashMap<String, Object> userInfo = kakao.getUserInfo(token);
+			kakao.sendMessage(token);
+
+			resultMap.put("status", true);
+			resultMap.put("info", userInfo);
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {

@@ -37,7 +37,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private String IP = "http://localhost:8888";
+	private String IP = "http://localhost:8080";
 
 	@Override
 	public boolean emailDuplicateCheck(String email) {
@@ -107,8 +107,8 @@ public class AccountServiceImpl implements IAccountService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String subject = "[본인인증] FindMe 인증메일입니다.";
 		String text = "<h2>안녕하세요 FindMe 입니다!</h2><br><br>" + "<h3>" + name + "님</h3>"
-				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/api/user/key_alter?email=" + email
-				+ "&key=" + key + ">인증하기</a></p>" + "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
+				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/" + email
+				+ "/" + key + ">인증하기</a></p>" + "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {
 			mail.setSubject(subject, "utf-8");
 			mail.setText(text, "utf-8", "html");
