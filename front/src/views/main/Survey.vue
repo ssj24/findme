@@ -89,13 +89,27 @@
 </template>
 
 <script>
+import baseURL from '@/base-url.js'
+import cookie from '@/cookie.js'
 export default {
   data: () => ({
-      dialog: true,
+      isLogin: false,
+      dialog: false,
       lang: '언어',
     }),
   mounted() {
-  
+    this.isLogin = this.$store.state.isLogin
+    if (this.isLogin) {
+      this.isCompleted()
+    }
+  },
+  methods: {
+    isCompleted() {
+      baseURL('user/find/'+cookie.cookieUser())
+        .then(
+          // 사용자의 기술스택에 대해 모두 설문조사를 하지 않았을 경우 dialog를 true로 바꾼다
+        )
+    }
   }
 }
 </script>

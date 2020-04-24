@@ -68,20 +68,20 @@
     <v-card width="100%" style="margin-left: 110px;">
       <account-job name="AccountJob"></account-job>
     </v-card>
-    <v-card width="100%" height="400" style="margin-left: 110px;">
+    <!-- <v-card width="100%" height="400" style="margin-left: 110px;">
       <account-stack name="AccountStack"></account-stack>
-    </v-card>
+    </v-card> -->
   </v-row>
 </template>
 
 <script>
 import AccountJob from '@/views/user/AccountJob.vue'
-import AccountStack from '@/views/user/AccountStack.vue'
+// import AccountStack from '@/views/user/AccountStack.vue'
 
 export default {
   components: {
     AccountJob,
-    AccountStack
+    // AccountStack
   },
   data: () => ({
     name: '조수지',

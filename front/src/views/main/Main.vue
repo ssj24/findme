@@ -56,7 +56,7 @@
       </v-carousel-item>
   </v-carousel>
   <survey></survey>
-  <v-container>
+  <v-container class="mx-auto text-center">
     <div
     v-for="(lang, i) in langs"
     :key="i"
@@ -112,6 +112,7 @@
 <script>
 import Survey from '@/views/main/Survey.vue'
 import LangsGrid from '@/views/main/LangsGrid.vue'
+import cookie from '@/cookie.js'
 import '@/assets/css/main.css'
 
 const gradients = [
@@ -129,6 +130,7 @@ const gradients = [
     },
     data () {
       return {
+        userId: 0,
         slides: [
           {bgs: "url(https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60)", title: "퀸즈코퍼레이션", page: "#", position: "개발팀장", stacks: ["보안", "웹개발"], date: "2020-04-17",},
           {bgs: "url(https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60)", title: "트래포트", page: "#", position: "프론트", stacks: ["java", "oracle"], date: "2020-04-17",},
@@ -251,7 +253,13 @@ const gradients = [
         ]
       }
     },
-
+    mounted() {
+      this.userId = cookie.cookieId()
+    },
+    methods: {
+      
+    },
+    
   }
 </script>
 
@@ -260,7 +268,7 @@ const gradients = [
   color: red !important;
 } */
 .toLang {
-  width: 200px;
+  width: 180px;
   height: 200px;
   display: inline-block;
 }
