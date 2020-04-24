@@ -42,7 +42,7 @@ public class ReviewServiceImpl implements IReviewService {
 	}
 
 	@Override
-	public void save(Long user_id, String content) {
+	public void save(Long user_id, String content, Long language_id) {
 		try {
 			User user = accountrepo.findById(user_id);
 			Review review = new Review();
@@ -50,6 +50,9 @@ public class ReviewServiceImpl implements IReviewService {
 			review.setUser(user);
 			review.setCreatedAt(new Date());
 			review.setUpdatedAt(new Date());
+			review.setLanguageId(language_id);
+			review.setSympCnt((long)0);
+			review.setUnsympCnt((long)0);
 			reviewrepo.save(review);
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl save error");

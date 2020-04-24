@@ -1,11 +1,7 @@
 package com.ssafy.findme.service;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +15,6 @@ import com.ssafy.findme.repository.SurveyRepository;
 public class SurveyServiceImpl implements ISurveyService {
 	@Autowired
 	private SurveyRepository surveyrepo;
-
-	@Autowired
-	private EntityManager entityMapper;
-
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@Autowired
 	private AccountRepository accountrepo;
@@ -32,19 +22,29 @@ public class SurveyServiceImpl implements ISurveyService {
 	@Override
 	public void save(SurveyDTO surveydto) {
 		try {
-			Survey survey = modelMapper.map(surveydto, Survey.class);
-//			User user = accountrepo.findById(surveydto.getUserId());
-//			user.setId(surveydto.getUserId());
-//			survey.setCreated_at(new Date());
-//			survey.setUser(user);
-//			survey.setAdvantage(surveydto.getAdvantage());
-//			survey.setDisadvantage(surveydto.getDisadvantage());
-//			survey.setTotal_review(surveydto.getTotalReview());
-//			survey.setUse_reason(surveydto.getUseReason());
+			Survey survey = new Survey();
+			User user = accountrepo.findById(surveydto.getUserId());
+			user.setId(surveydto.getUserId());
+			survey.setCreatedAt(new Date());
+			survey.setUser(user);
+			survey.setAdvantage(surveydto.getAdvantage());
+			survey.setDisadvantage(surveydto.getDisadvantage());
+			survey.setTotalReview(surveydto.getTotalReview());
+			survey.setUseReason(surveydto.getUseReason());
+			survey.setLanguageId(surveydto.getLanguageId());
 			surveyrepo.save(survey);
 		} catch (Exception e) {
-			System.out.println("SurveyService saveSurvey error");
+			System.out.println("SurveyService save error");
 		}
+	}
+
+	@Override
+	public boolean findByConfirm(Long user_id, Long language_id) {
+		Survey survey = surveyrepo.findByUserIdAndLanguageId(user_id, language_id);
+		if(survey != null)
+			return true;
+		else
+			return false;
 	}
 
 }
