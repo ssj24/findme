@@ -31,8 +31,8 @@ public class ReviewController {
 	// 작성, 업데이트 시간이 이상함
 	@PostMapping("/review/write")
 	@ApiOperation(value = "리뷰 작성")
-	public void save(@RequestParam Long user_id, @RequestParam String content) {
-		reviewservice.save(user_id, content);
+	public void save(@RequestParam Long user_id, @RequestParam String content, @RequestParam Long language_id) {
+		reviewservice.save(user_id, content, language_id);
 	}
 
 	@PutMapping("/review/{review_id}/update")

@@ -8,5 +8,5 @@ import com.ssafy.findme.domain.Survey;
 
 public interface SurveyRepository extends JpaRepository<Survey, Long>{
 	List<Survey> findByLanguageId(Long language_id);
-	
+	Survey findByUserIdAndLanguageId(Long user_id, Long language_id);
 }

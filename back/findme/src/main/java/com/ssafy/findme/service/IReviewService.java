@@ -7,7 +7,7 @@ import com.ssafy.findme.dto.SympDTO;
 import com.ssafy.findme.dto.UnsympDTO;
 
 public interface IReviewService {
-	void save(Long user_id, String content);
+	void save(Long user_id, String content, Long language_id);
 	void update(Long review_id, String content);
 	void delete(Long review_id);
 	ReviewDTO findById(Long review_id);

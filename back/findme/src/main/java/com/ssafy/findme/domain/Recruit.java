@@ -33,11 +33,11 @@ public class Recruit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String comp_name;
+	private String compName;
 	private String title;
 	
 	@Lob
-	private String job_category;
+	private String jobCategory;
 	
 	@Lob
 	private String tech_stack;
