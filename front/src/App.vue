@@ -19,7 +19,7 @@
         </v-app-bar-nav-icon>
       </span> -->
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer; font-weight: 900;">{{ appTitle }}</router-link>
+        <router-link to="/" tag="span" class="toHome" style="font-family: ''; cursor: pointer; font-size: 1.5rem; font-weight: 900;">{{ appTitle }}</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items 
@@ -97,3 +97,31 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .toHome {
+    text-align: center;
+    color: #fff;
+		font-size: 92px;
+		font-family: "ubuntu";
+		text-transform: uppercase;
+		font-weight: 700;
+		font-family: "Josefin Sans", sans-serif;
+		background: linear-gradient(to right, navy 10%, yellow 50%, navy 70%);
+		background-size: auto auto;
+		background-clip: border-box;
+		background-size: 200% auto;
+		color: #fff;
+		background-clip: text;
+		text-fill-color: transparent;
+		-webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.014);
+		animation: textclip 1.5s linear infinite;
+		display: inline-block;
+  }
+  @keyframes textclip {
+	to {
+		background-position: 200% center;
+	}
+}
+</style>

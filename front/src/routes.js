@@ -5,6 +5,7 @@ import StatisticsPage from "./views/user/StatisticsPage.vue";
 import Admin from "./views/user/Admin.vue";
 import EmailConfirm from "./views/user/EmailConfirm.vue"
 import Lang from "./views/lang/Lang.vue"
+import Setting from "./views/user/Setting.vue"
 
 export default [
   {
@@ -21,6 +22,7 @@ export default [
     path: "/account",
     name: "Account",
     component: Account,
+    meta: { loginRequire: true }
   },
   {
     path: '/statistics',
@@ -33,9 +35,14 @@ export default [
     component: Admin,
   },
   {
-    path: '/*',
-    name: '404Error',
-    redirect: {name: 'Main'}
+    path: '/lang/:langId',
+    name: 'Lang',
+    component: Lang
+  },
+  {
+    path: '/setting/:id',
+    name: 'Setting',
+    component: Setting
   },
   {
     path: '/:email/:confirmcode',
@@ -43,9 +50,8 @@ export default [
     component: EmailConfirm,
   },
   {
-    path: '/lang/:langSeq',
-    name: 'Lang',
-    component: Lang
+    path: '/*',
+    name: '404Error',
+    redirect: {name: 'Main'}
   },
-
 ]

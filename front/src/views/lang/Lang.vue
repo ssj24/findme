@@ -10,10 +10,10 @@
 
     <v-row>
       <v-col cols="12">
-        <v-card>
+        <v-card class="cloudCard mx-auto">
           <cloud
             v-if="wordCount"
-            class="cloud" 
+            class="cloud mx-auto" 
             :data="wordCount" 
             :fontSizeMapper="fontSizeMapper" 
             :rotate="rotate" 
@@ -35,6 +35,7 @@
               <option>Courier</option>
               <option>Impact</option>
               <option>Georgia</option>
+              <option>Cafe24Dangdanghae</option>
             </select>
             <br />
             <label for="spiral">Spiral Style</label>:&nbsp;
@@ -60,21 +61,53 @@
       </v-col>
     </v-row>
     
-    
-			
     <v-form>
     <v-container>
+      {{symCommentList}}
       <v-row>
-
         <v-col cols="12">
           <v-text-field
-            v-model="review"
+            v-model="comment"
             label="댓글을 작성해주세요"
             outlined
             shaped
             color="indigo darken-3"
+            @keyup.enter="submitReview"
           ></v-text-field>
         </v-col>
+      </v-row>
+      <v-row
+        v-for="(review, i) in reviews"
+        :key="i"
+      >
+        <span
+          v-if="langSeq == (review.languageId - 1)"
+        >
+          
+          {{review.updatedAt}}
+          {{review.userId}}
+          {{review.content}}
+          {{review.id}}
+          <v-icon 
+            @click="symComment(review.id)"
+            class="upup"
+            >
+            mdi-thumb-up
+          </v-icon>
+          <v-icon 
+            @click="symComment(review.id)"
+            class="downdown"
+            >
+            mdi-thumb-down
+          </v-icon>
+          <v-btn @click="updateComment(review.id)">
+            수정
+          </v-btn>
+          <v-btn @click="deleteComment(review.id)">
+            삭제
+          </v-btn>
+        </span>
+        
       </v-row>
     </v-container>
   </v-form>
@@ -82,7 +115,8 @@
 </template>
 
 <script>
-// import baseURL from '@/base-url.js'
+import baseURL from '@/base-url.js'
+import cookie from '@/cookie.js'
 import Cloud from '@/views/lang/Cloud.vue'
 class TextScramble {
   constructor(el) {
@@ -236,24 +270,29 @@ export default {
 			colors: ['coral', 'blue', 'hotpink', 'peachpuff', 'green'],
 			coloring: 'random',
 			colorCount: 3,
-      review: '',
+      comment: '',
+      reviews: [],
+      symCommentList: [],
     }
   },
   mounted() {
-    this.langSeq = this.$route.params.langSeq;
+    this.langSeq = this.$route.params.langId;
     
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
     const fx = new TextScramble(el)
     let counter = 0
-    const next = () => {
+    const textNext = () => {
       fx.setText(phrases[counter])
       // .then(() => {
       //   setTimeout(next, 800)
       // })
       counter = (counter + 1) % phrases.length
     }
-    next()
+    textNext();
+    
+    this.getReviews();
+    this.getSymCommentList();
   },
   methods: {
     addColor() {
@@ -266,6 +305,52 @@ export default {
 				this.colorCount--;
 			}
     },
+    submitReview() {
+      let language_id = this.langSeq + 1
+      baseURL.post('review/write?user_id='+cookie.cookieUser()
+      +'&content='+this.comment
+      +'&language_id='+language_id)
+        .then(res => {
+          alert(res)
+          console.log(res)
+        })
+    },
+    getReviews() {
+      baseURL('review/findAll')
+        .then(res => {
+          this.reviews = res.data
+          
+        })
+    },
+    updateComment(v) {
+      baseURL.put('review/'+v+'/update')
+    },
+    deleteComment(v) {
+      baseURL.delete('review/'+v+'/delete')
+        .then(() => {
+          this.getReviews()
+          }
+        )
+    },
+    refreshReviews(arr, value) {
+      return arr.filter(function(ele) {
+        return ele != value;
+      })
+    },
+    getSymCommentList() {
+      baseURL('review/symp/'+ cookie.cookieUser()+'/findAll')
+        .then(res => {
+          this.symCommentList = res.data
+          
+        })
+    },
+    symComment(v) {
+      baseURL.post('review/symp/'+v+'/save?user_id='+cookie.cookieUser())
+        .then(() => {
+          return this.getSymCommentList()
+        })
+    }
+    
     
   },
   computed: {
@@ -302,7 +387,8 @@ export default {
 					return color
 				}
 			})
-		}
+    },
+    
 	},
 
 }
@@ -363,7 +449,7 @@ h2.no-span {
   height: 100%;
   width: 100%;
   justify-content: center;
-  align-items: cneter;
+  align-items: center;
   display: flex;
 }
 .wrapper .text {
@@ -373,5 +459,20 @@ h2.no-span {
 }
 .wrapper .dud {
   color: #757575;
+}
+
+.cloudCard svg g {
+  width: 100% !important;
+  height: 100% !important;
+  margin: auto 0 !important;
+}
+.upup {
+  
+}
+.upup::before {
+  color: rgb(55, 0, 128);
+}
+.downdown::before {
+  color: rgb(15, 95, 148);
 }
 </style>
