@@ -119,10 +119,11 @@ export default {
             }
             d3.select(this.$el)
             .append('svg')
+            .attr('margin', 'auto 0')
             .attr('width', this.width)
             .attr('height', this.height)
             .append('g')
-            .attr('transform', `translate(${this.width / 2},${this.height / 2})`)
+            .attr('transform', `translate(${this.width / 1.5},${this.height / 1.5})`)
             .selectAll('text')
             .data(words)
             .enter()
@@ -144,5 +145,5 @@ export default {
 </script>
 
 <template>
-    <div class="wordCloud" ref="wordCloud"></div>
+    <div class="wordCloud mx-auto" ref="wordCloud"></div>
 </template>

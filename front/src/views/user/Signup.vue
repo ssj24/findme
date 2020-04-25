@@ -66,7 +66,6 @@
               label="기술 스택 선택"
               attach
               chips
-              multiple
               required
             ></v-select>
             <v-select
@@ -77,7 +76,6 @@
               color="indigo darken-3"
               attach
               chips
-              multiple
               required
             ></v-select>
             <v-text-field
@@ -172,17 +170,18 @@ export default {
       positions: [
         '웹',
         '응용프로그램',
-        'Q/A',
-        'tester',
+        'QA',
+        '테스터',
         '인공지능',
         '빅데이터',
         '블록체인',
         '보안',
-        'DB',
+        '데이터베이스',
         '네트워크',
         'PM',
         'ERP',
-        '분석/설계'
+        '분석',
+        '설계'
       ],
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
@@ -218,7 +217,8 @@ export default {
           .then(() => {
             alert("이메일로 인증 코드를 보냈습니다.")
             this.$router.push({
-                name: "Main",
+              name: "Main",
+              params: {isNew: true}
             });
           })
       },

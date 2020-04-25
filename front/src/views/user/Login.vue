@@ -129,7 +129,7 @@ export default {
               this.id = ''
               this.password = ''
             }
-            else if (res.data.info.roleType) {
+            else if (res.data.info.roleType == 'ADMIN') {
               this.$router.push({
                 name: "Admin"
               })
@@ -181,7 +181,7 @@ export default {
           })
       },
       sendPassword() {
-        baseURL('user/sendpassword?email='+this.email)
+        baseURL.put('user/sendpassword?email='+this.email)
           .then(res => {
             console.log(res)
           })

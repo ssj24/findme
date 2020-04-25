@@ -55,28 +55,27 @@
       </div>
       </v-carousel-item>
   </v-carousel>
-  <survey></survey>
+  <survey :userId="userId" :langsList="langs"></survey>
   <v-container class="mx-auto text-center">
     <div
-    v-for="(lang, i) in langs"
-    :key="i"
-    :style="'background:'+lang.bgs"
-    style="background-size: contain; background-repeat: no-repeat;"
-    class="toLang"
-  >
-    <v-chip
-      
+      v-for="(lang, i) in langs"
+      :key="i"
+      :style="'background:'+lang.bgs"
+      class="toLang ma-2"
     >
-      <router-link 
-        :to="{name:'Lang', params:{langSeq:i}}">
+    <router-link 
+        :to="{name:'Lang', params:{langId:i}}">
+      <v-chip
+        
+      >
+      
         {{lang.title}} 
-      </router-link>
-    </v-chip>
+      </v-chip>
+    </router-link>
   </div>
   </v-container>
   
   
-  <langs-grid class="mx-auto"></langs-grid>
   <v-row>
     <v-col cols=6>
       <v-card>
@@ -111,7 +110,6 @@
 
 <script>
 import Survey from '@/views/main/Survey.vue'
-import LangsGrid from '@/views/main/LangsGrid.vue'
 import cookie from '@/cookie.js'
 import '@/assets/css/main.css'
 
@@ -126,7 +124,9 @@ const gradients = [
   export default {
     components: {
       Survey,
-      LangsGrid,
+    },
+    props: {
+      
     },
     data () {
       return {
@@ -152,109 +152,129 @@ const gradients = [
         autoLineWidth: false,
         langs: [
           {
+            seq: 1,
             title: 'Java',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971517-5fe28980-84cf-11ea-89dc-ce41e684064d.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png")',
           },
           {
+            seq: 2,
             title: 'C',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971545-653fd400-84cf-11ea-8501-70cf9dc894c1.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png")',
           },
           {
+            seq: 3,
             title: 'Python',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971532-6244e380-84cf-11ea-915e-3b4768f234af.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png")',
           },
           {
+            seq: 4,
             title: 'C++',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971547-653fd400-84cf-11ea-972a-e580e2249c1c.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png")',
           },
           {
+            seq: 5,
             title: 'C#',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971548-65d86a80-84cf-11ea-9b8a-292850f1b03c.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png")',
           },
           {
+            seq: 6,
             title: 'VB.NET',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971540-640ea700-84cf-11ea-9de3-f985833d7cff.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png")',
           },
           {
+            seq: 7,
             title: 'JavaScript',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971519-5fe28980-84cf-11ea-92ca-a1bfc46b9f71.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png")',
           },
           {
+            seq: 8,
             title: 'PHP',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971528-61ac4d00-84cf-11ea-8745-c8dd122efbe9.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png")',
           },
           {
+            seq: 9,
             title: 'SQL',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971536-63761080-84cf-11ea-9e66-59ac4802bdd8.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png")',
           },
           {
+            seq: 10,
             title: 'Go',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971515-5eb15c80-84cf-11ea-8285-ccefdc5950dc.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png")',
           },
           {
+            seq: 11,
             title: 'R',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971533-62dd7a00-84cf-11ea-9ab3-d25667316594.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png")',
           },
           {
+            seq: 12,
             title: 'Assembly',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971543-64a73d80-84cf-11ea-8d2c-1c823eae9699.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png")',
           },
           {
+            seq: 13,
             title: 'Swift',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971538-640ea700-84cf-11ea-9dff-bfb2bdcf51fb.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png")',
           },
           {
+            seq: 14,
             title: 'Ruby',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971534-62dd7a00-84cf-11ea-8edc-b58c0a93dd79.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png")',
           },
           {
+            seq: 15,
             title: 'MATLAB',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971521-607b2000-84cf-11ea-98c5-5c2d851e8eb9.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png")',
           },
           {
+            seq: 16,
             title: 'PL/SQL',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971530-6244e380-84cf-11ea-885a-357af701d09e.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png")',
           },
           {
+            seq: 17,
             title: 'Perl',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971525-6113b680-84cf-11ea-99e4-f3c09d023a51.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png")',
           },
           {
+            seq: 18,
             title: 'Visual Basic',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971541-64a73d80-84cf-11ea-9162-0d34eac9d818.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png")',
           },
           {
+            seq: 19,
             title: 'Objective-C',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971523-6113b680-84cf-11ea-8329-15109924203e.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png")',
           },
           {
+            seq: 20,
             title: 'Delphi',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971550-66710100-84cf-11ea-80d5-085d4f861b83.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png")',
           },
         ]
       }
     },
     mounted() {
-      this.userId = cookie.cookieId()
+      this.userId = cookie.cookieUser()
     },
     methods: {
       
@@ -268,8 +288,13 @@ const gradients = [
   color: red !important;
 } */
 .toLang {
-  width: 180px;
+  width: 200px;
   height: 200px;
   display: inline-block;
+  background-color: white !important;
+  background-size: contain !important; 
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  box-shadow: 5px 5px 10px #ccc;
 }
 </style>

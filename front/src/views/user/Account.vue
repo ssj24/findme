@@ -10,14 +10,19 @@
       left
     >
       <v-list-item>
-        <v-list-item-avatar height="70" width="70" class="ml-n1 pl-1">
+        <!-- <v-list-item-avatar height="70" width="70" class="ml-n1 pl-1">
           <v-img src="https://randomuser.me/api/portraits/women/75.jpg"></v-img>
           
-        </v-list-item-avatar>
-        <p class="accountTitle accountBasic pa-4">
+        </v-list-item-avatar> -->
+        <p class="accountName pa-4 mx-auto">
           {{name}}
           <br>
         </p>
+        <p class="accountIcon text-right">
+        <router-link :to="{ name: 'Setting', params:{id: id}}">
+          <v-icon color="white">mdi-cog</v-icon>
+        </router-link>
+      </p>
       </v-list-item>
       
       <v-divider color="white"></v-divider>
@@ -26,6 +31,8 @@
         dense
         nav
       >
+      
+      
         <p class="accountTitle">
           기술 스택
         </p>
@@ -75,6 +82,8 @@
 </template>
 
 <script>
+import cookie from '@/cookie.js'
+import baseURL from '@/base-url.js'
 import AccountJob from '@/views/user/AccountJob.vue'
 // import AccountStack from '@/views/user/AccountStack.vue'
 
@@ -83,25 +92,36 @@ export default {
     AccountJob,
     // AccountStack
   },
+  mounted() {
+    this.id = cookie.cookieUser()
+    this.profile()
+  },
   data: () => ({
-    name: '조수지',
-    stacks: [
-      'python', 'js'
-    ],
-    companies: [
-      '산업인력공단', '인천공항공사', '카카오'
-    ],
-    positions: [
-      '개발자', '기획자', '아무것도 없으면 전체겠죠?' 
-    ],
-    links: [
-      'Home', 'Contacts', 'Settings'
-    ],
+    id: 0,
+    name: '',
+    stacks: [],
+    companies: [],
+    positions: [],
+    links: [],
     mini: true,
   }),
   methods: {
     clicked() {
       
+    },
+    profile() {
+      baseURL('user/'+this.id+'/profile')
+        .then(res => {
+
+          this.id = res.data.id
+          this.name = res.data.name
+          this.stacks = res.data.techStack.split(',')
+          this.companies = res.data.wishHope.split(',')
+          this.positions = res.data.wishJob.split(',')
+          // for (stack in stacks) {
+          //   if (stack == )
+          // }
+        })
     }
   },
   computed: {
@@ -114,10 +134,19 @@ export default {
 </script>
 
 <style>
+.accountIcon .v-icon::before {
+  color: white;
+}
+.accountName {
+  color: white;
+  display: inline;
+  font-size: 1.3rem;
+  font-weight: 900;
+}
 .accountTitle {
   color: white;
   display: inline;
-  font-size: 0.9rem;
+  font-size: .9rem;
 }
 .accountBasic {
   font-size: 1.1rem;
