@@ -11,8 +11,8 @@ public interface IReviewService {
 	void update(Long review_id, String content);
 	void delete(Long review_id);
 	ReviewDTO findById(Long review_id);
-	List<ReviewDTO> findAll();
-	List<ReviewDTO> findReviewByUserId(Long user_id);
+	List<ReviewDTO> findAllByLanauageId(Long language_id);
+	List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id);
 	
 	List<SympDTO> findAllSymp();
 	void saveSymp(Long review_id, Long user_id);

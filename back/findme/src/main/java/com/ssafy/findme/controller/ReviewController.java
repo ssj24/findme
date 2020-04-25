@@ -42,11 +42,11 @@ public class ReviewController {
 		reviewservice.update(review_id, content);
 	}
 
-	@GetMapping("/review/findAll")
-	@ApiOperation(value = "전체 리뷰 리스트")
+	@GetMapping("/review/findAll/{language_id}")
+	@ApiOperation(value = "프로그래밍 언어별 전체 리뷰 조회")
 	@ResponseBody
-	public List<ReviewDTO> findAll() {
-		return reviewservice.findAll();
+	public List<ReviewDTO> findAllByLanguageId(@PathVariable Long id) {
+		return reviewservice.findAllByLanauageId(id);
 	}
 
 	@DeleteMapping("/review/{review_id}/delete")
@@ -55,13 +55,13 @@ public class ReviewController {
 		reviewservice.delete(review_id);
 	}
 
-	@GetMapping("/review/{user_id}/findReviews")
+	@GetMapping("/review/findAll/{language_id}")
 	@ApiOperation(value = "사용자별 작성 리뷰 리스트")
-	public List<ReviewDTO> findReviewByUserId(@PathVariable Long user_id) {
-		return reviewservice.findReviewByUserId(user_id);
+	public List<ReviewDTO> findReviewByUserIdAndLanguageId(@PathVariable Long language_id, @RequestParam Long user_id) {
+		return reviewservice.findReviewByUserIdAndLanguageId(user_id, language_id);
 	}
 	
-	@GetMapping("/review/symp/findAll")
+	@GetMapping("/review/symp/findAll/{language_id}")
 	@ApiOperation(value = "리뷰 공감 리스트")
 	@ResponseBody
 	public List<SympDTO> sympList() {
