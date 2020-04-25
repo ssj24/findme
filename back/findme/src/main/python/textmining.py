@@ -98,7 +98,7 @@ def get_tags(text, ntags=50):
     result = ""
     for t in counts:
         if len(t) > 1 and (t not in filtering):
-            result += t + "(" + str(counts[t]) + ")" + ","
+            result += t + "," + str(counts[t]) + ","
 
     result = result[:len(result)-1]
     return result
@@ -149,8 +149,8 @@ def main():
                 tags = get_tags(contents)
 
 
-        if tags is not "":
-            df.loc[i-1] =[i, language[i-1], tags]
+        df.loc[i-1] =[i, language[i-1], tags]
+        
     print(df)
     df.to_sql('textmining', con, if_exists='replace', index=False, index_label="id")
     conn.commit()

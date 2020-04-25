@@ -88,17 +88,16 @@ public class ReviewServiceImpl implements IReviewService {
 		ReviewDTO reviewDTO = entityMapper.convertToDomain(review, ReviewDTO.class);
 		return reviewDTO;
 	}
-
+	
 	@Override
-	// 전체 리뷰 가져오기
-	public List<ReviewDTO> findAll() {
-		return reviewrepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
+	public List<ReviewDTO> findAllByLanauageId(Long language_id) {
+		return reviewrepo.findAllByLanguageId(language_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<ReviewDTO> findReviewByUserId(Long user_id) {
-		return reviewrepo.findByUserId(user_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
+	public List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id) {
+		return reviewrepo.findReviewByUserIdAndLanguageId(user_id, language_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
 				.collect(Collectors.toList());
 	}
 
@@ -171,4 +170,6 @@ public class ReviewServiceImpl implements IReviewService {
 		Unsymp unsymp = unsymprepo.findByReview_IdAndUser_Id(review_id, user_id);
 		unsymprepo.delete(unsymp);
 	}
+
+
 }
