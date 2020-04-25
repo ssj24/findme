@@ -15,14 +15,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 @Service
 public class KakaoAPI {
-	
-		public String getAccessToken(String authorize_code) {
+
+	public String getAccessToken(String authorize_code) {
 		String access_Token = "";
 		String refresh_Token = "";
 		String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -147,10 +148,79 @@ public class KakaoAPI {
 			e.printStackTrace();
 		}
 	}
-	
-	public void sendMessage(String access_Token) {
-		//인자 넘겨주는걸로 바꾸자
-		CommandLineExecutor.execute("python src/main/python/kakao_send_to_me.py");
+
+	public void profile(String access_Token) {
+		String reqURL = "https://kapi.kakao.com/v1/api/talk/profile";
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+			String result = "";
+			String line = "";
+
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			System.out.println(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 친구목록받기
+	public HashMap<String, Object> friends(String access_Token) {
+		HashMap<String, Object> friendsInfo = new HashMap<>();
+		String reqURL = "https://kapi.kakao.com/v1/api/talk/friends";
+		try {
+			URL url = new URL(reqURL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+			String result = "";
+			String line = "";
+
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			System.out.println("response body : " + result);
+
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+
+			int friends_cnt = element.getAsJsonObject().get("total_count").getAsInt();
+//			JsonArray elements = element.getAsJsonObject().get("elements").getAsJsonArray();
+			System.out.println("friends_cnt: " + friends_cnt);
+//			System.out.println("elements의 수: "+elements.size());
+
+			friendsInfo.put("friends_cnt", friends_cnt);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return friendsInfo;
+	}
+
+	public void sendToMe(String access_Token, Long recruit_id) {
+		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id + " ");
+	}
+
+	public void sendToFriends(String access_Token, Long recruit_id) {
+		CommandLineExecutor
+				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " ");
 	}
 
 	public void sendMessagejorok(String access_Token) {
