@@ -46,5 +46,4 @@ public class SurveyServiceImpl implements ISurveyService {
 		else
 			return false;
 	}
-
 }

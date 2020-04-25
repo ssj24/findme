@@ -19,6 +19,7 @@ public class CommandLineExecutor {
 		System.out.println("scheduleTest: " + new Date());
 		// 실행
 		CommandLineExecutor.execute("python src/main/python/saramin.py");
+		CommandLineExecutor.execute("python src/main/python/textmining.py");
 	}
 
 	/**

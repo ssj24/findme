@@ -4,9 +4,11 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class ReviewDTO {
 	private Long id;
 	private String content;
@@ -16,4 +18,8 @@ public class ReviewDTO {
 	private Long unsympCnt;
 	private Long userId;
 	private Long languageId;
+	private String name;
+	
+	private String trans_createdAt;
+	private String trans_updatedAt;
 }
