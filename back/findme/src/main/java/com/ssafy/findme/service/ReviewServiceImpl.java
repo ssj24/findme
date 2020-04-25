@@ -1,5 +1,6 @@
 package com.ssafy.findme.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,12 +36,6 @@ public class ReviewServiceImpl implements IReviewService {
 	@Autowired
 	private EntityMapper entityMapper;
 
-	public boolean checkUserId(Long user_id) {
-		// 존재하는 유저 아이디라면 true를
-		// 존재하지 않는 유저 아이디라면 false를 return
-		return false;
-	}
-
 	@Override
 	public void save(Long user_id, String content, Long language_id) {
 		try {
@@ -48,11 +43,12 @@ public class ReviewServiceImpl implements IReviewService {
 			Review review = new Review();
 			review.setContent(content);
 			review.setUser(user);
+			review.setName(user.getName());
 			review.setCreatedAt(new Date());
 			review.setUpdatedAt(new Date());
 			review.setLanguageId(language_id);
-			review.setSympCnt((long)0);
-			review.setUnsympCnt((long)0);
+			review.setSympCnt((long) 0);
+			review.setUnsympCnt((long) 0);
 			reviewrepo.save(review);
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl save error");
@@ -88,20 +84,46 @@ public class ReviewServiceImpl implements IReviewService {
 		ReviewDTO reviewDTO = entityMapper.convertToDomain(review, ReviewDTO.class);
 		return reviewDTO;
 	}
-	
+
+	public String transformDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+	}
+
 	@Override
 	public List<ReviewDTO> findAllByLanauageId(Long language_id) {
-		return reviewrepo.findAllByLanguageId(language_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
-				.collect(Collectors.toList());
+		List<ReviewDTO> reviewList = reviewrepo.findAllByLanguageId(language_id).stream()
+				.map(e -> entityMapper.convertToDomain(e, ReviewDTO.class)).collect(Collectors.toList());
+
+		// 날짜 형식 변경
+		Date createdAt, updatedAt;
+		for (int i = 0; i < reviewList.size(); i++) {
+			ReviewDTO reviewDTO = reviewList.get(i);
+			createdAt = reviewDTO.getCreatedAt();
+			updatedAt = reviewDTO.getUpdatedAt();
+			reviewDTO.setTrans_createdAt(transformDate(createdAt));
+			reviewDTO.setTrans_updatedAt(transformDate(updatedAt));
+		}
+		return reviewList;
 	}
 
 	@Override
 	public List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id) {
-		return reviewrepo.findReviewByUserIdAndLanguageId(user_id, language_id).stream().map(e -> entityMapper.convertToDomain(e, ReviewDTO.class))
-				.collect(Collectors.toList());
+		List<ReviewDTO> reviewList = reviewrepo.findReviewByUserIdAndLanguageId(user_id, language_id).stream()
+				.map(e -> entityMapper.convertToDomain(e, ReviewDTO.class)).collect(Collectors.toList());
+		
+		// 날짜 형식 변경
+		Date createdAt, updatedAt;
+		for (int i = 0; i < reviewList.size(); i++) {
+			ReviewDTO reviewDTO = reviewList.get(i);
+			createdAt = reviewDTO.getCreatedAt();
+			updatedAt = reviewDTO.getUpdatedAt();
+			reviewDTO.setTrans_createdAt(transformDate(createdAt));
+			reviewDTO.setTrans_updatedAt(transformDate(updatedAt));
+		}
+		return reviewList;
 	}
 
-// 리뷰 공감
+	// 리뷰 공감
 	@Override
 	public List<SympDTO> findAllSymp() {
 		return symprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
@@ -109,34 +131,54 @@ public class ReviewServiceImpl implements IReviewService {
 	}
 
 	@Override
-	public void saveSymp(Long review_id, Long user_id) {
+	public boolean saveSymp(Long review_id, Long user_id) {
 		try {
-			Symp symp = new Symp();
+			//이미 공감을 눌렀으면 false
+			Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
+			if(symp != null)
+				return false;
+			
+			//비공감에 저장되었으면 삭제하고 공감테이블에 저장
+			Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
+			if (unsymp != null) {
+				deleteUnsymp(review_id, user_id);
+			}
+			
+			
+			Symp newsymp = new Symp();
 			Review review = reviewrepo.findById(review_id).get();
-			Long symp_cnt = review.getSympCnt();
-			review.setSympCnt(symp_cnt + 1);
+			long symp_cnt = review.getSympCnt();
+			review.setSympCnt(symp_cnt+1);
+			reviewrepo.save(review);
+			
 			User user = accountrepo.findById(user_id);
-			symp.setReview(review);
-			symp.setUser(user);
-			symprepo.save(symp);
+			newsymp.setReview(review);
+			newsymp.setUser(user);
+			symprepo.save(newsymp);
+			return true;
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl saveSymp error");
 		}
+		return false;
 	}
 
 	@Override
 	public List<SympDTO> findSympByUserId(Long user_id) {
-		return symprepo.findByUser_Id(user_id).stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
+		return symprepo.findByUserId(user_id).stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public void deleteSymp(Long review_id, Long user_id) {
-		Symp symp = symprepo.findByReview_IdAndUser_Id(review_id, user_id);
+		Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
 		symprepo.delete(symp);
+		Review review = reviewrepo.findById(review_id).get();
+		long symp_cnt = review.getSympCnt();
+		review.setSympCnt(symp_cnt - 1);
+		reviewrepo.save(review);
 	}
 
-// 리뷰 비공감
+	// 리뷰 비공감
 	@Override
 	public List<UnsympDTO> findAllUnsymp() {
 		return unsymprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
@@ -144,32 +186,47 @@ public class ReviewServiceImpl implements IReviewService {
 	}
 
 	@Override
-	public void saveUnsymp(Long review_id, Long user_id) {
+	public boolean saveUnsymp(Long review_id, Long user_id) {
 		try {
-			Unsymp unsymp = new Unsymp();
+			Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
+			if(unsymp != null)
+				return false;
+			
+			Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
+			if(symp != null) {
+				deleteSymp(review_id, user_id);
+			}
+			
+			Unsymp newunsymp = new Unsymp();
 			Review review = reviewrepo.findById(review_id).get();
-			Long unsymp_cnt = review.getSympCnt();
-			review.setSympCnt(unsymp_cnt - 1);
+			long unsymp_cnt = review.getUnsympCnt();
+			review.setUnsympCnt(unsymp_cnt + 1);
+			reviewrepo.save(review);
 			User user = accountrepo.findById(user_id);
-			unsymp.setReview(review);
-			unsymp.setUser(user);
-			unsymprepo.save(unsymp);
+			newunsymp.setReview(review);
+			newunsymp.setUser(user);
+			unsymprepo.save(newunsymp);
+			return true;
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl saveUnsymp error");
 		}
+		return false;
 	}
 
 	@Override
 	public List<UnsympDTO> findUnsympByUserId(Long user_id) {
-		return unsymprepo.findByUser_Id(user_id).stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
+		return unsymprepo.findByUserId(user_id).stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public void deleteUnsymp(Long review_id, Long user_id) {
-		Unsymp unsymp = unsymprepo.findByReview_IdAndUser_Id(review_id, user_id);
+		Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
 		unsymprepo.delete(unsymp);
+		Review review = reviewrepo.findById(review_id).get();
+		long unsymp_cnt = review.getUnsympCnt();
+		review.setUnsympCnt(unsymp_cnt - 1);
+		reviewrepo.save(review);
 	}
-
 
 }

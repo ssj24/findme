@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -53,14 +54,17 @@ public class Recruit {
 	private Date createdAt;
 	
 	@OneToMany(mappedBy = "recruit")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Message> messageList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "recruit")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Recommend> recommendList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "recruit")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Pick> pickList = new ArrayList<>();
 

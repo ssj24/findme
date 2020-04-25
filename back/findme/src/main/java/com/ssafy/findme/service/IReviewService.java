@@ -15,12 +15,12 @@ public interface IReviewService {
 	List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id);
 	
 	List<SympDTO> findAllSymp();
-	void saveSymp(Long review_id, Long user_id);
+	boolean saveSymp(Long review_id, Long user_id);
 	List<SympDTO> findSympByUserId(Long user_id);
 	void deleteSymp(Long review_id, Long user_id);
 	
 	List<UnsympDTO> findAllUnsymp();
-	void saveUnsymp(Long review_id, Long user_id);
+	boolean saveUnsymp(Long review_id, Long user_id);
 	List<UnsympDTO> findUnsympByUserId(Long user_id);
 	void deleteUnsymp(Long review_id, Long user_id);
 }

@@ -9,14 +9,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -60,36 +65,43 @@ public class User {
 		USER, ADMIN
 	}
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Review> reviewList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Symp> sympList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Unsymp> unsympList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Message> messageList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Survey> surveyList = new ArrayList<>();
-	
 
 	@OneToMany(mappedBy = "parent")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Similar> similarList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Recommend> recommendList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private List<Pick> pickList = new ArrayList<>();
 }
