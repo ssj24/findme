@@ -7,7 +7,7 @@
     <div class="wrapper">
       <div class="text"></div>
     </div>
-
+    <survey :langId="langSeq"></survey>
     <v-row>
       <v-col cols="12">
         <v-card class="cloudCard mx-auto">
@@ -60,10 +60,12 @@
         </v-card>
       </v-col>
     </v-row>
-    
+    <p style="display: none;">
+    {{unsymCommentList}}
+
+    </p>
     <v-form>
     <v-container>
-      {{symCommentList}}
       <v-row>
         <v-col cols="12">
           <v-text-field
@@ -77,30 +79,34 @@
         </v-col>
       </v-row>
       <v-row
-        v-for="(review, i) in reviews"
-        :key="i"
+        v-for="(review, index) in reviews"
+        :key="index"
       >
         <span
           v-if="langSeq == (review.languageId - 1)"
         >
           
-          {{review.updatedAt}}
+          {{review.trans_updatedAt}}
           {{review.userId}}
-          {{review.content}}
+          {{review.name}}
+          <input v-model="modifyComment[index]" :disabled="isDisabled" class="reviewContent" :placeholder="review.content">
+          <!-- {{review.content}} -->
           {{review.id}}
-          <v-icon 
-            @click="symComment(review.id)"
-            class="upup"
-            >
-            mdi-thumb-up
-          </v-icon>
-          <v-icon 
-            @click="symComment(review.id)"
-            class="downdown"
-            >
-            mdi-thumb-down
-          </v-icon>
-          <v-btn @click="updateComment(review.id)">
+            <v-icon 
+              @click="symComment(review.id)"
+              v-if="!review.unsymped"
+              >
+              <!-- :class="{upup: review.symped}" -->
+              mdi-thumb-up
+            </v-icon>
+            <v-icon 
+              @click="UnsymComment(review)"
+              :class="{downdown: review.unsymped}"
+              v-if="!review.symped"
+              >
+              mdi-thumb-down
+            </v-icon>
+          <v-btn @click="updateComment(review.id, index)">
             수정
           </v-btn>
           <v-btn @click="deleteComment(review.id)">
@@ -118,6 +124,7 @@
 import baseURL from '@/base-url.js'
 import cookie from '@/cookie.js'
 import Cloud from '@/views/lang/Cloud.vue'
+import Survey from '@/views/main/Survey.vue'
 class TextScramble {
   constructor(el) {
     this.el = el
@@ -174,6 +181,7 @@ class TextScramble {
 export default {
   components: {
     Cloud,
+    Survey
   },
   data () {
     return {
@@ -273,6 +281,9 @@ export default {
       comment: '',
       reviews: [],
       symCommentList: [],
+      unsymCommentList: [],
+      modifyComment: [],
+      isDisabled: true,
     }
   },
   mounted() {
@@ -292,7 +303,8 @@ export default {
     textNext();
     
     this.getReviews();
-    this.getSymCommentList();
+    // this.getSymCommentList();
+    this.getUnsymCommentList();
   },
   methods: {
     addColor() {
@@ -310,23 +322,33 @@ export default {
       baseURL.post('review/write?user_id='+cookie.cookieUser()
       +'&content='+this.comment
       +'&language_id='+language_id)
-        .then(res => {
-          alert(res)
-          console.log(res)
+        .then(() => {
+          this.getReviews()
+          this.comment = ''
         })
     },
     getReviews() {
-      baseURL('review/findAll')
+      let language_id = this.langSeq + 1
+      baseURL('review/findAll/'+ language_id)
         .then(res => {
           this.reviews = res.data
           
         })
     },
-    updateComment(v) {
-      baseURL.put('review/'+v+'/update')
+    updateComment(v, i) {
+      if (this.isDisabled) {
+        this.isDisabled = false;
+      } else {
+        baseURL.put('review/update/' + v + '?content='+this.modifyComment[i])
+          .then(()=> {
+            this.modifyComment = []
+            this.getReviews()
+            this.idDisabled=true;
+          })
+      }
     },
     deleteComment(v) {
-      baseURL.delete('review/'+v+'/delete')
+      baseURL.delete('review/delete/'+ v)
         .then(() => {
           this.getReviews()
           }
@@ -338,20 +360,52 @@ export default {
       })
     },
     getSymCommentList() {
-      baseURL('review/symp/'+ cookie.cookieUser()+'/findAll')
+      baseURL('review/symp/findAll/{language_id}')
         .then(res => {
           this.symCommentList = res.data
           
         })
     },
-    symComment(v) {
-      baseURL.post('review/symp/'+v+'/save?user_id='+cookie.cookieUser())
-        .then(() => {
-          return this.getSymCommentList()
+    getUnsymCommentList() {
+      baseURL('review/unsymp/findAll/'+cookie.cookieUser())
+        .then(res => {
+          this.unsymCommentList = res.data;
+          var i;
+          var j;
+          for (i=0; i < this.unsymCommentList.length; i++) {
+            for (j=0; j < this.reviews.length; j++) {
+              if (this.unsymCommentList[i].reviewId == this.reviews[j].id) {
+                this.reviews[j].unsymped = true;
+              }
+            }
+          }
         })
+    },
+    // symComment(v) {
+    //   if () {
+    //     baseURL.post('review/symp/save/'+v+'?user_id='+cookie.cookieUser())
+    //       .then(() => {
+    //         return this.getSymCommentList()
+    //       })
+    //   } else {
+    //     baseURL.delete('review/symp/delete?review_id='+v+'&user_id='+cookie.cookieUser())
+
+    //   }
+    // },
+    UnsymComment(v) {
+      if (v.unsymped) {
+        baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+            return this.getUnsymCommentList()
+          })
+      } else {
+        baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
+          .then(() => {
+            return this.getUnsymCommentList()
+          })
+      }
     }
-    
-    
   },
   computed: {
 		rotate: function() {

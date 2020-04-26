@@ -49,39 +49,42 @@
               <div style="color: #000;"><a :href="slide.page" style="color: #000;">>>>채용공고 보러가기</a></div>
             </v-col>
           </v-row>
-
         </v-sheet>
-        
       </div>
       </v-carousel-item>
   </v-carousel>
-  <survey :userId="userId" :langsList="langs"></survey>
-  <v-container class="mx-auto text-center">
-    <div
+  <survey :userId="userId" :langsList="langs" :new="newUser"></survey>
+  <v-container class="mx-auto text-center langContainer">
+    <span
       v-for="(lang, i) in langs"
       :key="i"
-      :style="'background:'+lang.bgs"
-      class="toLang ma-2"
     >
-    <router-link 
+      <router-link 
         :to="{name:'Lang', params:{langId:i}}">
-      <v-chip
-        
-      >
-      
-        {{lang.title}} 
-      </v-chip>
-    </router-link>
-  </div>
+        <div
+          :style="'background:'+lang.bgs"
+          class="toLang"
+        >
+          <div class="dimmer"></div>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <v-icon color="white">
+                mdi-arrow-top-right-thick
+              </v-icon>
+              <!-- <p>{{ lang.title }}</p> -->
+            </div>
+          </div>
+        </div>
+      </router-link>
+
+    </span>
   </v-container>
   
-  
-  <v-row>
+  <!-- <v-row>
     <v-col cols=6>
       <v-card>
         <h1>깃허브에서 사용도가 높은 언어</h1>
         <p>깃허브의 저장소에 사용된 언어 빈도를 분기별로 측정한 결과입니다 <br>
-           
         </p>
       </v-card>
     </v-col>
@@ -104,7 +107,7 @@
         ></v-sparkline>
       </v-card>
     </v-col>
-  </v-row>
+  </v-row> -->
 </div>
 </template>
 
@@ -130,6 +133,7 @@ const gradients = [
     },
     data () {
       return {
+        newUser: false,
         userId: 0,
         slides: [
           {bgs: "url(https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60)", title: "퀸즈코퍼레이션", page: "#", position: "개발팀장", stacks: ["보안", "웹개발"], date: "2020-04-17",},
@@ -275,6 +279,9 @@ const gradients = [
     },
     mounted() {
       this.userId = cookie.cookieUser()
+      if (this.$route.params) {
+        this.newUser = this.$route.params.isNew
+      }
     },
     methods: {
       
@@ -283,10 +290,19 @@ const gradients = [
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+* {
+  transition: all 0.2s ease-out;
+}
 /* .v-carousel__controls .v-btn--round .v-btn__content .v-icon {
   color: red !important;
 } */
+.langContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
 .toLang {
   width: 200px;
   height: 200px;
@@ -295,6 +311,55 @@ const gradients = [
   background-size: contain !important; 
   background-position: center !important;
   background-repeat: no-repeat !important;
-  box-shadow: 5px 5px 10px #ccc;
+  top: 0px;
+  position: relative;
+  border-radius: 4px;
+  padding: 32px 24px;
+  border: 1px solid #f2f8f9;
+  
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background-color: #010a3d;
+  border-radius: 0 4px 0 32px;
+  opacity: 0.7;
+}
+
+.toLang:hover {
+  border: 1px solid #000547;
+  box-shadow: 0px 0px 300px 200px rgba(255, 255, 255, 0.562);
+  z-index: 500;
+  .go-corner { 
+    opacity: 1;
+    width: 64px;
+    height: 64px;
+    transition: height 0.2s linear;
+  }
+  
+  .go-arrow p {
+    display: inline;
+  }
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+}
+
+.go-arrow p {
+  font-family: 'Noto Sans KR';
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: none;
 }
 </style>

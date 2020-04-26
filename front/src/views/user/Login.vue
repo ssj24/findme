@@ -52,18 +52,18 @@
               >
               카카오
               </v-btn>
-              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code">
+              <!-- <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code">
                 로그인
-              </a>
+              </a> -->
             </v-layout>
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
-                  <v-btn class="mx-auto" style="display: block;" text v-on="on">비밀번호를 잊어버렸습니다</v-btn>
+                  <v-btn class="mx-auto diyBtn" style="display: block; color: #888;" text v-on="on">비밀번호를 찾아주세요</v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
                     <span>
-                      비밀번호를 잊어버린 이메일 주소를 입력해주세요 
+                      가입하신 이메일 주소를 입력해주세요 
                       <br>
                       임시 비밀번호를 보내드립니다
                     </span>
@@ -169,7 +169,7 @@ export default {
       },
       kakaologin() {
         console.log('sdlfsdjkl;dfj;klsd')
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code")
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message")
           .then(() => {
             // console.log(res)
             this.$router.push({
@@ -190,6 +190,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.diyBtn  {
 
+}
 </style>

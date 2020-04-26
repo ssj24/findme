@@ -18,11 +18,6 @@ function cookieName() {
   return value = value? value[2] : null
 }
 
-function cookieAuth() {
-  var value = document.cookie.match('(^|;) ?' + 'login_auth' + '=([^;]*)(;|$)');
-  return value = value? value[2] : null
-}
-
 
 
 function updateCookie() {
@@ -36,7 +31,6 @@ function updateCookie() {
       document.cookie = 'login_user' + "=" + cookieUser() + ";" + expires + ";path=/" + ";";
       document.cookie = 'login_id' + "=" + cookieId() + ";" + expires + ";path=/" + ";";
       document.cookie = 'login_name' + "=" + cookieName() + ";" + expires + ";path=/" + ";";
-      // document.cookie = 'login_auth' + "=" + cookieAuth() + ";" + expires + ";path=/" + ";";
       return true
   } else {
     return false
@@ -51,7 +45,6 @@ function cookieCreate(data) {
   document.cookie = "jwt-auth-token=" + data.token + ";" + expires + ";path=/";
   document.cookie = "login_id=" + data.email + ";" + expires + ";path=/";
   document.cookie = 'login_name' + "=" + data.name + ";" + expires + ";path=/" + ";";
-  // document.cookie = 'login_auth' + "=" + data.userAuth + ";" + expires + ";path=/" + ";";
 }
 
 const cookie = {
@@ -59,8 +52,7 @@ const cookie = {
   updateCookie:()=>updateCookie(),
   cookieId:()=>cookieId(),
   cookieUser:()=>cookieUser(),
-  cookieNickname:()=>cookieName(),
+  cookieName:()=>cookieName(),
   cookieCreate:(email, headers)=>cookieCreate(email, headers),
-  cookieAuth:(email, headers)=>cookieAuth(email, headers)
 }
 export default cookie
