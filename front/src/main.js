@@ -31,9 +31,9 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if (cookie.cookieAuth() == 0 && to.name != 'Admin' && to.name != 'Login') {
-    return next('admin')
-  }
+  // if (cookie.cookieAuth() == 0 && to.name != 'Admin' && to.name != 'Login') {
+  //   return next('admin')
+  // }
   if (cookie.updateCookie()) {
     if (to.meta.loginRequire === false ) {
       if (from.name === null) {

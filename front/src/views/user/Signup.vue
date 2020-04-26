@@ -66,6 +66,7 @@
               label="기술 스택 선택"
               attach
               chips
+              multiple
               required
             ></v-select>
             <v-select
@@ -76,6 +77,7 @@
               color="indigo darken-3"
               attach
               chips
+              multiple
               required
             ></v-select>
             <v-text-field
@@ -204,21 +206,21 @@ export default {
         this.$refs.form.reset()
       },
       submit () {
-
+        let Stacks = this.langSelect.join()
+        let wishPositions = this.positionSelect.join()
         let data = {
           email: this.id,
           name: this.name,
           password: this.password,
-          techStack: this.langSelect.join(),
+          techStack: Stacks,
           wishHope: this.firm,
-          wishJob: this.positionSelect.join()
+          wishJob: wishPositions
         }
         baseURL.post('user/signup', data)
           .then(() => {
             alert("이메일로 인증 코드를 보냈습니다.")
             this.$router.push({
               name: "Main",
-              params: {isNew: true}
             });
           })
       },

@@ -83,8 +83,10 @@ import baseURL from '@/base-url.js'
 import cookie from '@/cookie.js'
 export default {
   props: [
+    'langId',
     'userId',
-    'langsList'
+    'langsList',
+    'new',
   ],
   data: () => ({
       isLogin: false,
@@ -119,11 +121,19 @@ export default {
       comment: ''
     }),
   mounted() {
+    if (this.langId) {
+      console.log(this.langId)
+      this.dialog = true;
+      this.langs = []
+      // this.lang = this.langsList[this.langId+1]
+    }
+    if (this.new) {
+      this.dialog = true;
+    }
     this.isLogin = this.$store.state.isLogin
     if (this.isLogin) {
-      this.isCompleted()
+      this.userProfile()
     }
-    this.userProfile()
   },
   methods: {
     userProfile() {

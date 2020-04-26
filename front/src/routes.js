@@ -27,22 +27,26 @@ export default [
   {
     path: '/statistics',
     name: 'Statistics',
-    component: StatisticsPage
+    component: StatisticsPage,
+    meta: { loginRequire: true }
   },
   {
     path: '/admin',
     name: 'Admin',
     component: Admin,
+    meta: { loginRequire: true }
   },
   {
     path: '/lang/:langId',
     name: 'Lang',
-    component: Lang
+    component: Lang,
+    meta: { loginRequire: true }
   },
   {
     path: '/setting/:id',
     name: 'Setting',
-    component: Setting
+    component: Setting,
+    meta: { loginRequire: true }
   },
   {
     path: '/:email/:confirmcode',
