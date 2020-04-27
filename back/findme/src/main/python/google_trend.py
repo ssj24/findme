@@ -88,7 +88,7 @@ def trans_date(year, month, day):
 	return start_date
 
 def main():
-	engine = create_engine("mysql+pymysql://ssafy:"+"ssafy"+"@localhost:3306/findme?charset=utf8", encoding='utf-8')
+	engine = create_engine("mysql+pymysql://root:"+"ssafy"+"@localhost:3306/test3?charset=utf8", encoding='utf-8')
 	conn = engine.connect()
 
 	year = datetime.today().year
@@ -129,12 +129,13 @@ def main():
 		my_dict[languages[i]] = sql_language[i]
 
 	getdatainfo = getdatainfo.reset_index().rename(columns=my_dict)
-	
-	for d in getdatainfo["insert_date"]:
-		d = str(d)
-		getdatainfo[0] = d[:10]
-	print(getdatainfo)
-	# getdatainfo.to_sql(name='gtrend_data', con=engine, if_exists='append', index=False)
+
+	for i in range(len(getdatainfo["insert_date"])):
+		tmp = str(getdatainfo["insert_date"][i])
+		tmp = tmp[:10]
+		getdatainfo["insert_date"][i] = tmp
+
+	getdatainfo.to_sql(name='gtrend_data', con=engine, if_exists='append', index=False)
 
 
 
@@ -160,10 +161,14 @@ def main():
 
 	my_dict = {}
 	my_dict["geoName"] = "geo_name"
+	index = [1,2,3,4,5,6,7,8,9,19,11,12,13,14,15,16]
+
 	for i in range(len(languages)):
 		my_dict[languages[i]] = sql_language[i]
 
 	getdataregion = getdataregion.reset_index().rename(columns=my_dict)
+	getdataregion["id"] = index
+	getdataregion.set_index("id",inplace=True)
 	getdataregion.to_sql(name='gtrend_geo_data', con=engine, if_exists='replace', index=True)
 	conn.close()
 
