@@ -206,4 +206,9 @@ public class AccountServiceImpl implements IAccountService {
 		return null;
 	}
 
+	@Override
+	public void deleteUser(Long user_id) {
+		
+	}
+
 }

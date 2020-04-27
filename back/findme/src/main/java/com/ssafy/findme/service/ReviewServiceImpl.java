@@ -138,9 +138,7 @@ public class ReviewServiceImpl implements IReviewService {
 //	}
 
 	
-	
-	
-//	// 리뷰 공감
+	// 리뷰 공감
 //	@Override
 //	public List<SympDTO> findAllSymp() {
 //		return symprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
@@ -243,6 +241,11 @@ public class ReviewServiceImpl implements IReviewService {
 		long unsymp_cnt = review.getUnsympCnt();
 		review.setUnsympCnt(unsymp_cnt - 1);
 		reviewrepo.save(review);
+	}
+
+	@Override
+	public void countSympAndUnsymp(Long user_id) {
+		
 	}
 
 }
