@@ -72,8 +72,8 @@ public class UserController {
 
 	@PutMapping("/user/{id}/updatepassword")
 	@ApiOperation(value = "비밀번호 변경")
-	public ResponseEntity<Map<String, Object>> updatepassword(@PathVariable Long id, @RequestParam String password,
-			HttpServletRequest req) {
+	public ResponseEntity<Map<String, Object>> updatepassword(@PathVariable Long id, @RequestParam String pre_password,
+			@RequestParam String new_password, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
@@ -84,15 +84,20 @@ public class UserController {
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			String encryPassword = UserSha256.encrypt(password);
-			user.setPassword(encryPassword);
-			UserDTO member = userservice.updateProfile(user);
+			String encryPrePassword = UserSha256.encrypt(pre_password);
+			if (user.getPassword().equals(encryPrePassword)) {
+				String encryNewPassword = UserSha256.encrypt(new_password);
+				user.setPassword(encryNewPassword);
+				UserDTO member = userservice.updateProfile(user);
+				// logout해야할 것 같은데
 
-			// logout해야할 것 같은데
-
-			resultMap.put("status", true);
-			resultMap.put("info", member);
-			status = HttpStatus.ACCEPTED;
+				resultMap.put("status", true);
+				resultMap.put("info", member);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("status", false);
+				status = HttpStatus.ACCEPTED;
+			}
 
 		} catch (RuntimeException e) {
 			resultMap.put("message", e.getMessage());
