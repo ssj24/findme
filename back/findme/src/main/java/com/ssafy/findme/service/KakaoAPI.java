@@ -46,6 +46,7 @@ public class KakaoAPI {
 			sb.append("&client_id=df3683c5354024c47b509ecad955f714");
 			sb.append("&redirect_uri=http://localhost:8888/api/user/kakao_oauth");
 			sb.append("&code=" + authorize_code);
+			System.out.println("여기로 갈거야"+sb.toString());
 			bw.write(sb.toString());
 			bw.flush();
 

@@ -1,5 +1,6 @@
 package com.ssafy.findme.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.dto.UserDTO.RoleType;
 import com.ssafy.findme.service.IAccountService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
@@ -49,6 +51,9 @@ public class AccountController {
 		// 비밀번호 암호화
 		String encryPassword = UserSha256.encrypt(user.getPassword());
 		user.setPassword(encryPassword);
+		user.setUtility(true);
+		user.setRoleType(RoleType.USER);
+		user.setCreatedAt(new Date());
 		// 회원가입
 		accountservice.signUp(user);
 		// 인증메일
@@ -148,11 +153,14 @@ public class AccountController {
 
 	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
-	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code, HttpServletResponse res) {
+	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		System.out.println("왔뉘,,,?");
 
+		System.out.println("++"+code);
 		String access_Token = kakao.getAccessToken(code);
+		System.out.println(access_Token);
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
 		String name = userInfo.get("nickname").toString();
 		String email = userInfo.get("email").toString();
@@ -164,7 +172,7 @@ public class AccountController {
 			user.setEmail(email);
 			user.setPassword(password);
 			// db에 이메일이 없으면 singup
-			res.setHeader("jwt-auth-token", access_Token);
+//			res.setHeader("jwt-auth-token", access_Token);
 
 			if (accountservice.emailDuplicateCheck(email)) {
 				if (accountservice.accountDuplicateCheck(email, password)) { // 로그인
