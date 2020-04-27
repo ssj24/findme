@@ -24,5 +24,4 @@ public interface AccountRepository extends JpaRepository<User, Integer> {
 	public User findByEmailAndPassword(String email, String password);
 	
 	public User findById(Long user_id);
-
 }

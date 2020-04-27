@@ -31,5 +31,5 @@ public interface IAccountService {
 
 	UserDTO findbyEmail(String email);
 
-	void deleteUser(Long user_id);
+	void deleteUser(UserDTO user);
 }
