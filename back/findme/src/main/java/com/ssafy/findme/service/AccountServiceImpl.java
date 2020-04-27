@@ -100,8 +100,8 @@ public class AccountServiceImpl implements IAccountService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String subject = "[본인인증] FindMe 인증메일입니다.";
 		String text = "<h2>안녕하세요 FindMe 입니다!</h2><br><br>" + "<h3>" + name + "님</h3>"
-				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/" + email
-				+ "/" + key + ">인증하기</a></p>" + "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
+				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/" + email + "/" + key + ">인증하기</a></p>"
+				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {
 			mail.setSubject(subject, "utf-8");
 			mail.setText(text, "utf-8", "html");
@@ -126,7 +126,7 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO login(UserDTO trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
-		if(!member.isUtility())
+		if (!member.isUtility())
 			throw new IllegalArgumentException("탈퇴한 계정입니다.");
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
@@ -194,17 +194,16 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO findById(Long user_id) {
 		String result = CommandLineExecutor.execute_return("python src/main/python/similarAnalysis.py " + user_id + "");
 		System.out.println(result);
-		if(result.equals("dismatch")) {
-			//유사도 검사해서 80%이하면 맞춤공고 -> recommend 테이블에 넣기
+		if (result.equals("dismatch")) {
+			// 유사도 검사해서 80%이하면 맞춤공고 -> recommend 테이블에 넣기
 		}
 		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
 	}
 
-
 	@Override
 	public UserDTO findbyEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = accountrepo.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("가입된 계정이 아닙니다."));
+		return modelMapper.map(user, UserDTO.class);
 	}
 
 	@Override
