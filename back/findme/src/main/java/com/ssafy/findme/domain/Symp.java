@@ -34,6 +34,4 @@ public class Symp {
 	@JoinColumn(name = "review_id")
 	@NotNull
 	private Review review;
-	
-	private Long languageId;
 }

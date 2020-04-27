@@ -91,16 +91,16 @@ public class ReviewServiceImpl implements IReviewService {
 		Date createdAt, updatedAt;
 		for (int i = 0; i < reviewList.size(); i++) {
 			ReviewDTO reviewDTO = reviewList.get(i);
-			
-			//작성자인지 확인
-			if(reviewDTO.getUser().getId() == user_id) {
+
+			// 작성자인지 확인
+			if (reviewDTO.getUser().getId() == user_id) {
 				reviewDTO.getUser().setCheck(true);
 			}
-			
-			//review_id와 user_id 값으로 symp 테이블에 있는지 확인
-			if(symprepo.findByReviewIdAndUserId(reviewDTO.getId(), user_id) != null) {
+
+			// review_id와 user_id 값으로 symp 테이블에 있는지 확인
+			if (symprepo.findByReviewIdAndUserId(reviewDTO.getId(), user_id) != null) {
 				reviewDTO.getUser().setCheckSymp(true);
-			} else if(unsymprepo.findByReviewIdAndUserId(reviewDTO.getId(), user_id) != null) {
+			} else if (unsymprepo.findByReviewIdAndUserId(reviewDTO.getId(), user_id) != null) {
 				reviewDTO.getUser().setCheckUnsymp(true);
 			}
 			createdAt = reviewDTO.getCreatedAt();
@@ -111,33 +111,39 @@ public class ReviewServiceImpl implements IReviewService {
 
 		return reviewList;
 	}
-	
+
 	// 리뷰 공감
 	@Override
 	public boolean saveSymp(Long review_id, Long user_id) {
 		try {
-			//이미 공감을 눌렀으면 false
-			Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
-			if(symp != null)
-				return false;
-			
-			//비공감에 저장되었으면 삭제하고 공감테이블에 저장
-			Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
-			if (unsymp != null) {
-				deleteUnsymp(review_id, user_id);
-			}
-			
-			Symp newsymp = new Symp();
 			Review review = reviewrepo.findById(review_id).get();
-			long symp_cnt = review.getSympCnt();
-			review.setSympCnt(symp_cnt+1);
-			reviewrepo.save(review);
-			
-			User user = accountrepo.findById(user_id);
-			newsymp.setReview(review);
-			newsymp.setUser(user);
-			symprepo.save(newsymp);
-			return true;
+			Long review_author = review.getUser().getId();
+			if (review_author != user_id) {
+				// 이미 공감을 눌렀으면 false
+				Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
+				if (symp != null)
+					return false;
+
+				// 비공감에 저장되었으면 삭제하고 공감테이블에 저장
+				Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
+				if (unsymp != null) {
+					deleteUnsymp(review_id, user_id);
+				}
+				review = reviewrepo.findById(review_id).get();
+				Symp newsymp = new Symp();
+				long symp_cnt = review.getSympCnt();
+				review.setSympCnt(symp_cnt + 1);
+				reviewrepo.save(review);
+
+				User user = accountrepo.findById(user_id);
+				newsymp.setReview(review);
+				newsymp.setUser(user);
+				symprepo.save(newsymp);
+				return true;
+			} else {
+				System.out.println("ReviewServiceImpl saveSymp 리뷰작성자는 공감을 누를 수 없습니다.");
+				return false;
+			}
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl saveSymp error");
 		}
@@ -147,37 +153,42 @@ public class ReviewServiceImpl implements IReviewService {
 	@Override
 	public void deleteSymp(Long review_id, Long user_id) {
 		Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
-		symprepo.delete(symp);
 		Review review = reviewrepo.findById(review_id).get();
-		long symp_cnt = review.getSympCnt();
-		review.setSympCnt(symp_cnt - 1);
+		long symp_cnt = review.getSympCnt()-1;
+		review.setSympCnt(symp_cnt);
 		reviewrepo.save(review);
+		symprepo.delete(symp);
 	}
 
-	
 	// 리뷰 비공감
 	@Override
 	public boolean saveUnsymp(Long review_id, Long user_id) {
 		try {
-			Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
-			if(unsymp != null)
-				return false;
-			
-			Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
-			if(symp != null) {
-				deleteSymp(review_id, user_id);
-			}
-			
-			Unsymp newunsymp = new Unsymp();
 			Review review = reviewrepo.findById(review_id).get();
-			long unsymp_cnt = review.getUnsympCnt();
-			review.setUnsympCnt(unsymp_cnt + 1);
-			reviewrepo.save(review);
-			User user = accountrepo.findById(user_id);
-			newunsymp.setReview(review);
-			newunsymp.setUser(user);
-			unsymprepo.save(newunsymp);
-			return true;
+			Long review_author = review.getUser().getId();
+			if (review_author != user_id) {
+				Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
+				if (unsymp != null)
+					return false;
+
+				Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
+				if (symp != null) {
+					deleteSymp(review_id, user_id);
+				}
+				review = reviewrepo.findById(review_id).get();
+				Unsymp newunsymp = new Unsymp();
+				long unsymp_cnt = review.getUnsympCnt();
+				review.setUnsympCnt(unsymp_cnt + 1);
+				reviewrepo.save(review);
+				User user = accountrepo.findById(user_id);
+				newunsymp.setReview(review);
+				newunsymp.setUser(user);
+				unsymprepo.save(newunsymp);
+				return true;
+			} else {
+				System.out.println("ReviewServiceImpl saveUnsymp 리뷰작성자는 비공감을 누를 수 없습니다.");
+				return false;
+			}
 		} catch (Exception e) {
 			System.out.println("ReviewServiceImpl saveUnsymp error");
 		}
@@ -187,33 +198,33 @@ public class ReviewServiceImpl implements IReviewService {
 	@Override
 	public void deleteUnsymp(Long review_id, Long user_id) {
 		Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
-		unsymprepo.delete(unsymp);
 		Review review = reviewrepo.findById(review_id).get();
-		long unsymp_cnt = review.getUnsympCnt();
-		review.setUnsympCnt(unsymp_cnt - 1);
+		long unsymp_cnt = review.getUnsympCnt()-1;
+		review.setUnsympCnt(unsymp_cnt);
 		reviewrepo.save(review);
+		unsymprepo.delete(unsymp);
 	}
 
 	@Override
 	public void recountSympAndUnsymp(Long user_id) {
 		List<SympDTO> sympList = symprepo.findByUserId(user_id).stream()
-				.map(e->entityMapper.convertToDomain(e, SympDTO.class))
-				.collect(Collectors.toList());
-		Review review;
+				.map(e -> entityMapper.convertToDomain(e, SympDTO.class)).collect(Collectors.toList());
+		Review review = null;
 		for (int i = 0; i < sympList.size(); i++) {
 			review = reviewrepo.findById(sympList.get(i).getReviewId()).get();
-			long symp_cnt = review.getSympCnt();
-			review.setSympCnt(symp_cnt - 1);
+			long symp_cnt = review.getSympCnt()-1;
+			review.setSympCnt(symp_cnt);
+			reviewrepo.save(review);
 		}
-		
+
 		List<UnsympDTO> unsympList = unsymprepo.findByUserId(user_id).stream()
-				.map(e->entityMapper.convertToDomain(e, UnsympDTO.class))
-				.collect(Collectors.toList());
-		
+				.map(e -> entityMapper.convertToDomain(e, UnsympDTO.class)).collect(Collectors.toList());
+
 		for (int i = 0; i < unsympList.size(); i++) {
 			review = reviewrepo.findById(unsympList.get(i).getReviewId()).get();
-			long unsymp_cnt = review.getUnsympCnt();
-			review.setUnsympCnt(unsymp_cnt - 1);
+			long unsymp_cnt = review.getUnsympCnt()-1;
+			review.setUnsympCnt(unsymp_cnt);
+			reviewrepo.save(review);
 		}
 	}
 
