@@ -27,5 +27,7 @@ public class UserDTO {
 	public enum RoleType {
 		USER, ADMIN
 	}
-
+	private boolean check;
+	private boolean checkSymp;
+	private boolean checkUnsymp;
 }

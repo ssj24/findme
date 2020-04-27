@@ -33,5 +33,7 @@ public class Unsymp {
 	@NotNull
 	private Review review;
 	
+	private Long languageId;
+	
 }
 

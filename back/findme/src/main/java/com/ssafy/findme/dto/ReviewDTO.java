@@ -16,7 +16,7 @@ public class ReviewDTO {
 	private Date updatedAt;
 	private Long sympCnt;
 	private Long unsympCnt;
-	private Long userId;
+	private UserDTO user;
 	private Long languageId;
 	private String name;
 	
