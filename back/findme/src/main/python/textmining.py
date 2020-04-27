@@ -108,10 +108,10 @@ def get_tags(text, ntags=50):
 def main():
     # 빈 Dataframe 생성
     df = DataFrame(columns=("id", "name", "result"))
-    engine = create_engine("mysql+pymysql://root:"+"ssafy"+"@localhost:3306/test2?charset=utf8", encoding='utf-8')
+    engine = create_engine("mysql+pymysql://ssafy:"+"ssafy"+"@localhost:3306/findme?charset=utf8", encoding='utf-8')
     con = engine.connect()
 
-    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test2', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
     
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()

@@ -80,7 +80,7 @@
               >
                 로그인
               </v-btn>
-              <v-btn
+              <!-- <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"
@@ -88,9 +88,9 @@
               >
               카카오
               </v-btn> -->
-              <!-- <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code">
-                로그인
-              </a> -->
+              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message">
+                카카오
+              </a>
             </v-layout>
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
@@ -219,9 +219,9 @@ export default {
       },
       kakaologin() {
         console.log('sdlfsdjkl;dfj;klsd')
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message")
-          .then(res => {
-            console.log(res)
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message")
+          .then(() => {
+            // console.log(res)
             this.$router.push({
                 name: "Main",
             });

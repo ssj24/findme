@@ -23,7 +23,11 @@ public class UserDTO {
 	private String authKey;
 	private RoleType roleType;
 	private Date createdAt;
+
 	public enum RoleType {
 		USER, ADMIN
 	}
+	private boolean check;
+	private boolean checkSymp;
+	private boolean checkUnsymp;
 }

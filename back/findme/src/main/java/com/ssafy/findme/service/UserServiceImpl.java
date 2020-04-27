@@ -27,6 +27,4 @@ public class UserServiceImpl implements IUserService {
 
 	}
 	
-	//비밀번호 변경
-
 }

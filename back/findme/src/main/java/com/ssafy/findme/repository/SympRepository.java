@@ -9,6 +9,6 @@ import com.ssafy.findme.domain.Symp;
 
 @Repository
 public interface SympRepository extends JpaRepository<Symp, Long>{
-	List<Symp> findByUserId(Long user_id);
 	Symp findByReviewIdAndUserId(Long review_id, Long user_id);
+	List<Symp> findByUserId(Long user_id);
 }
