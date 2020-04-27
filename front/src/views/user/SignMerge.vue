@@ -72,7 +72,8 @@ export default {
 	background: url('../../assets/images/sky3.jpg') no-repeat;
 	background-position: center;
 	background-size: cover;
-	
+	overflow-x: scroll;
+	overflow-y: hidden;
 }
 .firefly {
 	position: fixed;
@@ -150,6 +151,7 @@ export default {
     box-shadow: 0 0 2vw 0.4vw yellow;
 	}
 }
+
 .section-title {
 	font-size: 32px;
 	letter-spacing: 1px;
@@ -163,6 +165,7 @@ export default {
 }
 
 .form-wrapper {
+	width: 600px;
 	animation: hideLayer .3s ease-out forwards;
 }
 
@@ -263,7 +266,6 @@ export default {
 
 .form {
 	overflow: hidden;
-	min-width: 600px;
 	margin-top: 50px;
 	padding: 30px 25px;
   border-radius: 5px;
@@ -271,6 +273,8 @@ export default {
 }
 
 .form-login {
+	width: 100%;
+
 	animation: hideLogin .3s ease-out forwards;
 }
 
@@ -311,6 +315,7 @@ export default {
 }
 
 .form-signup {
+	width: 100%;
 	animation: hideSignup .3s ease-out forwards;
 }
 
@@ -432,5 +437,20 @@ export default {
 }
 .v-form {
 	width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+	.form-wrapper {
+		width: 300px;
+	}
+	.form-login.form-signup {
+		display: none;
+	}
+	.switcher-login {
+	right: -80px;
+	}
+	.switcher-signup {
+		left: -40px;
+	}
 }
 </style>

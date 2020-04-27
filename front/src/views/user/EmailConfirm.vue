@@ -27,7 +27,6 @@ export default {
       .then(()=> {
         this.$router.push({
           name: "Main",
-          params: {isNew: true}
         });
       })
       .catch(() => {
