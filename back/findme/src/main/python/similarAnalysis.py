@@ -28,8 +28,10 @@ def sim_pearson(data, id1, id2): # 피어슨 유사도
             sum_id1 += pow(data[id1][tech] - avg_id1, 2)
             sum_id2 += pow(data[id2][tech] - avg_id2, 2)
             sum_id1_id2 += (data[id1][tech] - avg_id1) * (data[id2][tech] - avg_id2)
-    
-    return sum_id1_id2 / (math.sqrt(sum_id1)*math.sqrt(sum_id2))
+    try:
+        return sum_id1_id2 / (math.sqrt(sum_id1)*math.sqrt(sum_id2))
+    except:
+        pass
 
 
 def top_match(data, id, index=3, sim_function=sim_pearson):

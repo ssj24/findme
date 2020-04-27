@@ -207,8 +207,9 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public void deleteUser(Long user_id) {
+	public void deleteUser(UserDTO user) {
+		User userEntity = modelMapper.map(user, User.class);
+		accountrepo.delete(userEntity);
 		
 	}
-
 }

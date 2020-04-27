@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.service.IAccountService;
+import com.ssafy.findme.service.IReviewService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
 
@@ -34,6 +35,8 @@ public class AccountController {
 
 	@Autowired
 	private IAccountService accountservice;
+	@Autowired
+	private IReviewService reviewservice;
 	@Autowired
 	private KakaoAPI kakao;
 
@@ -66,10 +69,9 @@ public class AccountController {
 			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
 				KakaoAPI.secession(tmp);
 			}
-//			user.setUtility(false);
-			accountservice.deleteUser(user_id);
+			accountservice.deleteUser(user);
+			reviewservice.recountSympAndUnsymp(user_id);
 			UserDTO member = accountservice.updateProfile(user);
-			
 
 			resultMap.put("status", true);
 			resultMap.put("info", member);

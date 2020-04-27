@@ -15,7 +15,6 @@ import com.ssafy.findme.domain.User;
 import com.ssafy.findme.dto.ReviewDTO;
 import com.ssafy.findme.dto.SympDTO;
 import com.ssafy.findme.dto.UnsympDTO;
-import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.mapper.EntityMapper;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.repository.ReviewRepository;
@@ -79,13 +78,6 @@ public class ReviewServiceImpl implements IReviewService {
 		reviewrepo.delete(reivew);
 	}
 
-//	@Override
-//	public ReviewDTO findById(Long review_id) {
-//		Review review = reviewrepo.findById(review_id).get();
-//		ReviewDTO reviewDTO = entityMapper.convertToDomain(review, ReviewDTO.class);
-//		return reviewDTO;
-//	}
-
 	public String transformDate(Date date) {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 	}
@@ -119,32 +111,8 @@ public class ReviewServiceImpl implements IReviewService {
 
 		return reviewList;
 	}
-
-//	@Override
-//	public List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id) {
-//		List<ReviewDTO> reviewList = reviewrepo.findReviewByUserIdAndLanguageId(user_id, language_id).stream()
-//				.map(e -> entityMapper.convertToDomain(e, ReviewDTO.class)).collect(Collectors.toList());
-//		
-//		// 날짜 형식 변경
-//		Date createdAt, updatedAt;
-//		for (int i = 0; i < reviewList.size(); i++) {
-//			ReviewDTO reviewDTO = reviewList.get(i);
-//			createdAt = reviewDTO.getCreatedAt();
-//			updatedAt = reviewDTO.getUpdatedAt();
-//			reviewDTO.setTrans_createdAt(transformDate(createdAt));
-//			reviewDTO.setTrans_updatedAt(transformDate(updatedAt));
-//		}
-//		return reviewList;
-//	}
-
 	
 	// 리뷰 공감
-//	@Override
-//	public List<SympDTO> findAllSymp() {
-//		return symprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
-//				.collect(Collectors.toList());
-//	}
-
 	@Override
 	public boolean saveSymp(Long review_id, Long user_id) {
 		try {
@@ -176,12 +144,6 @@ public class ReviewServiceImpl implements IReviewService {
 		return false;
 	}
 
-//	@Override
-//	public List<SympDTO> findByLanguageIdAndUserId(Long language_id, Long user_id) {
-//		return symprepo.findByLanguageIdAndUserId(language_id, user_id).stream().map(e -> entityMapper.convertToDomain(e, SympDTO.class))
-//				.collect(Collectors.toList());
-//	}
-
 	@Override
 	public void deleteSymp(Long review_id, Long user_id) {
 		Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
@@ -192,13 +154,8 @@ public class ReviewServiceImpl implements IReviewService {
 		reviewrepo.save(review);
 	}
 
-//	// 리뷰 비공감
-//	@Override
-//	public List<UnsympDTO> findAllUnsymp() {
-//		return unsymprepo.findAll().stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
-//				.collect(Collectors.toList());
-//	}
-
+	
+	// 리뷰 비공감
 	@Override
 	public boolean saveUnsymp(Long review_id, Long user_id) {
 		try {
@@ -227,12 +184,6 @@ public class ReviewServiceImpl implements IReviewService {
 		return false;
 	}
 
-//	@Override
-//	public List<UnsympDTO> findUnsympByUserId(Long user_id) {
-//		return unsymprepo.findByUserId(user_id).stream().map(e -> entityMapper.convertToDomain(e, UnsympDTO.class))
-//				.collect(Collectors.toList());
-//	}
-
 	@Override
 	public void deleteUnsymp(Long review_id, Long user_id) {
 		Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
@@ -244,8 +195,26 @@ public class ReviewServiceImpl implements IReviewService {
 	}
 
 	@Override
-	public void countSympAndUnsymp(Long user_id) {
+	public void recountSympAndUnsymp(Long user_id) {
+		List<SympDTO> sympList = symprepo.findByUserId(user_id).stream()
+				.map(e->entityMapper.convertToDomain(e, SympDTO.class))
+				.collect(Collectors.toList());
+		Review review;
+		for (int i = 0; i < sympList.size(); i++) {
+			review = reviewrepo.findById(sympList.get(i).getReviewId()).get();
+			long symp_cnt = review.getSympCnt();
+			review.setSympCnt(symp_cnt - 1);
+		}
 		
+		List<UnsympDTO> unsympList = unsymprepo.findByUserId(user_id).stream()
+				.map(e->entityMapper.convertToDomain(e, UnsympDTO.class))
+				.collect(Collectors.toList());
+		
+		for (int i = 0; i < unsympList.size(); i++) {
+			review = reviewrepo.findById(unsympList.get(i).getReviewId()).get();
+			long unsymp_cnt = review.getUnsympCnt();
+			review.setUnsympCnt(unsymp_cnt - 1);
+		}
 	}
 
 }
