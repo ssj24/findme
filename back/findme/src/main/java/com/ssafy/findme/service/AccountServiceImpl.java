@@ -125,6 +125,8 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO login(UserDTO trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
+		if(!member.isUtility())
+			throw new IllegalArgumentException("탈퇴한 계정입니다.");
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
 		if (!trial.getPassword().equals(member.getPassword()))
