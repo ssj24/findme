@@ -88,7 +88,7 @@ def trans_date(year, month, day):
 	return start_date
 
 def main():
-	engine = create_engine("mysql+pymysql://root:"+"ssafy"+"@localhost:3306/test3?charset=utf8", encoding='utf-8')
+	engine = create_engine("mysql+pymysql://ssafy:"+"ssafy"+"@localhost:3306/findme?charset=utf8", encoding='utf-8')
 	conn = engine.connect()
 
 	year = datetime.today().year
@@ -139,32 +139,32 @@ def main():
 
 
 	# 지역별로 저장
-	# keywords = []
+	keywords = []
 
-	# for j in range(0, 5):
-	# 	keywords.append(languages[j])
+	for j in range(0, 5):
+		keywords.append(languages[j])
 
-	# pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo='KR', gprop='')
-	# getdataregion = pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=False)
+	pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo='KR', gprop='')
+	getdataregion = pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=False)
 
-	# for i in range(1, 4):
-	# 	keywords = []
-	# 	start = i*5
-	# 	for j in range(start, start+5):
-	# 		keywords.append(languages[j])    
+	for i in range(1, 4):
+		keywords = []
+		start = i*5
+		for j in range(start, start+5):
+			keywords.append(languages[j])    
 		
-	# 	pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo='KR', gprop='')
-	# 	getdata = pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=False)
-	# 	for k in range(len(keywords)):
-	# 		getdataregion[keywords[k]] = getdata[keywords[k]]
+		pytrends.build_payload(keywords, cat=0, timeframe='today 1-m', geo='KR', gprop='')
+		getdata = pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=False)
+		for k in range(len(keywords)):
+			getdataregion[keywords[k]] = getdata[keywords[k]]
 
-	# my_dict = {}
-	# my_dict["geoName"] = "geo_name"
-	# for i in range(len(languages)):
-	# 	my_dict[languages[i]] = sql_language[i]
+	my_dict = {}
+	my_dict["geoName"] = "geo_name"
+	for i in range(len(languages)):
+		my_dict[languages[i]] = sql_language[i]
 
-	# getdataregion = getdataregion.reset_index().rename(columns=my_dict)
-	# getdataregion.to_sql(name='gtrend_geo_data', con=engine, if_exists='replace', index=True)
+	getdataregion = getdataregion.reset_index().rename(columns=my_dict)
+	getdataregion.to_sql(name='gtrend_geo_data', con=engine, if_exists='replace', index=True)
 	conn.close()
 
 if __name__ == "__main__":

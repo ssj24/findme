@@ -66,8 +66,10 @@ public class AccountController {
 			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
 				KakaoAPI.secession(tmp);
 			}
-			user.setUtility(false);
+//			user.setUtility(false);
+			accountservice.deleteUser(user_id);
 			UserDTO member = accountservice.updateProfile(user);
+			
 
 			resultMap.put("status", true);
 			resultMap.put("info", member);

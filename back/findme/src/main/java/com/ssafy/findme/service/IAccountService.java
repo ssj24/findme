@@ -30,4 +30,6 @@ public interface IAccountService {
 	UserDTO findById(Long user_id);
 
 	UserDTO findbyEmail(String email);
+
+	void deleteUser(Long user_id);
 }

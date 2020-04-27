@@ -14,6 +14,8 @@ public interface IReviewService {
 	List<ReviewDTO> findAllByLanauageId(Long language_id, Long user_id);
 //	List<ReviewDTO> findReviewByUserIdAndLanguageId(Long user_id, Long language_id);
 	
+	void countSympAndUnsymp(Long user_id);
+	
 //	List<SympDTO> findAllSymp();
 	boolean saveSymp(Long review_id, Long user_id);
 //	List<SympDTO> findByLanguageIdAndUserId(Long language_ig, Long user_id);
