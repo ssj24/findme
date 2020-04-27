@@ -52,8 +52,9 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
-		CommandLineExecutor.execute("python src/main/python/similarAnalysis.py " + member.getId() + "");
-		return modelMapper.map(accountrepo.save(member), UserDTO.class);
+		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
+		CommandLineExecutor.execute("python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+		return memberDTO;
 	}
 
 	// 이메일 난수 만드는 메서드

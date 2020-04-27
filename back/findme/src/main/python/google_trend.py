@@ -88,7 +88,7 @@ def trans_date(year, month, day):
 	return start_date
 
 def main():
-	engine = create_engine("mysql+pymysql://root:"+"ssafy"+"@localhost:3306/test3?charset=utf8", encoding='utf-8')
+	engine = create_engine("mysql+pymysql://ssafy:"+"ssafy"+"@localhost:3306/findme?charset=utf8", encoding='utf-8')
 	conn = engine.connect()
 
 	year = datetime.today().year

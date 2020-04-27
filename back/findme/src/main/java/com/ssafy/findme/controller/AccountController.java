@@ -71,10 +71,8 @@ public class AccountController {
 			}
 			accountservice.deleteUser(user);
 			reviewservice.recountSympAndUnsymp(user_id);
-			UserDTO member = accountservice.updateProfile(user);
 
 			resultMap.put("status", true);
-			resultMap.put("info", member);
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {
