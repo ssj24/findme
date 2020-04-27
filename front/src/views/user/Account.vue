@@ -47,18 +47,6 @@
           </p>
         </div>
         <p class="accountTitle ">
-          희망 기업
-        </p>
-        <hr class="hr-divider">
-        <div>
-          <p class="stacklist px-2 py-1"
-            v-for="(company,idx) in companies"
-            :key="idx"
-            @click="clicked">
-            {{company}}
-          </p>
-        </div>
-        <p class="accountTitle ">
           희망 직무
         </p>
         <hr class="hr-divider">
@@ -68,6 +56,18 @@
             :key="idx"
             @click="clicked">
             {{position}}
+          </p>
+        </div>
+        <p class="accountTitle ">
+          희망 기업
+        </p>
+        <hr class="hr-divider">
+        <div>
+          <p class="stacklist px-2 py-1"
+            v-for="(company,idx) in companies"
+            :key="idx"
+            @click="clicked">
+            {{company}}
           </p>
         </div>
       </v-list>

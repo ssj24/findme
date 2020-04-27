@@ -5,7 +5,7 @@
         <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
       </template> -->
       <v-card class="pa-3">
-        <span v-if="langs.length >= 2">
+        <!-- <span v-if="langs.length >= 2">
           <v-select
             :items="langs"
             label="언어를 선택해주세요"
@@ -14,7 +14,7 @@
             class="mx-auto lang-select"
             >
           </v-select>
-        </span>
+        </span> -->
         <v-card-title>
           <span class="headline" style="font-family: Cafe24Dangdanghae !important;">
             '{{lang}}'를 알려줘!
@@ -82,18 +82,22 @@
 import baseURL from '@/base-url.js'
 import cookie from '@/cookie.js'
 export default {
-  props: [
-    'langId',
-    'userId',
-    'langsList',
-    'new',
-  ],
+  props: {
+    langId: {
+      type: Number,
+    },
+    chk: {
+      type: Boolean,
+    },
+    langName: {
+      type: String,
+    }
+  },
   data: () => ({
-      isLogin: false,
       dialog: false,
       userName: '',
       langs: [],
-      lang: '언어',
+      lang: this.langName,
       reason: '',
       reasonList: [
         '사용이 편리하다', 
@@ -122,17 +126,9 @@ export default {
     }),
   mounted() {
     if (this.langId) {
-      console.log(this.langId)
-      this.dialog = true;
+      this.dialog = this.chk;
       this.langs = []
       // this.lang = this.langsList[this.langId+1]
-    }
-    if (this.new) {
-      this.dialog = true;
-    }
-    this.isLogin = this.$store.state.isLogin
-    if (this.isLogin) {
-      this.userProfile()
     }
   },
   methods: {

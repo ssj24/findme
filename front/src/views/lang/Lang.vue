@@ -7,7 +7,9 @@
     <div class="wrapper">
       <div class="text"></div>
     </div>
-    <survey :langId="langSeq"></survey>
+    <span v-if="langSeq">
+      <survey :langId="langSeq" :chk="chk" :langName="langs[langSeq].title"></survey>
+    </span>
     <v-row>
       <v-col cols="12">
         <v-card class="cloudCard mx-auto">
@@ -186,6 +188,7 @@ export default {
   data () {
     return {
       langSeq: 0,
+      chk: false,
       langs: [
           {
             title: 'Java',
@@ -288,7 +291,11 @@ export default {
   },
   mounted() {
     this.langSeq = this.$route.params.langId;
-    
+    let language_id = this.langSeq + 1
+    baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
+      .then(res=>{
+        this.chk = res.data
+      })
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
     const fx = new TextScramble(el)
