@@ -1,5 +1,8 @@
 <template>
   <section class="forms-section">
+		<div class="firefly"
+			v-for="n in 30" :key="n">
+		</div>
   <div class="forms">
     <div class="form-wrapper is-active">
       <button 
@@ -59,15 +62,94 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   .forms-section {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
   align-items: center;
-  background-color: rgb(4, 12, 102);
+  // background-color: rgb(4, 12, 102);
+	background: url('../../assets/images/sky3.jpg') no-repeat;
+	background-position: center;
+	background-size: cover;
+	
+}
+.firefly {
+	position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 0.4vw;
+  height: 0.4vw;
+  margin: -0.2vw 0 0 9.8vw;
+  animation: ease 100s alternate infinite;
+  pointer-events: none;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform-origin: -10vw;
+	}
+  &::before {
+    background: rgb(4, 12, 102);
+    opacity: 0.4;
+    animation: drift ease alternate infinite;
+	}
+  &::after {
+    background: rgb(247, 243, 7);
+    opacity: 0;
+    box-shadow: 0 0 0vw 0vw yellow;
+    animation: drift ease alternate infinite, flash ease infinite;
+	}
 }
 
+@for $i from 1 through 30 {
+  
+  $steps: random(12) + 16;
+  $rotationSpeed: random(10) + 8s;
+  
+  .firefly:nth-child(#{$i}) {
+    animation-name: move#{$i};
+
+    &::before {
+      animation-duration: #{$rotationSpeed};
+		}
+
+    &::after {
+      animation-duration: #{$rotationSpeed}, random(6000) + 5000ms;
+      animation-delay: 0ms, random(8000) + 500ms;
+		}
+	}
+
+  @keyframes move#{$i} {
+    @for $step from 0 through $steps {
+      #{$step * (100 / $steps)}% {
+        transform: translateX(random(100) - 50vw) translateY(random(100) - 50vh) scale(random(75) / 100 + .25);
+			}
+		}
+	}
+}
+@keyframes drift {
+  0% {
+    transform: rotate(0deg);
+	}
+  100% {
+    transform: rotate(360deg);
+	}
+}
+@keyframes flash {
+  0%, 30%, 100% {
+    opacity: 0;
+    box-shadow: 0 0 0vw 0vw yellow;
+	}
+  5% {
+    opacity: 1;
+    box-shadow: 0 0 2vw 0.4vw yellow;
+	}
+}
 .section-title {
 	font-size: 32px;
 	letter-spacing: 1px;
@@ -124,6 +206,10 @@ export default {
 	transform: translateX(0);
 	transition: all .3s ease-out;
 }
+.switcher:hover {
+	color:rgb(255, 255, 255);
+}
+
 .switcher-login {
 	right: -200px;
 }
@@ -132,6 +218,7 @@ export default {
 }
 .form-wrapper.is-active .switcher-login {
 	color: #fff;
+	text-shadow: 1px 1px 5px #fff;
 	transform: translateX(50px);
 }
 
@@ -192,7 +279,7 @@ export default {
 }
 
 .form-wrapper:not(.is-active) .container {
-	background:rgb(4, 12, 102);
+	// background:rgb(4, 12, 102);
 	opacity: 0.2;
 }
 @keyframes showLogin {
@@ -234,28 +321,28 @@ export default {
 @keyframes showSignup {
 	0% {
 		/* background: #d7e7f1; */
-		transform: translate(-40%, 10px) scaleY(.8);
+		transform: translate(-40%, 10px);
 	}
 	50% {
-		transform: translate(0, 0) scaleY(.8);
+		transform: translate(0, 0);
 	}
 	100% {
 		/* background-color: #fff; */
-		transform: translate(-35%, -20px) scaleY(1);
+		transform: translate(-35%, -20px);
 	}
 }
 
 @keyframes hideSignup {
 	0% {
 		/* background-color: #fff; */
-		transform: translate(-35%, -20px) scaleY(1);
+		transform: translate(-35%, -20px);
 	}
 	50% {
-		transform: translate(0, 0) scaleY(.8);
+		transform: translate(0, 0);
 	}
 	100% {
 		/* background: #d7e7f1; */
-		transform: translate(-40%, 10px) scaleY(.8);
+		transform: translate(-40%, 10px);
 	}
 }
 

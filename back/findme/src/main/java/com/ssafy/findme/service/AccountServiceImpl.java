@@ -1,14 +1,6 @@
 package com.ssafy.findme.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -133,6 +125,8 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO login(UserDTO trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
+		if(!member.isUtility())
+			throw new IllegalArgumentException("탈퇴한 계정입니다.");
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
 		if (!trial.getPassword().equals(member.getPassword()))

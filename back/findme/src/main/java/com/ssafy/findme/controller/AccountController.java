@@ -1,6 +1,5 @@
 package com.ssafy.findme.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +53,51 @@ public class AccountController {
 		accountservice.signUp(user);
 		// 인증메일
 		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
+	}
+
+	@PutMapping("/user/{user_id}/secession")
+	@ApiOperation(value = "회원 탈퇴")
+	public ResponseEntity<Map<String, Object>> secession(@PathVariable Long user_id, @RequestParam String tmp,
+			HttpServletRequest req) throws MessagingException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			UserDTO user = accountservice.findById(user_id);
+			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
+				KakaoAPI.secession(tmp);
+			}
+			user.setUtility(false);
+			UserDTO member = accountservice.updateProfile(user);
+
+			resultMap.put("status", true);
+			resultMap.put("info", member);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/kakaologout")
+	@ApiOperation(value = "로그아웃")
+	public ResponseEntity<Map<String, Object>> kakaologout(@RequestParam String tmp, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			kakao.kakaoLogout(tmp);
+
+			resultMap.put("status", true);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	@GetMapping("/user/key_alter")
@@ -193,29 +237,4 @@ public class AccountController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
-	@PostMapping("/user/kakao_message")
-	@ApiOperation(value = "카카오 메세지 보내기")
-	public ResponseEntity<Map<String, Object>> sendMessage(@RequestParam String tmp, HttpServletRequest req) throws IOException {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		try {
-			String token = tmp;
-//			String token = req.getHeader("jwt-auth-token");
-			System.out.println("token");
-			HashMap<String, Object> userInfo = kakao.getUserInfo(token);
-			kakao.sendMessage(token);
-
-			resultMap.put("status", true);
-			resultMap.put("info", userInfo);
-			status = HttpStatus.ACCEPTED;
-
-		} catch (RuntimeException e) {
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
 }

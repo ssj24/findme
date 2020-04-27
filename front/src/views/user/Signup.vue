@@ -172,17 +172,18 @@ export default {
       positions: [
         '웹',
         '응용프로그램',
-        'Q/A',
-        'tester',
+        'QA',
+        '테스터',
         '인공지능',
         '빅데이터',
         '블록체인',
         '보안',
-        'DB',
+        '데이터베이스',
         '네트워크',
         'PM',
         'ERP',
-        '분석/설계'
+        '분석',
+        '설계'
       ],
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
@@ -205,20 +206,21 @@ export default {
         this.$refs.form.reset()
       },
       submit () {
-
+        let Stacks = this.langSelect.join()
+        let wishPositions = this.positionSelect.join()
         let data = {
           email: this.id,
           name: this.name,
           password: this.password,
-          techStack: this.langSelect.join(),
+          techStack: Stacks,
           wishHope: this.firm,
-          wishJob: this.positionSelect.join()
+          wishJob: wishPositions
         }
         baseURL.post('user/signup', data)
           .then(() => {
             alert("이메일로 인증 코드를 보냈습니다.")
             this.$router.push({
-                name: "Main",
+              name: "Main",
             });
           })
       },

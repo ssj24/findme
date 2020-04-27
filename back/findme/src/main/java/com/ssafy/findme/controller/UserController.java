@@ -1,6 +1,8 @@
 package com.ssafy.findme.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,13 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.findme.dto.FriendDTO;
 import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.service.IUserService;
+import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
 
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +35,8 @@ public class UserController {
 
 	@Autowired
 	private IUserService userservice;
+	@Autowired
+	private KakaoAPI kakao;
 
 	@GetMapping("/user/{id}/profile")
 	@ApiOperation(value = "프로필")
@@ -64,8 +72,8 @@ public class UserController {
 
 	@PutMapping("/user/{id}/updatepassword")
 	@ApiOperation(value = "비밀번호 변경")
-	public ResponseEntity<Map<String, Object>> updatepassword(@PathVariable Long id, @RequestParam String password,
-			HttpServletRequest req) {
+	public ResponseEntity<Map<String, Object>> updatepassword(@PathVariable Long id, @RequestParam String pre_password,
+			@RequestParam String new_password, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
@@ -76,14 +84,86 @@ public class UserController {
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			String encryPassword = UserSha256.encrypt(password);
-			user.setPassword(encryPassword);
-			UserDTO member = userservice.updateProfile(user);
+			String encryPrePassword = UserSha256.encrypt(pre_password);
+			if (user.getPassword().equals(encryPrePassword)) {
+				String encryNewPassword = UserSha256.encrypt(new_password);
+				user.setPassword(encryNewPassword);
+				UserDTO member = userservice.updateProfile(user);
+				// logout해야할 것 같은데
 
-			// logout해야할 것 같은데
+				resultMap.put("status", true);
+				resultMap.put("info", member);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("status", false);
+				status = HttpStatus.ACCEPTED;
+			}
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/{user_id}/{recruit_id}/kakao_sendToMe")
+	@ApiOperation(value = "카카오 메세지 나에게 보내기")
+	public ResponseEntity<Map<String, Object>> sendToMe(@PathVariable Long user_id, @PathVariable Long recruit_id,
+			@RequestParam String tmp, HttpServletRequest req) throws IOException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			String token = tmp;
+//			String token = req.getHeader("jwt-auth-token");
+			kakao.sendToMe(token, recruit_id);
 
 			resultMap.put("status", true);
-			resultMap.put("info", member);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/{user_id}/{recruit_id}/kakao_sendToFriends")
+	@ApiOperation(value = "카카오 메세지 친구에게 보내기")
+	public ResponseEntity<Map<String, Object>> sendToFriend(@PathVariable Long user_id, @PathVariable Long recruit_id,
+			@RequestParam String tmp, @RequestBody FriendDTO friends, HttpServletRequest req) throws IOException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			String token = tmp;
+//			String token = req.getHeader("jwt-auth-token");
+			System.out.println(friends.getUuids().size());
+			kakao.sendToFriends(token, recruit_id, friends.getUuids());
+
+			resultMap.put("status", true);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@GetMapping("/user/{id}/kakaofriends")
+	@ApiOperation(value = "내 카톡 친구들")
+	public ResponseEntity<Map<String, Object>> kakaofriends(@PathVariable Long id, @RequestParam String tmp,
+			HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			String token = tmp;
+//			String token = req.getHeader("jwt-auth-token");
+			List<FriendDTO> friendsInfo = kakao.friends(token);
+			resultMap.put("status", true);
+			resultMap.put("info", friendsInfo);
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {
