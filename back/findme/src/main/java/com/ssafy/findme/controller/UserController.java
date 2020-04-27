@@ -2,6 +2,7 @@ package com.ssafy.findme.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.findme.dto.FriendDTO;
 import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.service.IUserService;
 import com.ssafy.findme.service.KakaoAPI;
@@ -99,20 +102,41 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/user/{user_id}/{recruit_id}/kakao_message")
-	@ApiOperation(value = "카카오 메세지 보내기")
-	public ResponseEntity<Map<String, Object>> sendMessage(@PathVariable Long user_id, @PathVariable Long recruit_id,
+	@PostMapping("/user/{user_id}/{recruit_id}/kakao_sendToMe")
+	@ApiOperation(value = "카카오 메세지 나에게 보내기")
+	public ResponseEntity<Map<String, Object>> sendToMe(@PathVariable Long user_id, @PathVariable Long recruit_id,
 			@RequestParam String tmp, HttpServletRequest req) throws IOException {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
 			String token = tmp;
 //			String token = req.getHeader("jwt-auth-token");
-			HashMap<String, Object> userInfo = kakao.getUserInfo(token);
 			kakao.sendToMe(token, recruit_id);
 
 			resultMap.put("status", true);
-			resultMap.put("info", userInfo);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/{user_id}/{recruit_id}/kakao_sendToFriends")
+	@ApiOperation(value = "카카오 메세지 친구에게 보내기")
+	public ResponseEntity<Map<String, Object>> sendToFriend(@PathVariable Long user_id, @PathVariable Long recruit_id,
+			@RequestParam String tmp, @RequestBody FriendDTO friends, HttpServletRequest req) throws IOException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			String token = tmp;
+//			String token = req.getHeader("jwt-auth-token");
+			System.out.println(friends.getUuids().size());
+			kakao.sendToFriends(token, recruit_id, friends.getUuids());
+
+			resultMap.put("status", true);
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {
@@ -132,7 +156,7 @@ public class UserController {
 		try {
 			String token = tmp;
 //			String token = req.getHeader("jwt-auth-token");
-			HashMap<String, Object> friendsInfo = kakao.friends(token);
+			List<FriendDTO> friendsInfo = kakao.friends(token);
 			resultMap.put("status", true);
 			resultMap.put("info", friendsInfo);
 			status = HttpStatus.ACCEPTED;

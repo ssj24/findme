@@ -23,7 +23,9 @@ public class UserDTO {
 	private String authKey;
 	private RoleType roleType;
 	private Date createdAt;
+
 	public enum RoleType {
 		USER, ADMIN
 	}
+
 }
