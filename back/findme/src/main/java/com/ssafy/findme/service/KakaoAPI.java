@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ssafy.findme.dto.FriendDTO;
 
 @Service
 public class KakaoAPI {
@@ -175,9 +178,9 @@ public class KakaoAPI {
 	}
 
 	// 친구목록받기
-	public HashMap<String, Object> friends(String access_Token) {
-		HashMap<String, Object> friendsInfo = new HashMap<>();
+	public List<FriendDTO> friends(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v1/api/talk/friends";
+		List<FriendDTO> list = new ArrayList<FriendDTO>();
 		try {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -200,27 +203,59 @@ public class KakaoAPI {
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(result);
 
-			int friends_cnt = element.getAsJsonObject().get("total_count").getAsInt();
-//			JsonArray elements = element.getAsJsonObject().get("elements").getAsJsonArray();
-			System.out.println("friends_cnt: " + friends_cnt);
-//			System.out.println("elements의 수: "+elements.size());
+			JsonArray elements = element.getAsJsonObject().get("elements").getAsJsonArray();
 
-			friendsInfo.put("friends_cnt", friends_cnt);
+			JsonObject tmp = null;
+			for (int i = 0; i < elements.size(); i++) {
+				tmp = (JsonObject) elements.get(i);
 
+				String profile_nickname_tmp = tmp.get("profile_nickname").toString();
+				String profile_thumbnail_image_tmp = tmp.get("profile_thumbnail_image").toString();
+				String uuid_tmp = tmp.get("uuid").toString();
+				String favorite_tmp = tmp.get("favorite").toString();
+
+				String profile_nickname = profile_nickname_tmp.substring(1, profile_nickname_tmp.length() - 1);
+				String profile_thumbnail_image = profile_thumbnail_image_tmp.substring(1,
+						profile_thumbnail_image_tmp.length() - 1);
+				int id = Integer.parseInt(tmp.get("id").toString());
+				String uuid = uuid_tmp.substring(1, uuid_tmp.length() - 1);
+				boolean favorite = false;
+				if (favorite_tmp.equals("true"))
+					favorite = true;
+
+				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, uuid, favorite));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return friendsInfo;
+		return list;
 	}
 
 	public void sendToMe(String access_Token, Long recruit_id) {
 		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id + " ");
 	}
 
-	public void sendToFriends(String access_Token, Long recruit_id) {
+	public void sendToFriends(String access_Token, Long recruit_id, List<String> list) {
+		int num = list.size();
+		String tmp = "";
+		switch (num) {
+		case 5:
+			tmp += list.get(4) + "*";
+		case 4:
+			tmp += list.get(3) + "*";
+		case 3:
+			tmp += list.get(2) + "*";
+		case 2:
+			tmp += list.get(1) + "*";
+		case 1:
+			tmp += list.get(0);
+		default:
+			break;
+
+		}
+		System.out.println(tmp);
 		CommandLineExecutor
-				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " ");
+				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 	}
 
 	public void sendMessagejorok(String access_Token) {
