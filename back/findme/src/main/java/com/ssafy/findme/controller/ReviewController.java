@@ -45,8 +45,8 @@ public class ReviewController {
 	@GetMapping("/review/findAll/{language_id}")
 	@ApiOperation(value = "프로그래밍 언어별 전체 리뷰 조회")
 	@ResponseBody
-	public List<ReviewDTO> findAllByLanguageId(@PathVariable Long language_id) {
-		return reviewservice.findAllByLanauageId(language_id);
+	public List<ReviewDTO> findAllByLanguageId(@PathVariable Long language_id, @RequestParam Long user_id) {
+		return reviewservice.findAllByLanauageId(language_id,user_id);
 	}
 
 	@DeleteMapping("/review/delete/{review_id}")
@@ -55,20 +55,19 @@ public class ReviewController {
 		reviewservice.delete(review_id);
 	}
 
-	@GetMapping("/review/findAll/{language_id}/user/{user_id}")
-	@ApiOperation(value = "사용자별 작성 리뷰 리스트")
-	public List<ReviewDTO> findReviewByUserIdAndLanguageId(@PathVariable Long language_id, @PathVariable Long user_id) {
-		return reviewservice.findReviewByUserIdAndLanguageId(user_id, language_id);
-	}
+//	@GetMapping("/review/findAll/{language_id}/user/{user_id}")
+//	@ApiOperation(value = "사용자별 작성 리뷰 리스트")
+//	public List<ReviewDTO> findReviewByUserIdAndLanguageId(@PathVariable Long language_id, @PathVariable Long user_id) {
+//		return reviewservice.findReviewByUserIdAndLanguageId(user_id, language_id);
+//	}
 	
-	
-	//리뷰 공감, 비공감
-	@GetMapping("/review/symp/findAll/{language_id}")
-	@ApiOperation(value = "리뷰 공감 리스트")
-	@ResponseBody
-	public List<SympDTO> sympList() {
-		return reviewservice.findAllSymp();
-	}
+//	//리뷰 공감, 비공감
+//	@GetMapping("/review/symp/findAll/{language_id}")
+//	@ApiOperation(value = "리뷰 공감 리스트")
+//	@ResponseBody
+//	public List<SympDTO> sympList() {
+//		return reviewservice.findAllSymp();
+//	}
 	
 	@PostMapping("/review/symp/save/{review_id}")
 	@ApiOperation(value = "하나의 리뷰 공감 누름")
@@ -76,12 +75,12 @@ public class ReviewController {
 		return reviewservice.saveSymp(review_id, user_id);
 	}
 	
-	@GetMapping("/review/symp/findAll/{user_id}")
-	@ApiOperation(value = "사용자가 공감 누른 리뷰 리스트")
-	@ResponseBody
-	public List<SympDTO> findSympByUserId(@PathVariable Long user_id) {
-		return reviewservice.findSympByUserId(user_id);
-	}
+//	@GetMapping("/review/symp/findAll/{language_id}/user/{user_id}")
+//	@ApiOperation(value = "사용자가 공감 누른 리뷰 리스트")
+//	@ResponseBody
+//	public List<SympDTO> findSympListByUserId(@PathVariable Long language_id, @PathVariable Long user_id) {
+//		return reviewservice.findByLanguageIdAndUserId(language_id, user_id);
+//	}
 	
 	@DeleteMapping("/review/symp/delete")
 	@ApiOperation(value = "리뷰 공감 해제")
@@ -89,12 +88,12 @@ public class ReviewController {
 		reviewservice.deleteSymp(review_id, user_id);
 	}
 	
-	@GetMapping("/review/unsymp/findAll")
-	@ApiOperation(value = "리뷰 비공감 리스트")
-	@ResponseBody
-	public List<UnsympDTO> unsympList() {
-		return reviewservice.findAllUnsymp();
-	}
+//	@GetMapping("/review/unsymp/findAll")
+//	@ApiOperation(value = "리뷰 비공감 리스트")
+//	@ResponseBody
+//	public List<UnsympDTO> unsympList() {
+//		return reviewservice.findAllUnsymp();
+//	}
 	
 	@PostMapping("/review/unsymp/save/{review_id}")
 	@ApiOperation(value = "하나의 리뷰 비공감 누름")
@@ -102,12 +101,12 @@ public class ReviewController {
 		return reviewservice.saveUnsymp(review_id, user_id);
 	}
 	
-	@GetMapping("/review/unsymp/findAll/{user_id}")
-	@ApiOperation(value = "사용자가 비공감 누른 리뷰 리스트")
-	@ResponseBody
-	public List<UnsympDTO> findUnsympByUserId(@PathVariable Long user_id) {
-		return reviewservice.findUnsympByUserId(user_id);
-	}
+//	@GetMapping("/review/unsymp/findAll/{language_id}/user/{user_id}")
+//	@ApiOperation(value = "사용자가 비공감 누른 리뷰 리스트")
+//	@ResponseBody
+//	public List<UnsympDTO> findUnsympByUserId(@PathVariable Long user_id) {
+//		return reviewservice.findUnsympByUserId(user_id);
+//	}
 	
 	@DeleteMapping("/review/unsymp/delete")
 	@ApiOperation(value = "리뷰 비공감 해제")

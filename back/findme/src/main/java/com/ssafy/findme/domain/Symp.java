@@ -35,4 +35,5 @@ public class Symp {
 	@NotNull
 	private Review review;
 	
+	private Long languageId;
 }
