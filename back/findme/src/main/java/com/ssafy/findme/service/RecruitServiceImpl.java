@@ -64,7 +64,7 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-		String filePath = "src/main/python/MatchRecruit.py";
+		String filePath = "C:\\MatchRecruit.py";
 		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
 		Process p;
@@ -175,7 +175,7 @@ public class RecruitServiceImpl implements IRecruitService {
 
 		for (int i = 0; i < matchRecruitList.size() / 2; i++) {
 			List<String> matchRecruitTechStack = Arrays
-					.asList(matchRecruitList.get(i).getTech_stack().replace("·", ",").split(","));
+					.asList(matchRecruitList.get(i).getTechStack().replace("·", ",").split(","));
 
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {

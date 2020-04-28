@@ -108,7 +108,7 @@ def start(userId):
     PORT = 3306
     USER = 'root'
     PASSWORD = 'ssafy'
-    DB = 'tmp_findme'
+    DB = 'findme'
 
     # MySQL Connection 연결
     conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, db=DB)
@@ -125,7 +125,6 @@ def start(userId):
 
     # 데이터 Fetch
     userRows = curs.fetchall()
-
     # 데이터 프레임 생성
     myInfo = pd.DataFrame(userRows)
     myInfo.columns = ['id', 'job_category', 'tech_stack']

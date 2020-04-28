@@ -1,6 +1,8 @@
 package com.ssafy.findme.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.findme.dto.FriendDTO;
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.repository.RecruitRepository;
 import com.ssafy.findme.service.IUserService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
@@ -32,6 +35,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api") // url과 컨트롤러의 메서드 매핑할때 사용하는 스프링 프레임워크 어노테이션
 @RestController // 메서드마다 @ResponseBody 안붙여도 전송가능
 public class UserController {
+
+	@Autowired
+	private static RecruitRepository recruitrepo;
 
 	@Autowired
 	private IUserService userservice;
@@ -164,6 +170,27 @@ public class UserController {
 			List<FriendDTO> friendsInfo = kakao.friends(token);
 			resultMap.put("status", true);
 			resultMap.put("info", friendsInfo);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@GetMapping("/test")
+	@ApiOperation(value = "deleteRecruit")
+	public ResponseEntity<Map<String, Object>> test() {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			System.out.println("scheduleDeleteRecruit: " + new Date());
+			// 마감일이 지금보다 이르면 다 지워주자
+			long now = (Calendar.getInstance().getTimeInMillis() / 1000);
+			recruitrepo.deleteByDueDate(now);
+			System.out.println("End DeleteRecruit");
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {
