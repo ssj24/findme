@@ -44,7 +44,7 @@ def makeup_survey(arr, data):
         if d == 1: arr.append("불편함")
         elif d == 2: arr.append("배우기어렵다")
         elif d == 3: arr.append("낮은수요")
-        elif d == 4: arr.append("개발속도느림")
+        elif d == 4: arr.append("느린개발속도")
         else: arr.append("실행속도느림")
 
     for d in data[6]:
@@ -58,8 +58,8 @@ def makeup_survey(arr, data):
         if d == 1: arr.append("사용편리")
         elif d == 2: arr.append("배우기 쉽다")
         elif d == 3: arr.append("높은수요")
-        elif d == 4: arr.append("개발속도빠름")
-        else: arr.append("실행속도빠름")
+        elif d == 4: arr.append("빠른개발속도")
+        else: arr.append("빠른실행속도")
 
     for d in data[5]:
         arr.append(d)

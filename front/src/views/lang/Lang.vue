@@ -11,12 +11,13 @@
       <survey :langId="langSeq" :chk="chk" :langName="langs[langSeq].title"></survey>
     </span>
     <v-row>
-      <v-col cols="12">
-        <v-card class="cloudCard mx-auto">
+      <v-col cols="11" class="mx-auto">
+        <v-card class="cloudCard mt-10" outlined>
+          
           <cloud
-            v-if="wordCount"
+            v-if="flag"
             class="cloud mx-auto" 
-            :data="wordCount" 
+            :words="words" 
             :fontSizeMapper="fontSizeMapper" 
             :rotate="rotate" 
             :font="font" 
@@ -25,41 +26,12 @@
             :colors="colors"
             :coloring="coloring"
             />
-        
-          <div>
-            <label for="font">Font</label>:&nbsp;
-            <select v-model="font" name="font">
-              <option>Serif</option>
-              <option>Helvetica</option>
-              <option>Arial</option>
-              <option>Times</option>
-              <option>Times New Roman</option>
-              <option>Courier</option>
-              <option>Impact</option>
-              <option>Georgia</option>
-              <option>Cafe24Dangdanghae</option>
-            </select>
-            <br />
-            <label for="spiral">Spiral Style</label>:&nbsp;
-            <select v-model="spiral" name="spiral">
-              <option>archimedean</option>
-              <option>rectangular</option>
-            </select>
-            <br />
-            <label for="spiral">Colors</label>:&nbsp;
-            [<span v-for="color in useColors" :key="color">
-              {{color.toString()}},
-            </span>]
-            <button @click="addColor">Add Color</button> / 
-            <button @click="removeColor">Remove Color</button>
-            <br />
-            <label for="coloring">Coloring By</label>:&nbsp;
-            <select v-model="coloring" name="coloring">
-              <option>size</option>
-              <option>random</option>
-            </select>
-          </div>
+          <v-img v-else class="text-center pa-auto"
+          src="https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png" width="500" height="500">
+          <v-card-text >통계치가 부족합니다</v-card-text>
+          </v-img>
         </v-card>
+
       </v-col>
     </v-row>
     <p style="display: none;">
@@ -272,13 +244,14 @@ export default {
           },
         ],
       min: 0,
-			max: 65,
-			padding: 0,
-			words: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed cursus metus. Proin posuere, risus vestibulum malesuada consectetur, est justo vehicula eros, et hendrerit velit eros nec sem. Fusce lacinia ex et urna suscipit lobortis. Sed sollicitudin sodales felis, in tincidunt erat pretium eget. Integer at ligula rutrum, faucibus massa eget, porttitor sem. Ut non porttitor lorem. In luctus nec dui quis finibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec ultrices leo vitae vehicula vehicula. Cras porttitor, quam eu lobortis luctus, nunc justo suscipit sem, sit amet semper velit ante quis turpis. Vestibulum mattis sollicitudin ullamcorper. Maecenas sit amet nulla vitae nisl blandit dictum. Proin pharetra eget nisl pharetra venenatis. Quisque interdum ullamcorper neque tincidunt ultricies.",
-			fontSizeMapper: word => Math.log2(word.value*5) * 12,
+			max: 10,
+      padding: 10,
+      words : [],
+      flag : false,
+			fontSizeMapper: word => Math.log2(word.value*5) * 13,
 			font: "Helvetica",
 			spiral: "archimedean",
-			colors: ['coral', 'blue', 'hotpink', 'peachpuff', 'green'],
+			colors: ['#403030', '#f97a7a'],
 			coloring: 'random',
 			colorCount: 3,
       comment: '',
@@ -312,6 +285,7 @@ export default {
     this.getReviews();
     // this.getSymCommentList();
     this.getUnsymCommentList();
+    this.getTextMiningData();
   },
   methods: {
     addColor() {
@@ -412,35 +386,32 @@ export default {
             return this.getUnsymCommentList()
           })
       }
+    },
+    getTextMiningData() {
+      baseURL("/language/detail/"+(Number(this.langSeq)+1))
+      .then(res=>{
+        let keys = Object.keys(res.data)
+        for (let i = 0; i < keys.length; i++) {
+          if(keys[0] == "message") {
+            this.flag = false;
+            return ;
+          }
+          this.words.push({
+            text:keys[i],
+            value:res.data[keys[i]]
+          })
+        }
+        this.flag = true
+      })
+
+      console.log("words", this.words)
     }
   },
   computed: {
 		rotate: function() {
 			let newMin = this.min
 			let newMax = this.max
-			return () => Math.random() * (newMax - newMin) + newMin
-		},
-		wordCount: function() {
-			if(!this.words)
-				return []
-			let occurences = this.words.split(' ').reduce((allNames, name) => { 
-				if (name in allNames) {
-					allNames[name]++;
-				} else {
-					allNames[name] = 1;
-				}
-				return allNames;
-			}, {});
-			
-			let occurencesCount = []
-			
-			for(var text in occurences) {
-				let obj = {}
-				obj.text = text;
-				obj.value = occurences[text]
-				occurencesCount.push(obj)
-			}
-			return occurencesCount
+      return () => Math.random() * (newMax - newMin) + newMin
 		},
 		useColors() {
 			return this.colors.filter((color, index) => {
