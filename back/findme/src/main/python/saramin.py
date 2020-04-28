@@ -9,14 +9,14 @@ from sqlalchemy import create_engine
 # MySQL Connector using pymysql
 pymysql.install_as_MySQLdb()
 # import MySQLdb
-db_data = 'mysql+mysqldb://' + 'root' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
-       + 'test3' + '?charset=utf8mb4'
+db_data = 'mysql+mysqldb://' + 'ssafy' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
+       + 'findme' + '?charset=utf8mb4'
 engine = create_engine(db_data, encoding='utf-8')
 
 conn = pymysql.connect(host='localhost', 
-                    user='root', 
+                    user='ssafy', 
                     password='ssafy',
-                    db='test3', 
+                    db='findme', 
                     connect_timeout=1)
 #https://oapi.saramin.co.kr/job-search/?access-key=0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O&start=0&count=110&job_category=4&sort=pd
 access_key="0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O"
