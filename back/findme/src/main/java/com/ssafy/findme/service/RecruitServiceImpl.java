@@ -109,7 +109,7 @@ public class RecruitServiceImpl implements IRecruitService {
 		List<RecruitDTO> pickRecruitList = new ArrayList<>();
 
 		try {
-			List<Pick> tmpPickRecruitList = pickRepo.findByuserId(Long.parseLong(userId));
+			List<Pick> tmpPickRecruitList = pickRepo.findByUserId(Long.parseLong(userId));
 
 			for (int i = 0; i < tmpPickRecruitList.size(); i++) {
 				Recruit pickRecruit = recruitRepo.findById(tmpPickRecruitList.get(i).getRecruit().getId());
