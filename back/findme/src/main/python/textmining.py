@@ -5,10 +5,6 @@ import pandas as pd
 from konlpy.tag import Okt
 from collections import Counter
 from pandas import DataFrame
-# import matplotlib.pyplot as plt
-# from PIL import Image
-# from wordcloud import WordCloud
-# import numpy as np
 
 language = (
         'Java',
@@ -155,21 +151,6 @@ def main():
     df.to_sql('textmining', con, if_exists='replace', index=False, index_label="id")
     conn.commit()
     conn.close()
-
-    # wordcloud
-    # mask = np.array(Image.open("alice.png"))
-    # print(mask)
-
-    # #텍스트를 읽어주시면 됩니다.
-    # text = tags
-    
-    # # 그리고 다음과 같이 WordCloud 객체를 만들어 주시고
-    # wc = WordCloud(font_path = 'C:/Windows/Fonts/malgun.ttf',background_color="white", max_words=20000, 
-    # mask=mask, max_font_size=300).generate_from_frequencies(text)
-
-    # plt.imshow(wc, interpolation='bilinear')
-    # plt.axis('off')
-    # plt.show()
  
 if __name__ == '__main__':
     main()
