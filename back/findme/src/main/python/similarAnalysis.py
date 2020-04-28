@@ -28,8 +28,10 @@ def sim_pearson(data, id1, id2): # 피어슨 유사도
             sum_id1 += pow(data[id1][tech] - avg_id1, 2)
             sum_id2 += pow(data[id2][tech] - avg_id2, 2)
             sum_id1_id2 += (data[id1][tech] - avg_id1) * (data[id2][tech] - avg_id2)
-    
-    return sum_id1_id2 / (math.sqrt(sum_id1)*math.sqrt(sum_id2))
+    try:
+        return sum_id1_id2 / (math.sqrt(sum_id1)*math.sqrt(sum_id2))
+    except:
+        return 0
 
 
 def top_match(data, id, index=3, sim_function=sim_pearson):
@@ -43,6 +45,7 @@ def top_match(data, id, index=3, sim_function=sim_pearson):
 
 
 def main(register_id):
+    print(register_id)
     register_id = int(register_id)
     language_columns = (
         'id',
@@ -68,7 +71,7 @@ def main(register_id):
         'Delphi'
     )
 
-    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test2', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
 
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()
