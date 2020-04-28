@@ -25,6 +25,7 @@ export default {
     }
     baseURL('user/key_alter?email='+data.email+'&key='+data.confirm_code)
       .then(()=> {
+        alert("인증되셨습니다 로그인 해주세요")
         this.$router.push({
           name: "Main",
         });
