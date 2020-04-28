@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.findme.domain.User;
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.mapper.EntityMapper;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.security.JwtService;
 
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements IAccountService {
 	private JwtService jwtService;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private EntityMapper entityMapper;
 
 	private String IP = "http://localhost:8080";
 
@@ -53,7 +56,7 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
-		CommandLineExecutor.execute("python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
 

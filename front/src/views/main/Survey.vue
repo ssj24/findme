@@ -5,19 +5,9 @@
         <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
       </template> -->
       <v-card class="pa-3">
-        <!-- <span v-if="langs.length >= 2">
-          <v-select
-            :items="langs"
-            label="언어를 선택해주세요"
-            v-model="lang"
-            style="width: 50%; font-size: 1.2rem; font-weight: 900; line-height: 100px;"
-            class="mx-auto lang-select"
-            >
-          </v-select>
-        </span> -->
         <v-card-title>
           <span class="headline" style="font-family: Cafe24Dangdanghae !important;">
-            '{{lang}}'를 알려줘!
+            '{{langName}}'를 알려줘!
           </span>
           <br>
         </v-card-title>
@@ -31,20 +21,22 @@
             <v-row class="survey">
               <v-col cols="12">
                 <v-select
+                  id="reasonSelect"
                   color="indigo darken-3"
                   v-model="reason"
                   :items="reasonList"
-                  :label= "lang + '을 사용하는 이유는 무엇입니까?'"
-                  required multiple
-                ></v-select>
+                  :label="langName + '을 사용하는 이유는 무엇입니까?'"
+                  required
+                >
+                </v-select>
               </v-col>
               <v-col cols="12">
                 <v-select
                   color="indigo darken-3"
                   v-model="advantage"
                   :items="advantageList"
-                  :label="lang + '의 장점은 무엇입니까?'"
-                  required multiple
+                  :label="langName + '의 장점은 무엇입니까?'"
+                  required
                 ></v-select>
               </v-col>
               <v-col cols="12">
@@ -52,8 +44,8 @@
                   color="indigo darken-3"
                   v-model="disadvantage"
                   :items="disadvantageList"
-                  :label="lang + '의 단점은 무엇입니까?'"
-                  required multiple
+                  :label="langName + '의 단점은 무엇입니까?'"
+                  required
                 ></v-select>
               </v-col>
               <v-col cols="12">
@@ -63,7 +55,7 @@
                   v-model="comment"
                   color="indigo darken-3"
                   :messages="['ex)프로그래밍을 처음 하는 사람에게 강추']"
-                  :label="lang + '에 대해 하고 싶은 말을 적어주세요.'" 
+                  :label="langName + '에 대해 하고 싶은 말을 적어주세요.'" 
                   required></v-textarea>
               </v-col>
             </v-row>
@@ -84,7 +76,7 @@ import cookie from '@/cookie.js'
 export default {
   props: {
     langId: {
-      type: Number,
+      type: String,
     },
     chk: {
       type: Boolean,
@@ -96,8 +88,8 @@ export default {
   data: () => ({
       dialog: false,
       userName: '',
-      langs: [],
-      lang: this.langName,
+      langSeq: 0,
+      lang: '',
       reason: '',
       reasonList: [
         '사용이 편리하다', 
@@ -125,11 +117,10 @@ export default {
       comment: ''
     }),
   mounted() {
-    if (this.langId) {
-      this.dialog = this.chk;
-      this.langs = []
+      this.lang = this.langName
+      this.userName = cookie.cookieName()
+      this.dialog = !this.chk
       // this.lang = this.langsList[this.langId+1]
-    }
   },
   methods: {
     userProfile() {
@@ -146,19 +137,17 @@ export default {
           // 사용자의 기술스택에 대해 모두 설문조사를 하지 않았을 경우 dialog를 true로 바꾼다
         )
     },
+    
     submitSurvey() {
       let data = {
-        advantage: this.advantageList[this.advantage],
-        Disadvantage: this.disadvantageList[this.disadvantage],
+        advantage: this.advantageList.indexOf(this.advantage) + 1,
+        disadvantage: this.disadvantageList.indexOf(this.disadvantage) + 1,
         totalReview: this.comment,
-        useReason: this.reasonList[this.reason],
-        languageId: this.langsList[this.lang],
+        useReason: this.reasonList.indexOf(this.reason) + 1,
+        languageId: this.langId + 1,
         userId: cookie.cookieUser()
       }
       baseURL.post('survey/write', data)
-        .then(res=>{
-          console.log(res)
-        })
     }
   }
 }
