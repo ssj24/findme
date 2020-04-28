@@ -23,7 +23,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items 
-        class="hidden-xs-only"
+        class=""
         v-for="item in menuItems" 
           :key="item.title"
           @click="logout(item.title)"
@@ -116,7 +116,7 @@ export default {
 		-webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 1px rgba(0, 0, 0, 0.014);
-		animation: textclip 1.5s linear infinite;
+		animation: textclip 3s linear infinite;
 		display: inline-block;
   }
   @keyframes textclip {

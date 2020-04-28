@@ -13,7 +13,6 @@
   font-style: normal; 
 }
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:100');
-@font-face { font-family: 'NeoDunggeunmo'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.3/NeoDunggeunmo.woff') format('woff'); font-weight: normal; font-style: normal; }
 @font-face { font-family: 'MapoMaponaru'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoMaponaruA.woff') format('woff'); font-weight: normal; font-style: normal; }
 @font-face { font-family: 'ON-IGothic'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff'); font-weight: normal; font-style: normal; }
 *, *::before, *::after {
@@ -63,10 +62,11 @@ a, a:link, a:visited, a:hover, a:active {
 .signup .row, .form .row {
   /* background-image: linear-gradient(130deg, #fff 10%, #292381 99%); */
   padding: 20px;
-  border-radius: 0px 150px 0px 150px;
+  border-radius: 10px;
+  /* border-radius: 0px 150px 0px 150px; */
   /* border: 1px solid #999; */
   border-top: #fff;
-  box-shadow: 5px 5px rgb(205, 204, 228);
+  /* box-shadow: 5px 5px rgb(205, 204, 228); */
 }
 .form-header {
   font-size: 30px;
@@ -78,6 +78,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 .btnParent .v-btn {
   border-radius: 100px;
+  padding: 10px 0;
 }
 .btnParent .v-btn:before {
   border-radius: 100px;
@@ -90,8 +91,8 @@ a, a:link, a:visited, a:hover, a:active {
 }
 .btnParent .v-btn:hover .v-btn__content {
   color: #fff;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .btnParent .v-btn .v-btn__content {
-  font-size: 1.2em;
+  font-size: 0.8rem;
 }

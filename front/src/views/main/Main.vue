@@ -53,14 +53,15 @@
       </div>
       </v-carousel-item>
   </v-carousel>
-  <survey :userId="userId" :langsList="langs" :new="newUser"></survey>
   <v-container class="mx-auto text-center langContainer">
     <span
       v-for="(lang, i) in langs"
       :key="i"
+      style="height: 200px;"
     >
       <router-link 
-        :to="{name:'Lang', params:{langId:i}}">
+        :to="{name:'Lang', params:{langId:i}}"
+        >
         <div
           :style="'background:'+lang.bgs"
           class="toLang"
@@ -112,7 +113,6 @@
 </template>
 
 <script>
-import Survey from '@/views/main/Survey.vue'
 import cookie from '@/cookie.js'
 import '@/assets/css/main.css'
 
@@ -126,7 +126,6 @@ const gradients = [
   ]
   export default {
     components: {
-      Survey,
     },
     props: {
       
@@ -279,9 +278,6 @@ const gradients = [
     },
     mounted() {
       this.userId = cookie.cookieUser()
-      if (this.$route.params) {
-        this.newUser = this.$route.params.isNew
-      }
     },
     methods: {
       
@@ -302,7 +298,9 @@ const gradients = [
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
+
 .toLang {
   width: 200px;
   height: 200px;
@@ -311,10 +309,10 @@ const gradients = [
   background-size: contain !important; 
   background-position: center !important;
   background-repeat: no-repeat !important;
-  top: 0px;
+  // top: 0px;
   position: relative;
   border-radius: 4px;
-  padding: 32px 24px;
+  // padding: 32px 24px;
   border: 1px solid #f2f8f9;
   
 }
@@ -338,6 +336,8 @@ const gradients = [
   border: 1px solid #000547;
   box-shadow: 0px 0px 300px 200px rgba(255, 255, 255, 0.562);
   z-index: 500;
+  transform: scale(1.05);
+  transition: transform 0.2s linear;
   .go-corner { 
     opacity: 1;
     width: 64px;

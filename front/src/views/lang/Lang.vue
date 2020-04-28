@@ -7,14 +7,17 @@
     <div class="wrapper">
       <div class="text"></div>
     </div>
-    <survey :langId="langSeq"></survey>
+    <span v-if="langSeq">
+      <survey :langId="langSeq" :chk="chk" :langName="langName"></survey>
+    </span>
     <v-row>
-      <v-col cols="12">
-        <v-card class="cloudCard mx-auto">
+      <v-col cols="11" class="mx-auto">
+        <v-card class="cloudCard mt-10" outlined>
+          
           <cloud
-            v-if="wordCount"
+            v-if="flag"
             class="cloud mx-auto" 
-            :data="wordCount" 
+            :words="words" 
             :fontSizeMapper="fontSizeMapper" 
             :rotate="rotate" 
             :font="font" 
@@ -23,41 +26,12 @@
             :colors="colors"
             :coloring="coloring"
             />
-        
-          <div>
-            <label for="font">Font</label>:&nbsp;
-            <select v-model="font" name="font">
-              <option>Serif</option>
-              <option>Helvetica</option>
-              <option>Arial</option>
-              <option>Times</option>
-              <option>Times New Roman</option>
-              <option>Courier</option>
-              <option>Impact</option>
-              <option>Georgia</option>
-              <option>Cafe24Dangdanghae</option>
-            </select>
-            <br />
-            <label for="spiral">Spiral Style</label>:&nbsp;
-            <select v-model="spiral" name="spiral">
-              <option>archimedean</option>
-              <option>rectangular</option>
-            </select>
-            <br />
-            <label for="spiral">Colors</label>:&nbsp;
-            [<span v-for="color in useColors" :key="color">
-              {{color.toString()}},
-            </span>]
-            <button @click="addColor">Add Color</button> / 
-            <button @click="removeColor">Remove Color</button>
-            <br />
-            <label for="coloring">Coloring By</label>:&nbsp;
-            <select v-model="coloring" name="coloring">
-              <option>size</option>
-              <option>random</option>
-            </select>
-          </div>
+          <v-img v-else class="text-center pa-auto"
+          src="https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png" width="500" height="500">
+          <v-card-text >통계치가 부족합니다</v-card-text>
+          </v-img>
         </v-card>
+
       </v-col>
     </v-row>
     <p style="display: none;">
@@ -83,35 +57,42 @@
         :key="index"
       >
         <span
+          :id="'Content'+review.id"
           v-if="langSeq == (review.languageId - 1)"
         >
           
           {{review.trans_updatedAt}}
           {{review.userId}}
           {{review.name}}
-          <input v-model="modifyComment[index]" :disabled="isDisabled" class="reviewContent" :placeholder="review.content">
-          <!-- {{review.content}} -->
+          <p class="reviewContent">
+            {{review.content}}
+          </p>
           {{review.id}}
+          <span v-if="review.user.id != cookieId">
             <v-icon 
-              @click="symComment(review.id)"
-              v-if="!review.unsymped"
+              @click="symComment(review)"
+              :class="{upup: review.user.checkSymp}"
+              v-if="!review.user.checkUnsymp"
               >
               <!-- :class="{upup: review.symped}" -->
               mdi-thumb-up
             </v-icon>
             <v-icon 
               @click="UnsymComment(review)"
-              :class="{downdown: review.unsymped}"
-              v-if="!review.symped"
+              :class="{downdown: review.user.checkUnsymp}"
+              v-if="!review.user.checkSymp"
               >
               mdi-thumb-down
             </v-icon>
-          <v-btn @click="updateComment(review.id, index)">
-            수정
-          </v-btn>
-          <v-btn @click="deleteComment(review.id)">
-            삭제
-          </v-btn>
+          </span>
+          <span v-else>
+            <v-btn @click="updateComment(review, index)">
+              수정
+            </v-btn>
+            <v-btn @click="deleteComment(review.id)">
+              삭제
+            </v-btn>
+          </span>
         </span>
         
       </v-row>
@@ -185,7 +166,10 @@ export default {
   },
   data () {
     return {
+      cookieId: 0,
       langSeq: 0,
+      langName: '',
+      chk: false,
       langs: [
           {
             title: 'Java',
@@ -269,13 +253,14 @@ export default {
           },
         ],
       min: 0,
-			max: 65,
-			padding: 0,
-			words: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed cursus metus. Proin posuere, risus vestibulum malesuada consectetur, est justo vehicula eros, et hendrerit velit eros nec sem. Fusce lacinia ex et urna suscipit lobortis. Sed sollicitudin sodales felis, in tincidunt erat pretium eget. Integer at ligula rutrum, faucibus massa eget, porttitor sem. Ut non porttitor lorem. In luctus nec dui quis finibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec ultrices leo vitae vehicula vehicula. Cras porttitor, quam eu lobortis luctus, nunc justo suscipit sem, sit amet semper velit ante quis turpis. Vestibulum mattis sollicitudin ullamcorper. Maecenas sit amet nulla vitae nisl blandit dictum. Proin pharetra eget nisl pharetra venenatis. Quisque interdum ullamcorper neque tincidunt ultricies.",
-			fontSizeMapper: word => Math.log2(word.value*5) * 12,
+			max: 10,
+      padding: 10,
+      words : [],
+      flag : false,
+			fontSizeMapper: word => Math.log2(word.value*5) * 13,
 			font: "Helvetica",
 			spiral: "archimedean",
-			colors: ['coral', 'blue', 'hotpink', 'peachpuff', 'green'],
+			colors: ['#403030', '#f97a7a'],
 			coloring: 'random',
 			colorCount: 3,
       comment: '',
@@ -288,6 +273,14 @@ export default {
   },
   mounted() {
     this.langSeq = this.$route.params.langId;
+    this.langName = this.langs[this.langSeq].title;
+    this.cookieId = cookie.cookieUser();
+    let language_id = this.langSeq + 1
+  
+    baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
+      .then(res=>{
+        this.chk = res.data
+      })
     
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
@@ -305,6 +298,7 @@ export default {
     this.getReviews();
     // this.getSymCommentList();
     this.getUnsymCommentList();
+    this.getTextMiningData();
   },
   methods: {
     addColor() {
@@ -329,20 +323,26 @@ export default {
     },
     getReviews() {
       let language_id = this.langSeq + 1
-      baseURL('review/findAll/'+ language_id)
+      baseURL('review/findAll/'+ language_id+'?user_id='+cookie.cookieUser())
         .then(res => {
           this.reviews = res.data
           
         })
     },
     updateComment(v, i) {
-      if (this.isDisabled) {
+      if (this.isDisabled == true) {
         this.isDisabled = false;
+        let updatingReview = document.querySelector('#Content'+v.id)
+        updatingReview.appendChild(document.createElement("input"))
+        updatingReview.lastChild.style.display="block";
       } else {
-        baseURL.put('review/update/' + v + '?content='+this.modifyComment[i])
+        let updatingReview = document.querySelector('#Content'+v.id)
+        this.modifyComment[i] = updatingReview.lastChild.value
+        baseURL.put('review/update/' + v.id + '?content='+this.modifyComment[i])
           .then(()=> {
             this.modifyComment = []
             this.getReviews()
+            updatingReview.removeChild(updatingReview.lastChild);
             this.idDisabled=true;
           })
       }
@@ -359,81 +359,57 @@ export default {
         return ele != value;
       })
     },
-    getSymCommentList() {
-      baseURL('review/symp/findAll/{language_id}')
-        .then(res => {
-          this.symCommentList = res.data
-          
-        })
+    symComment(v) {
+      if (v.user.checkSymp) {
+        baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+          })
+      } else {
+        baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+          })
+      }
     },
-    getUnsymCommentList() {
-      baseURL('review/unsymp/findAll/'+cookie.cookieUser())
-        .then(res => {
-          this.unsymCommentList = res.data;
-          var i;
-          var j;
-          for (i=0; i < this.unsymCommentList.length; i++) {
-            for (j=0; j < this.reviews.length; j++) {
-              if (this.unsymCommentList[i].reviewId == this.reviews[j].id) {
-                this.reviews[j].unsymped = true;
-              }
-            }
-          }
-        })
-    },
-    // symComment(v) {
-    //   if () {
-    //     baseURL.post('review/symp/save/'+v+'?user_id='+cookie.cookieUser())
-    //       .then(() => {
-    //         return this.getSymCommentList()
-    //       })
-    //   } else {
-    //     baseURL.delete('review/symp/delete?review_id='+v+'&user_id='+cookie.cookieUser())
-
-    //   }
-    // },
     UnsymComment(v) {
-      if (v.unsymped) {
+      if (v.user.checkUnsymp) {
         baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
           .then(() => {
             this.getReviews()
-            return this.getUnsymCommentList()
           })
       } else {
         baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
           .then(() => {
-            return this.getUnsymCommentList()
+            this.getReviews()
           })
       }
+    },
+    getTextMiningData() {
+      baseURL("/language/detail/"+(Number(this.langSeq)+1))
+      .then(res=>{
+        let keys = Object.keys(res.data)
+        for (let i = 0; i < keys.length; i++) {
+          if(keys[0] == "message") {
+            this.flag = false;
+            return ;
+          }
+          this.words.push({
+            text:keys[i],
+            value:res.data[keys[i]]
+          })
+        }
+        this.flag = true
+      })
+
+      console.log("words", this.words)
     }
   },
   computed: {
 		rotate: function() {
 			let newMin = this.min
 			let newMax = this.max
-			return () => Math.random() * (newMax - newMin) + newMin
-		},
-		wordCount: function() {
-			if(!this.words)
-				return []
-			let occurences = this.words.split(' ').reduce((allNames, name) => { 
-				if (name in allNames) {
-					allNames[name]++;
-				} else {
-					allNames[name] = 1;
-				}
-				return allNames;
-			}, {});
-			
-			let occurencesCount = []
-			
-			for(var text in occurences) {
-				let obj = {}
-				obj.text = text;
-				obj.value = occurences[text]
-				occurencesCount.push(obj)
-			}
-			return occurencesCount
+      return () => Math.random() * (newMax - newMin) + newMin
 		},
 		useColors() {
 			return this.colors.filter((color, index) => {
@@ -528,5 +504,8 @@ h2.no-span {
 }
 .downdown::before {
   color: rgb(15, 95, 148);
+}
+.reviewContent {
+  display: inline-block;
 }
 </style>

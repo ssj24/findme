@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.findme.domain.User;
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.mapper.EntityMapper;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.security.JwtService;
 
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements IAccountService {
 	private JwtService jwtService;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private EntityMapper entityMapper;
 
 	private String IP = "http://localhost:8080";
 
@@ -53,7 +56,7 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
-		CommandLineExecutor.execute("python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
 
@@ -126,8 +129,6 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO login(UserDTO trial) {
 		User member = accountrepo.findByEmail(trial.getEmail())
 				.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
-		if (!member.isUtility())
-			throw new IllegalArgumentException("탈퇴한 계정입니다.");
 		if (!member.getAuthKey().equals("Y"))
 			throw new IllegalArgumentException("인증되지 않은 계정입니다.");
 		if (!trial.getPassword().equals(member.getPassword()))

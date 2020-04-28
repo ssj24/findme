@@ -45,6 +45,7 @@ def top_match(data, id, index=3, sim_function=sim_pearson):
 
 
 def main(register_id):
+    print(register_id)
     register_id = int(register_id)
     language_columns = (
         'id',
@@ -70,7 +71,7 @@ def main(register_id):
         'Delphi'
     )
 
-    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test3', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
 
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()

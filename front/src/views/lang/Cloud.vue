@@ -1,6 +1,7 @@
 <script>
 import * as d3 from "d3";
 import * as cloud from 'd3-cloud';
+
 export default {
     name: "Cloud",
     data() {
@@ -11,7 +12,7 @@ export default {
         }
     },
     props: {
-        data: {
+        words: {
             type: Array,
             required: true,
         },
@@ -19,12 +20,12 @@ export default {
             type: Function,
             required: true,
         },
-        onWordClick: {
-            type: Function,
-            default: (word) => { 
-                window.alert(`You clicked ${word.text}`) 
-            },
-        },
+        // onWordClick: {
+        //     type: Function,
+        //     default: (word) => { 
+        //         window.alert(`You clicked ${word.text}`) 
+        //     },
+        // },
         rotate: {
             type: [Function, String, Number],
             default: 0,
@@ -61,7 +62,7 @@ export default {
         this.createCanvas()
     },
     watch: {
-        data() {
+        words() {
             this.createCanvas()
         },
         rotate() {
@@ -81,11 +82,12 @@ export default {
         },
         coloring() {
             this.createCanvas()
-        }
+        },
+        
     },
     methods: {
         createCanvas: function() {
-            const wordCounts = this.data.map(
+            const wordCounts = this.words.map(
                 text => ({ ...text })
             );
             d3.select(this.$el).selectAll('*').remove();
@@ -145,5 +147,5 @@ export default {
 </script>
 
 <template>
-    <div class="wordCloud mx-auto" ref="wordCloud"></div>
+    <div class="wordCloud" ref="wordCloud"></div>
 </template>

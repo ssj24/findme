@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class UserDTO {
 	private Long id;
 	private String email;
@@ -19,7 +21,6 @@ public class UserDTO {
 	private String techStack;
 	private String wishHope;
 	private String wishJob;
-	private boolean utility;
 	private String authKey;
 	private RoleType roleType;
 	private Date createdAt;

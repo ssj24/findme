@@ -54,7 +54,6 @@ public class AccountController {
 		// 비밀번호 암호화
 		String encryPassword = UserSha256.encrypt(user.getPassword());
 		user.setPassword(encryPassword);
-		user.setUtility(true);
 		user.setRoleType(RoleType.USER);
 		user.setCreatedAt(new Date());
 		// 회원가입

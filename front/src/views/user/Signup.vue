@@ -1,6 +1,11 @@
 <template>
   <!-- <div class="signup"> -->
     <v-container fill-height class="justify-center">
+      <svg id="stroke" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+        <defs>
+          <path id="line" d="M2 2c49.7 2.6 100 3.1 150 1.7-46.5 2-93 4.4-139.2 7.3 45.2-1.5 90.6-1.8 135.8-.6" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        </defs>
+      </svg>
       <v-row align="center" justify="center" style="background-color: white;">
         <v-col 
           justify="center"
@@ -23,15 +28,18 @@
               style="width: 80%; display: inline-block;"
             >
             </v-text-field>
-            <v-btn @click="emailCheck()"
-              class="ml-2"
-              style="width: 18%; display: inline-block;"
-              outlined
-              small
-              color="indigo darken-3"
-            >
-              중복 확인
-            </v-btn>
+            <span class="btnParent">
+              <v-btn @click="emailCheck()"
+                class="ml-2"
+                style="width: 18%; display: inline-block;"
+                outlined
+                small
+                color="indigo darken-3"
+              >
+                중복 확인
+              </v-btn>
+            </span>
+            
             <v-text-field
               v-model="name"
               label="이름"
@@ -86,27 +94,25 @@
               label="선호 기업"
               required
             ></v-text-field>
-            <v-layout justify-center class="btnParent">
-              <v-btn
-                outlined
-                color="e0d3d3"
-                class="mr-6 text-center"
-                @click="reset"
-              >
+            <v-layout justify-center class="box2">
+              <button class="btn1 mr-2" @click="reset">
                 재작성
-              </v-btn>
-
-              <v-btn
-                outlined
-                color="rgb(14, 22, 112)"
-                class="mr-6 text-center"
-                id="signUp"
-                @click="submit"
-                :disabled="enableSwitch"
-              >
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+              </button>
+              <button class="btn1 mr-2" @click="submit" :disabled="enableSwitch">
                 회원가입
-              </v-btn>
-
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+              </button>
             </v-layout>
           </v-form>
         </v-col>
@@ -203,7 +209,13 @@ export default {
     },
     methods: {
       reset () {
-        this.$refs.form.reset()
+        this.id = '';
+        this.name = '';
+        this.password = '';
+        this.passwordConfirm = '';
+        this.firm = '';
+        this.langSelect = [];
+        this.positionSelect = [];
       },
       submit () {
         let Stacks = this.langSelect.join()
@@ -218,7 +230,7 @@ export default {
         }
         baseURL.post('user/signup', data)
           .then(() => {
-            alert("이메일로 인증 코드를 보냈습니다.")
+            alert("이메일로 인증 코드를 보냈습니다")
             this.$router.push({
               name: "Main",
             });
