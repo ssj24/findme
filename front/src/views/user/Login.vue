@@ -80,7 +80,7 @@
               >
                 로그인
               </v-btn>
-              <!-- <v-btn
+              <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"

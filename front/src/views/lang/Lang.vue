@@ -8,7 +8,7 @@
       <div class="text"></div>
     </div>
     <span v-if="langSeq">
-      <survey :langId="langSeq" :chk="chk" :langName="langs[langSeq].title"></survey>
+      <survey :langId="langSeq" :chk="chk" :langName="langName"></survey>
     </span>
     <v-row>
       <v-col cols="12">
@@ -85,35 +85,42 @@
         :key="index"
       >
         <span
+          :id="'Content'+review.id"
           v-if="langSeq == (review.languageId - 1)"
         >
           
           {{review.trans_updatedAt}}
           {{review.userId}}
           {{review.name}}
-          <input v-model="modifyComment[index]" :disabled="isDisabled" class="reviewContent" :placeholder="review.content">
-          <!-- {{review.content}} -->
+          <p class="reviewContent">
+            {{review.content}}
+          </p>
           {{review.id}}
+          <span v-if="review.user.id != cookieId">
             <v-icon 
-              @click="symComment(review.id)"
-              v-if="!review.unsymped"
+              @click="symComment(review)"
+              :class="{upup: review.user.checkSymp}"
+              v-if="!review.user.checkUnsymp"
               >
               <!-- :class="{upup: review.symped}" -->
               mdi-thumb-up
             </v-icon>
             <v-icon 
               @click="UnsymComment(review)"
-              :class="{downdown: review.unsymped}"
-              v-if="!review.symped"
+              :class="{downdown: review.user.checkUnsymp}"
+              v-if="!review.user.checkSymp"
               >
               mdi-thumb-down
             </v-icon>
-          <v-btn @click="updateComment(review.id, index)">
-            수정
-          </v-btn>
-          <v-btn @click="deleteComment(review.id)">
-            삭제
-          </v-btn>
+          </span>
+          <span v-else>
+            <v-btn @click="updateComment(review, index)">
+              수정
+            </v-btn>
+            <v-btn @click="deleteComment(review.id)">
+              삭제
+            </v-btn>
+          </span>
         </span>
         
       </v-row>
@@ -187,7 +194,9 @@ export default {
   },
   data () {
     return {
+      cookieId: 0,
       langSeq: 0,
+      langName: '',
       chk: false,
       langs: [
           {
@@ -291,11 +300,15 @@ export default {
   },
   mounted() {
     this.langSeq = this.$route.params.langId;
+    this.langName = this.langs[this.langSeq].title;
+    this.cookieId = cookie.cookieUser();
     let language_id = this.langSeq + 1
+  
     baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
       .then(res=>{
         this.chk = res.data
       })
+    
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
     const fx = new TextScramble(el)
@@ -310,8 +323,6 @@ export default {
     textNext();
     
     this.getReviews();
-    // this.getSymCommentList();
-    this.getUnsymCommentList();
   },
   methods: {
     addColor() {
@@ -336,20 +347,26 @@ export default {
     },
     getReviews() {
       let language_id = this.langSeq + 1
-      baseURL('review/findAll/'+ language_id)
+      baseURL('review/findAll/'+ language_id+'?user_id='+cookie.cookieUser())
         .then(res => {
           this.reviews = res.data
           
         })
     },
     updateComment(v, i) {
-      if (this.isDisabled) {
+      if (this.isDisabled == true) {
         this.isDisabled = false;
+        let updatingReview = document.querySelector('#Content'+v.id)
+        updatingReview.appendChild(document.createElement("input"))
+        updatingReview.lastChild.style.display="block";
       } else {
-        baseURL.put('review/update/' + v + '?content='+this.modifyComment[i])
+        let updatingReview = document.querySelector('#Content'+v.id)
+        this.modifyComment[i] = updatingReview.lastChild.value
+        baseURL.put('review/update/' + v.id + '?content='+this.modifyComment[i])
           .then(()=> {
             this.modifyComment = []
             this.getReviews()
+            updatingReview.removeChild(updatingReview.lastChild);
             this.idDisabled=true;
           })
       }
@@ -366,50 +383,29 @@ export default {
         return ele != value;
       })
     },
-    getSymCommentList() {
-      baseURL('review/symp/findAll/{language_id}')
-        .then(res => {
-          this.symCommentList = res.data
-          
-        })
+    symComment(v) {
+      if (v.user.checkSymp) {
+        baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+          })
+      } else {
+        baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+          })
+      }
     },
-    getUnsymCommentList() {
-      baseURL('review/unsymp/findAll/'+cookie.cookieUser())
-        .then(res => {
-          this.unsymCommentList = res.data;
-          var i;
-          var j;
-          for (i=0; i < this.unsymCommentList.length; i++) {
-            for (j=0; j < this.reviews.length; j++) {
-              if (this.unsymCommentList[i].reviewId == this.reviews[j].id) {
-                this.reviews[j].unsymped = true;
-              }
-            }
-          }
-        })
-    },
-    // symComment(v) {
-    //   if () {
-    //     baseURL.post('review/symp/save/'+v+'?user_id='+cookie.cookieUser())
-    //       .then(() => {
-    //         return this.getSymCommentList()
-    //       })
-    //   } else {
-    //     baseURL.delete('review/symp/delete?review_id='+v+'&user_id='+cookie.cookieUser())
-
-    //   }
-    // },
     UnsymComment(v) {
-      if (v.unsymped) {
+      if (v.user.checkUnsymp) {
         baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
           .then(() => {
             this.getReviews()
-            return this.getUnsymCommentList()
           })
       } else {
         baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
           .then(() => {
-            return this.getUnsymCommentList()
+            this.getReviews()
           })
       }
     }
@@ -535,5 +531,8 @@ h2.no-span {
 }
 .downdown::before {
   color: rgb(15, 95, 148);
+}
+.reviewContent {
+  display: inline-block;
 }
 </style>
