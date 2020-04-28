@@ -9,6 +9,7 @@ import com.ssafy.findme.domain.Survey;
 import com.ssafy.findme.domain.User;
 import com.ssafy.findme.dto.SurveyDTO;
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.mapper.EntityMapper;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.repository.SurveyRepository;
 
@@ -19,6 +20,9 @@ public class SurveyServiceImpl implements ISurveyService {
 
 	@Autowired
 	private AccountRepository accountrepo;
+	
+	@Autowired
+	private EntityMapper entityMapper;
 
 	@Override
 	public void save(SurveyDTO surveydto) {
@@ -46,14 +50,17 @@ public class SurveyServiceImpl implements ISurveyService {
 		String[] language = { "Java", "C", "Python", "C++", "C#", "VB.NET", "JavaScript", "PHP", "SQL", "Go", "R",
 				"Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C", "Delphi" };
 		int index = (int)(long)language_id-1;
+		System.out.println(index);
 		String languagePage = language[index];
 		
 		Survey survey = null;
 		for (int i = 0; i < tech_stacks.length; i++) {
 			if(tech_stacks[i].equals(languagePage)) {
 				survey = surveyrepo.findByUserIdAndLanguageId(user_id, language_id);
-				if (survey != null)
+				if (survey != null) {
+					System.out.println(entityMapper.convertToDomain(survey, SurveyDTO.class).toString());
 					return "yes";
+				}
 				else
 					return "no";
 			}
