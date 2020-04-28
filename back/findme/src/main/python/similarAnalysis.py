@@ -11,7 +11,7 @@ def sim_pearson(data, id1, id2): # 피어슨 유사도
     avg_id2 = 0
     count = 0
     for tech in data[id1]:
-        if tech in data[id2]: #같은 영화를 봤다면
+        if tech in data[id2]: # 같은 기술스택을 가지고있다면
             avg_id1 = data[id1][tech]
             avg_id2 = data[id2][tech]
             count += 1
@@ -31,7 +31,7 @@ def sim_pearson(data, id1, id2): # 피어슨 유사도
     try:
         return sum_id1_id2 / (math.sqrt(sum_id1)*math.sqrt(sum_id2))
     except:
-        return 0
+        pass
 
 
 def top_match(data, id, index=3, sim_function=sim_pearson):
@@ -126,6 +126,7 @@ def main(register_id):
     top = top_match(data_dict, register_id, len(data_dict), sim_function=sim_pearson)
     result = top[0]
     conn.commit()
+    print(result[0])
     if result[0] >= 0.8:
         sql = "insert into similar(child, parent) values(%s, %s)"
         val = (str(register_id), str(result[1]))

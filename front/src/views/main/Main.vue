@@ -49,40 +49,43 @@
               <div style="color: #000;"><a :href="slide.page" style="color: #000;">>>>채용공고 보러가기</a></div>
             </v-col>
           </v-row>
-
         </v-sheet>
-        
       </div>
       </v-carousel-item>
   </v-carousel>
-  <survey></survey>
-  <v-container class="mx-auto text-center">
-    <div
-    v-for="(lang, i) in langs"
-    :key="i"
-    :style="'background:'+lang.bgs"
-    style="background-size: contain; background-repeat: no-repeat;"
-    class="toLang"
-  >
-    <v-chip
-      
+  <v-container class="mx-auto text-center langContainer">
+    <span
+      v-for="(lang, i) in langs"
+      :key="i"
+      style="height: 200px;"
     >
       <router-link 
-        :to="{name:'Lang', params:{langSeq:i}}">
-        {{lang.title}} 
+        :to="{name:'Lang', params:{langId:i}}"
+        >
+        <div
+          :style="'background:'+lang.bgs"
+          class="toLang"
+        >
+          <div class="dimmer"></div>
+          <div class="go-corner">
+            <div class="go-arrow">
+              <v-icon color="white">
+                mdi-arrow-top-right-thick
+              </v-icon>
+              <!-- <p>{{ lang.title }}</p> -->
+            </div>
+          </div>
+        </div>
       </router-link>
-    </v-chip>
-  </div>
+
+    </span>
   </v-container>
   
-  
-  <langs-grid class="mx-auto"></langs-grid>
-  <v-row>
+  <!-- <v-row>
     <v-col cols=6>
       <v-card>
         <h1>깃허브에서 사용도가 높은 언어</h1>
         <p>깃허브의 저장소에 사용된 언어 빈도를 분기별로 측정한 결과입니다 <br>
-           
         </p>
       </v-card>
     </v-col>
@@ -105,13 +108,11 @@
         ></v-sparkline>
       </v-card>
     </v-col>
-  </v-row>
+  </v-row> -->
 </div>
 </template>
 
 <script>
-import Survey from '@/views/main/Survey.vue'
-import LangsGrid from '@/views/main/LangsGrid.vue'
 import cookie from '@/cookie.js'
 import '@/assets/css/main.css'
 
@@ -125,11 +126,13 @@ const gradients = [
   ]
   export default {
     components: {
-      Survey,
-      LangsGrid,
+    },
+    props: {
+      
     },
     data () {
       return {
+        newUser: false,
         userId: 0,
         slides: [
           {bgs: "url(https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60)", title: "퀸즈코퍼레이션", page: "#", position: "개발팀장", stacks: ["보안", "웹개발"], date: "2020-04-17",},
@@ -152,109 +155,129 @@ const gradients = [
         autoLineWidth: false,
         langs: [
           {
+            seq: 1,
             title: 'Java',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971517-5fe28980-84cf-11ea-89dc-ce41e684064d.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png")',
           },
           {
+            seq: 2,
             title: 'C',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971545-653fd400-84cf-11ea-8501-70cf9dc894c1.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png")',
           },
           {
+            seq: 3,
             title: 'Python',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971532-6244e380-84cf-11ea-915e-3b4768f234af.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png")',
           },
           {
+            seq: 4,
             title: 'C++',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971547-653fd400-84cf-11ea-972a-e580e2249c1c.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png")',
           },
           {
+            seq: 5,
             title: 'C#',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971548-65d86a80-84cf-11ea-9b8a-292850f1b03c.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png")',
           },
           {
+            seq: 6,
             title: 'VB.NET',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971540-640ea700-84cf-11ea-9de3-f985833d7cff.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png")',
           },
           {
+            seq: 7,
             title: 'JavaScript',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971519-5fe28980-84cf-11ea-92ca-a1bfc46b9f71.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png")',
           },
           {
+            seq: 8,
             title: 'PHP',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971528-61ac4d00-84cf-11ea-8745-c8dd122efbe9.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png")',
           },
           {
+            seq: 9,
             title: 'SQL',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971536-63761080-84cf-11ea-9e66-59ac4802bdd8.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png")',
           },
           {
+            seq: 10,
             title: 'Go',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971515-5eb15c80-84cf-11ea-8285-ccefdc5950dc.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png")',
           },
           {
+            seq: 11,
             title: 'R',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971533-62dd7a00-84cf-11ea-9ab3-d25667316594.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png")',
           },
           {
+            seq: 12,
             title: 'Assembly',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971543-64a73d80-84cf-11ea-8d2c-1c823eae9699.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png")',
           },
           {
+            seq: 13,
             title: 'Swift',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971538-640ea700-84cf-11ea-9dff-bfb2bdcf51fb.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png")',
           },
           {
+            seq: 14,
             title: 'Ruby',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971534-62dd7a00-84cf-11ea-8edc-b58c0a93dd79.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png")',
           },
           {
+            seq: 15,
             title: 'MATLAB',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971521-607b2000-84cf-11ea-98c5-5c2d851e8eb9.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png")',
           },
           {
+            seq: 16,
             title: 'PL/SQL',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971530-6244e380-84cf-11ea-885a-357af701d09e.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png")',
           },
           {
+            seq: 17,
             title: 'Perl',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971525-6113b680-84cf-11ea-99e4-f3c09d023a51.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png")',
           },
           {
+            seq: 18,
             title: 'Visual Basic',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971541-64a73d80-84cf-11ea-9162-0d34eac9d818.jpg")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png")',
           },
           {
+            seq: 19,
             title: 'Objective-C',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971523-6113b680-84cf-11ea-8329-15109924203e.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png")',
           },
           {
+            seq: 20,
             title: 'Delphi',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/79971550-66710100-84cf-11ea-80d5-085d4f861b83.png")',
+            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png")',
           },
         ]
       }
     },
     mounted() {
-      this.userId = cookie.cookieId()
+      this.userId = cookie.cookieUser()
     },
     methods: {
       
@@ -263,13 +286,80 @@ const gradients = [
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+* {
+  transition: all 0.2s ease-out;
+}
 /* .v-carousel__controls .v-btn--round .v-btn__content .v-icon {
   color: red !important;
 } */
+.langContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
 .toLang {
-  width: 180px;
+  width: 200px;
   height: 200px;
   display: inline-block;
+  background-color: white !important;
+  background-size: contain !important; 
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  // top: 0px;
+  position: relative;
+  border-radius: 4px;
+  // padding: 32px 24px;
+  border: 1px solid #f2f8f9;
+  
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background-color: #010a3d;
+  border-radius: 0 4px 0 32px;
+  opacity: 0.7;
+}
+
+.toLang:hover {
+  border: 1px solid #000547;
+  box-shadow: 0px 0px 300px 200px rgba(255, 255, 255, 0.562);
+  z-index: 500;
+  transform: scale(1.05);
+  transition: transform 0.2s linear;
+  .go-corner { 
+    opacity: 1;
+    width: 64px;
+    height: 64px;
+    transition: height 0.2s linear;
+  }
+  
+  .go-arrow p {
+    display: inline;
+  }
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+}
+
+.go-arrow p {
+  font-family: 'Noto Sans KR';
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: none;
 }
 </style>

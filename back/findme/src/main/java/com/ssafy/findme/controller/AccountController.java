@@ -1,5 +1,6 @@
 package com.ssafy.findme.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.findme.dto.UserDTO;
+import com.ssafy.findme.dto.UserDTO.RoleType;
 import com.ssafy.findme.service.IAccountService;
+import com.ssafy.findme.service.IReviewService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
 
@@ -34,6 +37,8 @@ public class AccountController {
 
 	@Autowired
 	private IAccountService accountservice;
+	@Autowired
+	private IReviewService reviewservice;
 	@Autowired
 	private KakaoAPI kakao;
 
@@ -49,10 +54,56 @@ public class AccountController {
 		// 비밀번호 암호화
 		String encryPassword = UserSha256.encrypt(user.getPassword());
 		user.setPassword(encryPassword);
+		user.setRoleType(RoleType.USER);
+		user.setCreatedAt(new Date());
 		// 회원가입
 		accountservice.signUp(user);
 		// 인증메일
 		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
+	}
+
+	@PutMapping("/user/{user_id}/secession")
+	@ApiOperation(value = "회원 탈퇴")
+	public ResponseEntity<Map<String, Object>> secession(@PathVariable Long user_id, @RequestParam String tmp,
+			HttpServletRequest req) throws MessagingException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			UserDTO user = accountservice.findById(user_id);
+			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
+				KakaoAPI.secession(tmp);
+			}
+			accountservice.deleteUser(user);
+			reviewservice.recountSympAndUnsymp(user_id);
+
+			resultMap.put("status", true);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@PostMapping("/user/kakaologout")
+	@ApiOperation(value = "로그아웃")
+	public ResponseEntity<Map<String, Object>> kakaologout(@RequestParam String tmp, HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = null;
+		try {
+			kakao.kakaoLogout(tmp);
+
+			resultMap.put("status", true);
+			status = HttpStatus.ACCEPTED;
+
+		} catch (RuntimeException e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	@GetMapping("/user/key_alter")
@@ -103,11 +154,14 @@ public class AccountController {
 
 	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
-	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code, HttpServletResponse res) {
+	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		System.out.println("왔뉘,,,?");
 
+		System.out.println("++"+code);
 		String access_Token = kakao.getAccessToken(code);
+		System.out.println(access_Token);
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
 		String name = userInfo.get("nickname").toString();
 		String email = userInfo.get("email").toString();
@@ -119,7 +173,7 @@ public class AccountController {
 			user.setEmail(email);
 			user.setPassword(password);
 			// db에 이메일이 없으면 singup
-			res.setHeader("jwt-auth-token", access_Token);
+//			res.setHeader("jwt-auth-token", access_Token);
 
 			if (accountservice.emailDuplicateCheck(email)) {
 				if (accountservice.accountDuplicateCheck(email, password)) { // 로그인
@@ -192,5 +246,4 @@ public class AccountController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
 }

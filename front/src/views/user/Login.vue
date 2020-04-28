@@ -1,6 +1,11 @@
 <template>
   <!-- <div class="signup"> -->
     <v-container fill-height class="justify-center">
+      <svg id="stroke" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+        <defs>
+          <path id="line" d="M2 2c49.7 2.6 100 3.1 150 1.7-46.5 2-93 4.4-139.2 7.3 45.2-1.5 90.6-1.8 135.8-.6" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        </defs>
+      </svg>
       <v-row align="center" justify="center" style="background-color: white;">
         <v-col 
           justify="center"
@@ -15,12 +20,14 @@
             <hr class="form-hr">
             <br>
             <v-text-field
+              color="indigo darken-3"
               v-model="id"
               :rules="idRules"
               label="Email"
               required
             ></v-text-field>
             <v-text-field
+              color="indigo darken-3"
               v-model="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="passwordRules"
@@ -28,15 +35,44 @@
               label="비밀번호"
               @click:append="show1 = !show1"
             ></v-text-field>
-        
-            <!-- <v-checkbox
-              v-model="checkbox"
-              label="로그인 유지...? 할 수 있을까 내가..?"
-              required
-            ></v-checkbox> -->
             <v-layout justify-center class="btnParent">
-              
-              <v-btn
+              <span class="box2">
+              <button class="btn1 mr-2" @click="submit">
+                로그인
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+              </button>
+              <button class="btn1" @click="kakaologin">
+                카카오
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+              </button>
+              </span>
+              <!-- <span class="frame">
+              <button class="BTN mr-2" @click="submit">
+                <span>로그인</span>
+                <svg>
+                  <polyline class="o1" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
+                  <polyline class="o2" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
+                </svg>
+              </button>
+              <button class="BTN" @click="kakaologin">
+                <span>카카오</span>
+                <svg>
+                  <polyline class="o1" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
+                  <polyline class="o2" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
+                </svg>
+              </button>
+              </span> -->
+              <!-- <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"
@@ -44,43 +80,60 @@
               >
                 로그인
               </v-btn>
-              <v-btn
+              <!-- <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"
                 @click="kakaologin"
               >
               카카오
-              </v-btn>
-              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code">
-                로그인
+              </v-btn> -->
+              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message">
+                카카오
               </a>
             </v-layout>
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
-                  <v-btn class="mx-auto" style="display: block;" text v-on="on">비밀번호를 잊어버렸습니다</v-btn>
+                  <v-btn class="mx-auto diyBtn" style="display: block; color: #888;" text v-on="on">비밀번호를 찾아주세요</v-btn>
                 </template>
                 <v-card>
-                  <v-card-title>
-                    <span>
-                      비밀번호를 잊어버린 이메일 주소를 입력해주세요 
-                      <br>
-                      임시 비밀번호를 보내드립니다
-                    </span>
+                  <v-card-title class="ml-4 pt-8" style="font-size: 1rem; line-height: 150%;">
+                    가입하신 이메일 주소를 입력해주세요 
+                    <br>
+                    임시 비밀번호를 보내드립니다
                   </v-card-title>
                   <v-card-text>
                     <v-container>
                       <v-text-field
                         v-model="email"
                         :rules="emailRules"
+                        color="indigo darken-3"
                         required>
                       </v-text-field>
                     </v-container>
                   </v-card-text>
-                  <v-card-actions>
+                  <v-card-actions class="box1">
                     <v-spacer></v-spacer>
-                    <v-btn style="font-weight: 900;" text large @click="dialog = false">닫기</v-btn>
-                    <v-btn style="font-weight: 900;" color="indigo darken-3" text large @click="dialog = false; sendPassword();">보내기</v-btn>
+
+                      <button class="btn1" @click="dialog = false">
+                        닫기
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                      </button>
+                    
+                      <button class="btn1" @click="dialog = false; sendPassword();">
+                        보내기
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                        <svg class="button-stroke" viewBox="0 0 154 13">
+                          <use href="#line"></use>
+                        </svg>
+                      </button>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -124,23 +177,10 @@ export default {
       submit () {
         baseURL.post('/user/login?email='+this.id+'&password='+this.password)
           .then(res => {
-            if (res.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
-              alert("로그인에 실패하셨습니다")
-              this.id = ''
-              this.password = ''
-            }
-            else if (res.data.info.roleType) {
+            if (res.data.info.roleType == 'ADMIN') {
               this.$router.push({
                 name: "Admin"
               })
-            }
-            else if (res.data.message == "인증되지 않은 계정입니다") {
-              alert("인증되지 않은 계정입니다")
-            }
-            else if (res.data.utility == false) {
-              alert("탈퇴한 회원입니다")
-              this.id = ''
-              this.password = ''
             }
             else {
               let loginData = {
@@ -160,16 +200,26 @@ export default {
               })
             }
           })
-          // error => {
-          //   this.id = ''
-          //   this.password = ''
-          //   this.checkbox = false
-          // }
+          .catch(err => {
+            if (err.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
+              alert("로그인에 실패하셨습니다")
+              this.id = ''
+              this.password = ''
+            }
+            else if (err.data.message == "인증되지 않은 계정입니다") {
+              alert("인증되지 않은 계정입니다")
+            }
+            else if (err.data.utility == false) {
+              alert("탈퇴한 회원입니다")
+              this.id = ''
+              this.password = ''
+            }
+          })
           
       },
       kakaologin() {
         console.log('sdlfsdjkl;dfj;klsd')
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code")
+        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message")
           .then(() => {
             // console.log(res)
             this.$router.push({
@@ -181,7 +231,7 @@ export default {
           })
       },
       sendPassword() {
-        baseURL('user/sendpassword?email='+this.email)
+        baseURL.put('user/sendpassword?email='+this.email)
           .then(res => {
             console.log(res)
           })
@@ -190,6 +240,121 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.frame {
+  display: flex;
+	justify-content: center;
+  align-items: center;
+  // background: #FFA114;
+}
+.frame .BTN {
+  display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	cursor: pointer;
+  border-radius: 10px;
+	svg {
+		height: 55px;
+		width: 120px;
+		fill: none;
+		stroke-width: 5;
 
+		.o1 {
+			stroke: rgba(rgb(2, 0, 129), 0.7);
+			fill: rgb(255, 255, 255);
+			transition: all 1s ease-in-out;
+		}
+
+		.o2 {
+			stroke: rgb(255, 255, 255);
+			stroke-dasharray: 20 420;
+			stroke-dashoffset: 20;
+			transition: all 1s ease-in-out;
+		}
+  }
+  span {
+		position: absolute;
+		margin: auto 0;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+	}
+
+	&:hover {
+		.o1{
+      // fill: rgba(rgb(9, 5, 255), 0.3);
+      
+		}
+		
+		.o2 {
+			stroke-dashoffset: -420;
+		}
+	}
+}
+
+
+.box1{
+  // position:absolute;
+  // top:50%;
+  // left:50%;
+  // transform : translate(-50% ,-50%);
+  // border: 1px solid red;
+  
+  display: flex;
+	justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -30px;
+  left: -20px;
+}
+.box2 {
+  display: flex;
+	justify-content: center;
+  align-items: center;
+}
+.btn1 {
+  display: inline-block;
+	// color: white;
+	min-width: 120px;
+	text-decoration: none;
+	margin: auto 0;
+	padding: 5px;
+  position: relative;
+  // top: -50px;
+	text-align: center;
+	
+	&:hover {
+		.button-stroke:nth-child(2) {
+			stroke-dashoffset: 0;
+		}
+	}
+}
+.button-stroke {
+	display: block;
+	width: calc(100% - 40px);
+  height: 20px;
+  stroke: darken(#020da8, 10%);
+	position: absolute;
+	left: 20px;
+	bottom: -10px;
+	stroke-width: 4;
+	
+	&:nth-child(2) {
+		stroke-dasharray: 650px;
+    stroke-dashoffset: 650px;
+    stroke: yellow;
+		stroke-width: 5;
+		transition: stroke-dashoffset 500ms ease-out;
+	}
+}
+.diyBtn:hover {
+  color: #000 !important;
+}
+.diyBtn:hover {
+  background: none !important;
+}
+
+.diyBtn::before {
+  background-color: #fff !important;
+}
 </style>

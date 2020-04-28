@@ -7,13 +7,15 @@
     <div class="wrapper">
       <div class="text"></div>
     </div>
-
+    <span v-if="langSeq">
+      <survey :langId="langSeq" :chk="chk" :langName="langs[langSeq].title"></survey>
+    </span>
     <v-row>
       <v-col cols="12">
-        <v-card>
+        <v-card class="cloudCard mx-auto">
           <cloud
             v-if="wordCount"
-            class="cloud" 
+            class="cloud mx-auto" 
             :data="wordCount" 
             :fontSizeMapper="fontSizeMapper" 
             :rotate="rotate" 
@@ -35,6 +37,7 @@
               <option>Courier</option>
               <option>Impact</option>
               <option>Georgia</option>
+              <option>Cafe24Dangdanghae</option>
             </select>
             <br />
             <label for="spiral">Spiral Style</label>:&nbsp;
@@ -59,22 +62,60 @@
         </v-card>
       </v-col>
     </v-row>
-    
-    
-			
+    <p style="display: none;">
+    {{unsymCommentList}}
+
+    </p>
     <v-form>
     <v-container>
       <v-row>
-
         <v-col cols="12">
           <v-text-field
-            v-model="review"
+            v-model="comment"
             label="댓글을 작성해주세요"
             outlined
             shaped
             color="indigo darken-3"
+            @keyup.enter="submitReview"
           ></v-text-field>
         </v-col>
+      </v-row>
+      <v-row
+        v-for="(review, index) in reviews"
+        :key="index"
+      >
+        <span
+          v-if="langSeq == (review.languageId - 1)"
+        >
+          
+          {{review.trans_updatedAt}}
+          {{review.userId}}
+          {{review.name}}
+          <input v-model="modifyComment[index]" :disabled="isDisabled" class="reviewContent" :placeholder="review.content">
+          <!-- {{review.content}} -->
+          {{review.id}}
+            <v-icon 
+              @click="symComment(review.id)"
+              v-if="!review.unsymped"
+              >
+              <!-- :class="{upup: review.symped}" -->
+              mdi-thumb-up
+            </v-icon>
+            <v-icon 
+              @click="UnsymComment(review)"
+              :class="{downdown: review.unsymped}"
+              v-if="!review.symped"
+              >
+              mdi-thumb-down
+            </v-icon>
+          <v-btn @click="updateComment(review.id, index)">
+            수정
+          </v-btn>
+          <v-btn @click="deleteComment(review.id)">
+            삭제
+          </v-btn>
+        </span>
+        
       </v-row>
     </v-container>
   </v-form>
@@ -82,8 +123,10 @@
 </template>
 
 <script>
-// import baseURL from '@/base-url.js'
+import baseURL from '@/base-url.js'
+import cookie from '@/cookie.js'
 import Cloud from '@/views/lang/Cloud.vue'
+import Survey from '@/views/main/Survey.vue'
 class TextScramble {
   constructor(el) {
     this.el = el
@@ -140,10 +183,12 @@ class TextScramble {
 export default {
   components: {
     Cloud,
+    Survey
   },
   data () {
     return {
       langSeq: 0,
+      chk: false,
       langs: [
           {
             title: 'Java',
@@ -236,24 +281,37 @@ export default {
 			colors: ['coral', 'blue', 'hotpink', 'peachpuff', 'green'],
 			coloring: 'random',
 			colorCount: 3,
-      review: '',
+      comment: '',
+      reviews: [],
+      symCommentList: [],
+      unsymCommentList: [],
+      modifyComment: [],
+      isDisabled: true,
     }
   },
   mounted() {
-    this.langSeq = this.$route.params.langSeq;
-    
+    this.langSeq = this.$route.params.langId;
+    let language_id = this.langSeq + 1
+    baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
+      .then(res=>{
+        this.chk = res.data
+      })
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
     const fx = new TextScramble(el)
     let counter = 0
-    const next = () => {
+    const textNext = () => {
       fx.setText(phrases[counter])
       // .then(() => {
       //   setTimeout(next, 800)
       // })
       counter = (counter + 1) % phrases.length
     }
-    next()
+    textNext();
+    
+    this.getReviews();
+    // this.getSymCommentList();
+    this.getUnsymCommentList();
   },
   methods: {
     addColor() {
@@ -266,7 +324,95 @@ export default {
 				this.colorCount--;
 			}
     },
-    
+    submitReview() {
+      let language_id = this.langSeq + 1
+      baseURL.post('review/write?user_id='+cookie.cookieUser()
+      +'&content='+this.comment
+      +'&language_id='+language_id)
+        .then(() => {
+          this.getReviews()
+          this.comment = ''
+        })
+    },
+    getReviews() {
+      let language_id = this.langSeq + 1
+      baseURL('review/findAll/'+ language_id)
+        .then(res => {
+          this.reviews = res.data
+          
+        })
+    },
+    updateComment(v, i) {
+      if (this.isDisabled) {
+        this.isDisabled = false;
+      } else {
+        baseURL.put('review/update/' + v + '?content='+this.modifyComment[i])
+          .then(()=> {
+            this.modifyComment = []
+            this.getReviews()
+            this.idDisabled=true;
+          })
+      }
+    },
+    deleteComment(v) {
+      baseURL.delete('review/delete/'+ v)
+        .then(() => {
+          this.getReviews()
+          }
+        )
+    },
+    refreshReviews(arr, value) {
+      return arr.filter(function(ele) {
+        return ele != value;
+      })
+    },
+    getSymCommentList() {
+      baseURL('review/symp/findAll/{language_id}')
+        .then(res => {
+          this.symCommentList = res.data
+          
+        })
+    },
+    getUnsymCommentList() {
+      baseURL('review/unsymp/findAll/'+cookie.cookieUser())
+        .then(res => {
+          this.unsymCommentList = res.data;
+          var i;
+          var j;
+          for (i=0; i < this.unsymCommentList.length; i++) {
+            for (j=0; j < this.reviews.length; j++) {
+              if (this.unsymCommentList[i].reviewId == this.reviews[j].id) {
+                this.reviews[j].unsymped = true;
+              }
+            }
+          }
+        })
+    },
+    // symComment(v) {
+    //   if () {
+    //     baseURL.post('review/symp/save/'+v+'?user_id='+cookie.cookieUser())
+    //       .then(() => {
+    //         return this.getSymCommentList()
+    //       })
+    //   } else {
+    //     baseURL.delete('review/symp/delete?review_id='+v+'&user_id='+cookie.cookieUser())
+
+    //   }
+    // },
+    UnsymComment(v) {
+      if (v.unsymped) {
+        baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+          .then(() => {
+            this.getReviews()
+            return this.getUnsymCommentList()
+          })
+      } else {
+        baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
+          .then(() => {
+            return this.getUnsymCommentList()
+          })
+      }
+    }
   },
   computed: {
 		rotate: function() {
@@ -302,7 +448,8 @@ export default {
 					return color
 				}
 			})
-		}
+    },
+    
 	},
 
 }
@@ -363,7 +510,7 @@ h2.no-span {
   height: 100%;
   width: 100%;
   justify-content: center;
-  align-items: cneter;
+  align-items: center;
   display: flex;
 }
 .wrapper .text {
@@ -373,5 +520,20 @@ h2.no-span {
 }
 .wrapper .dud {
   color: #757575;
+}
+
+.cloudCard svg g {
+  width: 100% !important;
+  height: 100% !important;
+  margin: auto 0 !important;
+}
+.upup {
+  
+}
+.upup::before {
+  color: rgb(55, 0, 128);
+}
+.downdown::before {
+  color: rgb(15, 95, 148);
 }
 </style>

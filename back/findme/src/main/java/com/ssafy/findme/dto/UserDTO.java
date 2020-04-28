@@ -21,11 +21,14 @@ public class UserDTO {
 	private String techStack;
 	private String wishHope;
 	private String wishJob;
-	private boolean utility;
 	private String authKey;
 	private RoleType roleType;
 	private Date createdAt;
+
 	public enum RoleType {
 		USER, ADMIN
 	}
+	private boolean check;
+	private boolean checkSymp;
+	private boolean checkUnsymp;
 }
