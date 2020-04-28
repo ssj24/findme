@@ -1,7 +1,6 @@
 <script>
 import * as d3 from "d3";
 import * as cloud from 'd3-cloud';
-import baseURL from '@/base-url.js'
 
 export default {
     name: "Cloud",
@@ -10,12 +9,10 @@ export default {
             layout: {},
             chart: {},
             fill: null,
-            langSeq: 0,
-            words: [],
         }
     },
     props: {
-        data: {
+        words: {
             type: Array,
             required: true,
         },
@@ -23,12 +20,12 @@ export default {
             type: Function,
             required: true,
         },
-        onWordClick: {
-            type: Function,
-            default: (word) => { 
-                window.alert(`You clicked ${word.text}`) 
-            },
-        },
+        // onWordClick: {
+        //     type: Function,
+        //     default: (word) => { 
+        //         window.alert(`You clicked ${word.text}`) 
+        //     },
+        // },
         rotate: {
             type: [Function, String, Number],
             default: 0,
@@ -63,11 +60,9 @@ export default {
     },
     mounted() {
         this.createCanvas()
-        this.getTextMiningData()
-        this.langSeq = this.$route.params.langId;
     },
     watch: {
-        data() {
+        words() {
             this.createCanvas()
         },
         rotate() {
@@ -87,7 +82,8 @@ export default {
         },
         coloring() {
             this.createCanvas()
-        }
+        },
+        
     },
     methods: {
         createCanvas: function() {
@@ -146,28 +142,10 @@ export default {
             .text(d => d.text)
             .on('click', d => this.onWordClick(d));
         },
-
-
-        getTextMiningData() {
-            let language_id = this.langSeq + 1
-            baseURL("language/detail/"+language_id)
-                .then(res => {
-                    var keys = Object.keys(res.data)
-                    var values = Object.values(res.data)
-                    for (let i = 0; i < keys.length; i++) {
-                        this.words.push({
-                            text:keys[i],
-                            values:values[i]
-                        })
-                    }
-
-                    console.log(this.words)
-                })
-        }
     }
  }
 </script>
 
 <template>
-    <div class="wordCloud mx-auto" ref="wordCloud"></div>
+    <div class="wordCloud" ref="wordCloud"></div>
 </template>

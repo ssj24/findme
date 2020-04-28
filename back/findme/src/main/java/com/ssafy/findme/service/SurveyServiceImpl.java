@@ -45,7 +45,8 @@ public class SurveyServiceImpl implements ISurveyService {
 		String[] tech_stacks = user.getTechStack().split(","); //Java,C
 		String[] language = { "Java", "C", "Python", "C++", "C#", "VB.NET", "JavaScript", "PHP", "SQL", "Go", "R",
 				"Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C", "Delphi" };
-		String languagePage = language[(int)(language_id+1)];
+		int index = (int)(long)language_id-1;
+		String languagePage = language[index];
 		
 		Survey survey = null;
 		for (int i = 0; i < tech_stacks.length; i++) {
