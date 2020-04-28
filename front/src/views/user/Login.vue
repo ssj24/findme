@@ -175,7 +175,7 @@ export default {
     methods: {
       
       submit () {
-        baseURL.post('/user/login?email='+this.id+'&password='+this.password)
+        baseURL.post('user/login?email='+this.id+'&password='+this.password)
           .then(res => {
             if (res.data.info.roleType == 'ADMIN') {
               this.$router.push({
@@ -201,19 +201,20 @@ export default {
             }
           })
           .catch(err => {
-            if (err.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
-              alert("로그인에 실패하셨습니다")
-              this.id = ''
-              this.password = ''
-            }
-            else if (err.data.message == "인증되지 않은 계정입니다") {
-              alert("인증되지 않은 계정입니다")
-            }
-            else if (err.data.utility == false) {
-              alert("탈퇴한 회원입니다")
-              this.id = ''
-              this.password = ''
-            }
+            alert(err)
+            // if (err.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
+            //   alert("로그인에 실패하셨습니다")
+            //   this.id = ''
+            //   this.password = ''
+            // }
+            // else if (err.data.message == "인증되지 않은 계정입니다") {
+            //   alert("인증되지 않은 계정입니다")
+            // }
+            // else if (err.data.utility == false) {
+            //   alert("탈퇴한 회원입니다")
+            //   this.id = ''
+            //   this.password = ''
+            // }
           })
           
       },
