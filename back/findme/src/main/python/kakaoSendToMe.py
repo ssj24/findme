@@ -5,23 +5,24 @@ import json
 import sys
 
 def main(access_token, recruit_id):
-    recruit_id=str(recruit_id)
+    print(access_token)
+    print(recruit_id)
     conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test3', charset='utf8')
     curs = conn.cursor()
     # sql = "select * from recruits where recruit_id = (select recruit_id from recommend where user_id = "+user_id+" ) "
-    sql = "select * from recruits where recruit_id = " + recruit_id
+    sql = "select * from recruit where id = " + recruit_id
 
     curs.execute(sql)
     rows = curs.fetchall()
     rows_data = pd.DataFrame(rows)
-    print(rows_data)
-    print(rows_data[2])
-    print(rows_data[4])
-    # access_token="DJtWKRhhc9mQaqltzi5ytmH7hCMryOKBFZj0AgopcNIAAAFxrO3kqA"
+    
     like_cnt=100
-    title = rows_data[2][0]
-    description = rows_data[4][0]
-    image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
+    title = rows_data[8][0]
+    image_url=rows_data[3][0]
+    if(image_url == ''):
+        image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
+    description = rows_data[7][0]
+    recruit_url=rows_data[9][0]
 
     template_dict_data = str({
         "object_type": "feed",
@@ -32,10 +33,10 @@ def main(access_token, recruit_id):
             "image_width": 640,
             "image_height": 640,
             "link": {
-                "web_url": "http://www.daum.net",
-                "mobile_web_url": "http://m.daum.net",
-                "android_execution_params": "contentId=100",
-                "ios_execution_params": "contentId=100"
+                "web_url": recruit_url,
+                "mobile_web_url": recruit_url,
+                "android_execution_params": recruit_url,
+                "ios_execution_params": recruit_url
             }
         },
         "social": {
@@ -45,15 +46,15 @@ def main(access_token, recruit_id):
             {
                 "title": "웹으로 이동",
                 "link": {
-                    "web_url": "http://www.daum.net",
-                    "mobile_web_url": "http://m.daum.net"
+                    "web_url": recruit_url,
+                    "mobile_web_url": recruit_url
                 }
             },
             {
                 "title": "앱으로 이동",
                 "link": {
-                    "android_execution_params": "contentId=100",
-                    "ios_execution_params": "contentId=100"
+                    "android_execution_params": recruit_url,
+                    "ios_execution_params": recruit_url
                 }
             }
         ]
@@ -67,11 +68,14 @@ def main(access_token, recruit_id):
         'Authorization': "Bearer " + access_token,
     }
 
-    template_json_data = "template_object="+str(json.dumps(template_dict_data))
-    template_json_data = template_json_data.replace("\"", "")
-    template_json_data = template_json_data.replace("'", "\"")
+    template_object = str(json.dumps(template_dict_data))
+    template_object = template_object.replace("\"", "")
+    template_object = template_object.replace("'", "\"")
+
+    params = {}
+    params['template_object'] = template_object
     
-    response = requests.request(method="POST", url=kakao_to_me_uri, data=template_json_data, headers=headers)
+    response = requests.request(method="POST", url=kakao_to_me_uri, params=params, headers=headers)
     print(response.json())
 
 if __name__ == "__main__":

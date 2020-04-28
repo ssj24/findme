@@ -7,10 +7,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.findme.domain.Pick;
@@ -24,7 +27,7 @@ import com.ssafy.findme.repository.RecruitRepository;
 @Service
 public class RecruitServiceImpl implements IRecruitService {
 	@Autowired
-	private RecruitRepository recruitRepo;
+	private static RecruitRepository recruitRepo;
 
 	@Autowired
 	private PickRepository pickRepo;
@@ -200,5 +203,20 @@ public class RecruitServiceImpl implements IRecruitService {
 			}
 		}
 		return recommendLanguageList;
+	}
+
+	@Scheduled(cron = "0 57 4 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
+	public static void deleteRecruit() {
+		System.out.println("scheduleDeleteRecruit: " + new Date());
+		// 마감일이 지금보다 이르면 다 지워주자
+		long now = (Calendar.getInstance().getTimeInMillis() / 1000);
+		System.out.println(now);
+		long test=2001164400;
+		List<Recruit> ids = recruitRepo.FindIdByDueDate(test);
+		System.out.println("ㅅㅄㅂ");
+//		recruitRepo.deleteById(id);
+		System.out.println(ids.size());
+		System.out.println("End DeleteRecruit");
 	}
 }
