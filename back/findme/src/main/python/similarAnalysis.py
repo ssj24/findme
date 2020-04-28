@@ -45,6 +45,7 @@ def top_match(data, id, index=3, sim_function=sim_pearson):
 
 
 def main(register_id):
+    print(register_id)
     register_id = int(register_id)
     language_columns = (
         'id',
