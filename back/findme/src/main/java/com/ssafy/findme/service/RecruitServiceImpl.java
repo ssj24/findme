@@ -64,7 +64,7 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-		String filePath = "src/main/python/MatchRecruit.py";
+		String filePath = "C:\\MatchRecruit.py";
 		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
 		Process p;
@@ -90,7 +90,6 @@ public class RecruitServiceImpl implements IRecruitService {
 
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
 				matchRecruit = recruitRepo.findByNumber(matchRecruitIdList.get(i));
-//				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
 			br.close();
@@ -145,11 +144,13 @@ public class RecruitServiceImpl implements IRecruitService {
 			int exitCode = p.waitFor();
 			String newLine = sb.toString().replace("[", "").replace("]", "").replace(" ", "");
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
-
-			for (int i = 0; i < recommendRecruitIdList.size(); i++) {
-				recommendRecruit = recruitRepo.findByNumber(recommendRecruitIdList.get(i));
-//				System.out.println(matchRecruit);
-				recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
+			
+			if (recommendRecruitIdList != null && !recommendRecruitIdList.isEmpty() && !recommendRecruitIdList.get(0).equals("")) {
+				
+				for (int i = 0; i < recommendRecruitIdList.size(); i++) {
+					recommendRecruit = recruitRepo.findByNumber(recommendRecruitIdList.get(i));
+					recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
+				}
 			}
 			br.close();
 		} catch (IOException e) {

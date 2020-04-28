@@ -54,10 +54,7 @@ public class RecruitController {
 				recommendRecruitList = matchRecruitList.subList(30, 59);
 			} else {
 				recommendRecruitList = recruitService.getRecommendRecruit(userId);
-				
-				System.out.println("recommendRecruitList");
-				System.out.println(recommendRecruitList);
-				
+
 				if (recommendRecruitList.size() < 10) {
 					recommendRecruitList.addAll(matchRecruitList.subList(30, 59));
 				}
