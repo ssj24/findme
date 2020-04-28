@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.findme.domain.Survey;
 import com.ssafy.findme.domain.User;
 import com.ssafy.findme.dto.SurveyDTO;
+import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.repository.SurveyRepository;
 
@@ -15,10 +16,10 @@ import com.ssafy.findme.repository.SurveyRepository;
 public class SurveyServiceImpl implements ISurveyService {
 	@Autowired
 	private SurveyRepository surveyrepo;
-	
+
 	@Autowired
 	private AccountRepository accountrepo;
-	
+
 	@Override
 	public void save(SurveyDTO surveydto) {
 		try {
@@ -39,11 +40,23 @@ public class SurveyServiceImpl implements ISurveyService {
 	}
 
 	@Override
-	public boolean findByConfirm(Long user_id, Long language_id) {
-		Survey survey = surveyrepo.findByUserIdAndLanguageId(user_id, language_id);
-		if(survey != null)
-			return true;
-		else
-			return false;
+	public String findByConfirm(Long user_id, Long language_id) {
+		User user = accountrepo.findById(user_id);
+		String[] tech_stacks = user.getTechStack().split(","); //Java,C
+		String[] language = { "Java", "C", "Python", "C++", "C#", "VB.NET", "JavaScript", "PHP", "SQL", "Go", "R",
+				"Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C", "Delphi" };
+		String languagePage = language[(int)(language_id+1)];
+		
+		Survey survey = null;
+		for (int i = 0; i < tech_stacks.length; i++) {
+			if(tech_stacks[i].equals(languagePage)) {
+				survey = surveyrepo.findByUserIdAndLanguageId(user_id, language_id);
+				if (survey != null)
+					return "yes";
+				else
+					return "no";
+			}
+		}
+		return "not";
 	}
 }

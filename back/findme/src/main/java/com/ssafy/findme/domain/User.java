@@ -47,7 +47,6 @@ public class User {
 	private String techStack;
 	private String wishHope;
 	private String wishJob;
-	private boolean utility = true;
 	private String authKey;
 
 	@Enumerated(EnumType.STRING) // enum이름을 DB에 저장

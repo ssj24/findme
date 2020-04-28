@@ -19,7 +19,6 @@ public class UserDTO {
 	private String techStack;
 	private String wishHope;
 	private String wishJob;
-	private boolean utility;
 	private String authKey;
 	private RoleType roleType;
 	private Date createdAt;
