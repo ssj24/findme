@@ -38,7 +38,7 @@ filtering = ["기간", "사용", "진짜"]
 
 # survey + review 데이터 합치기
 def makeup_survey(arr, data):
-    # print(data)
+    print(data)
 
     for d in data[3]:
         if d == 1: arr.append("불편함")
@@ -47,7 +47,7 @@ def makeup_survey(arr, data):
         elif d == 4: arr.append("개발속도느림")
         else: arr.append("실행속도느림")
 
-    for d in data[5]:
+    for d in data[6]:
         if d == 1: arr.append("편리함")
         elif d == 2: arr.append("다수사용")
         elif d == 3: arr.append("사용기간오래됨")
@@ -61,9 +61,8 @@ def makeup_survey(arr, data):
         elif d == 4: arr.append("개발속도빠름")
         else: arr.append("실행속도빠름")
 
-    for d in data[4]:
+    for d in data[5]:
         arr.append(d)
-
     return arr
 
 
@@ -101,6 +100,7 @@ def get_tags(text, ntags=50):
             result += t + "," + str(counts[t]) + ","
 
     result = result[:len(result)-1]
+
     return result
 
  

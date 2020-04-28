@@ -1,6 +1,8 @@
 <script>
 import * as d3 from "d3";
 import * as cloud from 'd3-cloud';
+import baseURL from '@/base-url.js'
+
 export default {
     name: "Cloud",
     data() {
@@ -8,6 +10,8 @@ export default {
             layout: {},
             chart: {},
             fill: null,
+            langSeq: 0,
+            words: [],
         }
     },
     props: {
@@ -59,6 +63,8 @@ export default {
     },
     mounted() {
         this.createCanvas()
+        this.getTextMiningData()
+        this.langSeq = this.$route.params.langId;
     },
     watch: {
         data() {
@@ -85,7 +91,7 @@ export default {
     },
     methods: {
         createCanvas: function() {
-            const wordCounts = this.data.map(
+            const wordCounts = this.words.map(
                 text => ({ ...text })
             );
             d3.select(this.$el).selectAll('*').remove();
@@ -140,6 +146,24 @@ export default {
             .text(d => d.text)
             .on('click', d => this.onWordClick(d));
         },
+
+
+        getTextMiningData() {
+            let language_id = this.langSeq + 1
+            baseURL("language/detail/"+language_id)
+                .then(res => {
+                    var keys = Object.keys(res.data)
+                    var values = Object.values(res.data)
+                    for (let i = 0; i < keys.length; i++) {
+                        this.words.push({
+                            text:keys[i],
+                            values:values[i]
+                        })
+                    }
+
+                    console.log(this.words)
+                })
+        }
     }
  }
 </script>
