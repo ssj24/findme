@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.dto.UserDTO.RoleType;
 import com.ssafy.findme.service.IAccountService;
+import com.ssafy.findme.service.IKakaoAPI;
 import com.ssafy.findme.service.IReviewService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
@@ -40,7 +41,7 @@ public class AccountController {
 	@Autowired
 	private IReviewService reviewservice;
 	@Autowired
-	private KakaoAPI kakao;
+	private IKakaoAPI kakao;
 
 	@GetMapping("/user/{email}/email-duplicate")
 	@ApiOperation(value = "이메일 중복체크")
@@ -71,7 +72,7 @@ public class AccountController {
 		try {
 			UserDTO user = accountservice.findById(user_id);
 			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
-				KakaoAPI.secession(tmp);
+				kakao.secession(tmp);
 			}
 			accountservice.deleteUser(user);
 			reviewservice.recountSympAndUnsymp(user_id);
@@ -194,7 +195,7 @@ public class AccountController {
 			String token = accountservice.getToken(user);
 			res.setHeader("jwt-auth-token", token);
 			res.setHeader("access-token", access_Token);
-			
+
 			resultMap.put("info", user);
 			resultMap.put("jwt-auth-token", token);
 			resultMap.put("access-token", access_Token);

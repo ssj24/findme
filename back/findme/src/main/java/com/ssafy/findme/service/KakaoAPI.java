@@ -24,8 +24,9 @@ import com.google.gson.JsonParser;
 import com.ssafy.findme.dto.FriendDTO;
 
 @Service
-public class KakaoAPI {
+public class KakaoAPI implements IKakaoAPI {
 
+	@Override
 	public String getAccessToken(String authorize_code) {
 		String access_Token = "";
 		String refresh_Token = "";
@@ -82,6 +83,7 @@ public class KakaoAPI {
 		return access_Token;
 	}
 
+	@Override
 	public HashMap<String, Object> getUserInfo(String access_Token) {
 
 		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
@@ -127,6 +129,7 @@ public class KakaoAPI {
 		return userInfo;
 	}
 
+	@Override
 	public void kakaoLogout(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v1/user/logout";
 		try {
@@ -152,6 +155,7 @@ public class KakaoAPI {
 		}
 	}
 
+	@Override
 	public void profile(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v1/api/talk/profile";
 		try {
@@ -177,6 +181,7 @@ public class KakaoAPI {
 		}
 	}
 
+	@Override
 	// 친구목록받기
 	public List<FriendDTO> friends(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v1/api/talk/friends";
@@ -223,7 +228,7 @@ public class KakaoAPI {
 				if (favorite_tmp.equals("true"))
 					favorite = true;
 
-				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, uuid, favorite));
+				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, favorite, uuid));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -231,10 +236,12 @@ public class KakaoAPI {
 		return list;
 	}
 
+	@Override
 	public void sendToMe(String access_Token, Long recruit_id) {
 		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id + " ");
 	}
 
+	@Override
 	public void sendToFriends(String access_Token, Long recruit_id, List<String> list) {
 		int num = list.size();
 		String tmp = "";
@@ -258,6 +265,7 @@ public class KakaoAPI {
 				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 	}
 
+	@Override
 	public void sendMessagejorok(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 		try {
@@ -349,7 +357,8 @@ public class KakaoAPI {
 		}
 	}
 
-	public static void secession(String access_Token) {
+	@Override
+	public void secession(String access_Token) {
 		String reqURL = "https://kapi.kakao.com/v1/user/unlink";
 		try {
 			URL url = new URL(reqURL);
