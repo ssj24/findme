@@ -12,13 +12,11 @@ public class RecruitDTO {
 	private String compName;
 	private String title;
 	private String jobCategory;
-	private long postDate;
-	private long startDate;
-	private long dueDate;
 	private String techStack;
 	private String url;
 	private boolean utility;
 	private String postDate;
 	private String startDate;
 	private String dueDate;
+	private String imgUrl;
 }
