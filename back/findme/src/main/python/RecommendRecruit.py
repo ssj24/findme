@@ -33,65 +33,65 @@ picks = {
 }
 
 def sim_pearson(data, userId1, userId2):
-    # sumX = 0  # X의 합
-    # sumY = 0  # Y의 합
-    # sumPowX = 0  # X 제곱의 합
-    # sumPowY = 0  # Y 제곱의 합
-    # sumXY = 0  # X*Y의 합
-    # count = 0  # 영화 개수
-    #
-    # for i in data[userId1]:  # i = key
-    #     if i in data[userId2]:  # 같은 영화를 평가했을때만
-    #         sumX += data[userId1][i]
-    #         sumY += data[userId2][i]
-    #         sumPowX += pow(data[userId1][i], 2)
-    #         sumPowY += pow(data[userId2][i], 2)
-    #         sumXY += data[userId1][i] * data[userId2][i]
-    #         count += 1
-    #
-    # # print("sumX: " + str(sumX))
-    # # print("sumY: " + str(sumY))
-    # # print("sumPowX: " + str(sumPowX))
-    # # print("sumPowY: " + str(sumPowY))
-    # # print("sumXY: " + str(sumXY))
-    # # print("count: " + str(count))
-    # # print("((sumX * sumY) / count): " + str(((sumX * sumY) / count)))
-    # # print("pow(sumX, 2): " + str(pow(sumX, 2)))
-    # try:
-    #     return (sumXY - ((sumX * sumY) / count)) / sqrt(
-    #     (sumPowX - (pow(sumX, 2) / count)) * (sumPowY - (pow(sumY, 2) / count)))
-    # except:
-    #     return 0
-    avg_id1 = 0
-    avg_id2 = 0
-    count = 0
-    for tech in data[userId1]:
-        if tech in data[userId2]:  # 같은 영화를 봤다면
-            avg_id1 = data[userId1][tech]
-            avg_id2 = data[userId2][tech]
-            count += 1
-    try:
-        avg_id1 = avg_id1 / count
-    except:
-        avg_id1 = 0
-    try:
-        avg_id2 = avg_id2 / count
-    except:
-        avg_id2 = 0
+    sumX = 0  # X의 합
+    sumY = 0  # Y의 합
+    sumPowX = 0  # X 제곱의 합
+    sumPowY = 0  # Y 제곱의 합
+    sumXY = 0  # X*Y의 합
+    count = 0  # 영화 개수
 
-    sum_id1 = 0
-    sum_id2 = 0
-    sum_id1_id2 = 0
-    count = 0
-    for tech in data[userId1]:
-        if tech in data[userId2]:
-            sum_id1 += pow(data[userId1][tech] - avg_id1, 2)
-            sum_id2 += pow(data[userId2][tech] - avg_id2, 2)
-            sum_id1_id2 += (data[userId1][tech] - avg_id1) * (data[userId2][tech] - avg_id2)
+    for i in data[userId1]:  # i = key
+        if i in data[userId2]:  # 같은 영화를 평가했을때만
+            sumX += data[userId1][i]
+            sumY += data[userId2][i]
+            sumPowX += pow(data[userId1][i], 2)
+            sumPowY += pow(data[userId2][i], 2)
+            sumXY += data[userId1][i] * data[userId2][i]
+            count += 1
+
+    # print("sumX: " + str(sumX))
+    # print("sumY: " + str(sumY))
+    # print("sumPowX: " + str(sumPowX))
+    # print("sumPowY: " + str(sumPowY))
+    # print("sumXY: " + str(sumXY))
+    # print("count: " + str(count))
+    # print("((sumX * sumY) / count): " + str(((sumX * sumY) / count)))
+    # print("pow(sumX, 2): " + str(pow(sumX, 2)))
     try:
-        return sum_id1_id2 / (sqrt(sum_id1) * sqrt(sum_id2))
+        return (sumXY - ((sumX * sumY) / count)) / sqrt(
+        (sumPowX - (pow(sumX, 2) / count)) * (sumPowY - (pow(sumY, 2) / count)))
     except:
         return 0
+    # avg_id1 = 0
+    # avg_id2 = 0
+    # count = 0
+    # for tech in data[userId1]:
+    #     if tech in data[userId2]:  # 같은 영화를 봤다면
+    #         avg_id1 = data[userId1][tech]
+    #         avg_id2 = data[userId2][tech]
+    #         count += 1
+    # try:
+    #     avg_id1 = avg_id1 / count
+    # except:
+    #     pass
+    # try:
+    #     avg_id2 = avg_id2 / count
+    # except:
+    #     pass
+    #
+    # sum_id1 = 0
+    # sum_id2 = 0
+    # sum_id1_id2 = 0
+    # count = 0
+    # for tech in data[userId1]:
+    #     if tech in data[userId2]:
+    #         sum_id1 += pow(data[userId1][tech] - avg_id1, 2)
+    #         sum_id2 += pow(data[userId2][tech] - avg_id2, 2)
+    #         sum_id1_id2 += (data[userId1][tech] - avg_id1) * (data[userId2][tech] - avg_id2)
+    # try:
+    #     return sum_id1_id2 / (sqrt(sum_id1) * sqrt(sum_id2))
+    # except:
+    #     return 0
 
 def top_match(data, userId, index=10, sim_function=sim_pearson):
     li=[]
@@ -103,8 +103,8 @@ def top_match(data, userId, index=10, sim_function=sim_pearson):
     return li[:index]
 
 def getRecommendation(data, myId, sim_function=sim_pearson):
-    result = top_match(picks, myId)
-    print(result)
+    result = top_match(data, myId)
+    # print(result)
     simSum = 0  # 유사도 합을 위한 변수
     score = 0  # 평점 합을 위한 변수
     li = []  # 리턴을 위한 리스트
@@ -142,12 +142,8 @@ def getRecommendation(data, myId, sim_function=sim_pearson):
     li.reverse()  # 내림차순
     return li
 
-# print(top_match(picks, '1'))
-
-# print(getRecommendation(picks, '2'))
-
 def start(userId):
-    userId = int(userId)
+    userId = str(userId)
 
     # 파이썬-MySQL 연결
     # MySQL 설정
@@ -169,8 +165,8 @@ def start(userId):
     # SQL 문 실행
     curs.execute(sql)
 
+    # Fetch
     pickRows = curs.fetchall()
-    tmpDataFrame = pd.DataFrame(pickRows).set_index(0)
 
     # 전체 공고 아이디 수집
     sql = "select number from recruit"
@@ -178,65 +174,70 @@ def start(userId):
     # SQL 문 실행
     curs.execute(sql)
 
+    #Fetch
     recruitRows = curs.fetchall()
 
+    # 공고 칼럼 만들기
     recruitIdList = []
 
     for recruitId in recruitRows:
         recruitIdList.append(recruitId[0])
 
-    # recruitIdList.insert(0, 'id')
-    print(recruitIdList)
-
     data = []
     tmp = []
 
-    # print(pickRows[0][1])
+    # tmp 리스트 만들기 1
+    for pickRow in pickRows:
+        if len(tmp) == 0:
+            tmp.append([pickRow[0]])
+        else:
+            for t in tmp:
+                flag = False
 
-    # print(pickRows)
+                if pickRow[0] not in t:
+                    flag = True
+                else:
+                    flag = False
+            if flag:
+                tmp.append([pickRow[0]])
 
-    # for pickRow in pickRows:
-    #     if len(data) == 0:
-    #         data.append([pickRow[0]])
-    #     else:
-    #         for d in data:
-    #             flag = False
-    #
-    #             if pickRow[0] not in d:
-    #                 flag = True
-    #             else:
-    #                 flag = False
-    #         if flag:
-    #             data.append([pickRow[0]])
-    #
-    # for recruitId in recruitIdList:
+    # tmp 리스트 만들기 2
+    for pickRow in pickRows:
+        for i in range(0, len(tmp)):
+            if tmp[i][0] == pickRow[0]:
+                tmp[i].append(pickRow[1])
 
+    for t in tmp:
+        data.append([str(t[0])])
 
-    # for pickRow in pickRows:
-    #     tmp = {}
-    #     data[pickRow[0]] = tmp[pickRow
+    # data 리스트 만들기 2
+    for i in range(0, len(tmp)):
+        for recruitId in recruitIdList:
+            for j in range(1, len(tmp[i])):
+                flag = False
 
+                if tmp[i][j] == int(recruitId):
+                    flag = True
+                    break
 
-    print(data)
-    #     for recruitId in recruitIdList:
-    #         # print(pickRows[i][1])
-    #         # print(recruitId)
-    #
-    #         if str(pickRows[i][1]) == recruitId:
-    #             data[i].append(1)
-    #         else:
-    #             data[i].append(0)
-    print(data)
-    newData = []
+            if flag:
+                data[i].append(1)
+            else:
+                data[i].append(0)
 
-    # dataFrame = pd.DataFrame(data=data)
-    # dataFrame.columns = ['id'] + recruitIdList
-    # dataFrame.join(dataFrame, on='id', how='left')
-    # dataFrame = dataFrame.set_index(['id'])
-    # print(dataFrame)
-    # dataDict = dataFrame.set_index('id').T.to_dict('dict')
-    # print(dataDict)
+    # 데이터 프레임 만들기
+    dataFrame = pd.DataFrame(data=data)
+    dataFrame.columns = ['id'] + recruitIdList
+    dataDict = dataFrame.set_index('id').T.to_dict('dict')
+    list = getRecommendation(dataDict, userId)
+
+    recommendRecruitList = []
+
+    for recruitId in list:
+        recommendRecruitList.append(int(recruitId[1]))
+
+    print(recommendRecruitList)
 
 if __name__=='__main__':
-    start(3)
+    start(sys.argv[1])
     sys.exit(220)

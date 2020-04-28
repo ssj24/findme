@@ -173,7 +173,6 @@ export default {
     }),
 
     methods: {
-      
       submit () {
         baseURL.post('user/login?email='+this.id+'&password='+this.password)
           .then(res => {
