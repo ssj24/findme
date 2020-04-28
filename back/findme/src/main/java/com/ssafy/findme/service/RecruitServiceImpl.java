@@ -89,7 +89,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			System.out.println(matchRecruitIdList);
 
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
-				matchRecruit = recruitRepo.findByNumber(matchRecruitIdList.get(i));
+				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)));
 //				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
@@ -109,10 +109,10 @@ public class RecruitServiceImpl implements IRecruitService {
 		List<RecruitDTO> pickRecruitList = new ArrayList<>();
 
 		try {
-			List<Pick> tmpPickRecruitList = pickRepo.findByuserId(Long.parseLong(userId));
+			List<Pick> tmpPickRecruitList = pickRepo.findByUserId(Long.parseLong(userId));
 
 			for (int i = 0; i < tmpPickRecruitList.size(); i++) {
-				Recruit pickRecruit = recruitRepo.findByNumber(tmpPickRecruitList.get(i).getRecruit().getNumber());
+				Recruit pickRecruit = recruitRepo.findById(tmpPickRecruitList.get(i).getRecruit().getId());
 				pickRecruitList.add(modelMapper.map(pickRecruit, RecruitDTO.class));
 			}
 		} catch (Exception e) {
@@ -147,7 +147,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
 
 			for (int i = 0; i < recommendRecruitIdList.size(); i++) {
-				recommendRecruit = recruitRepo.findByNumber(recommendRecruitIdList.get(i));
+				recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)));
 //				System.out.println(matchRecruit);
 				recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
 			}

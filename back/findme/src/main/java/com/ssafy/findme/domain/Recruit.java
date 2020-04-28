@@ -46,8 +46,6 @@ public class Recruit {
 	private String url;
 	private boolean utility;
 	
-	private String number;
-	
 	private String postDate;
 	private String startDate;
 	private String dueDate; //채용 시 마감인 경우도 있어서 String으로

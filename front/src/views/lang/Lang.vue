@@ -275,7 +275,7 @@ export default {
     this.langSeq = this.$route.params.langId;
     this.langName = this.langs[this.langSeq].title;
     this.cookieId = cookie.cookieUser();
-    let language_id = this.langSeq + 1
+    let language_id = Number(this.langSeq) + 1
   
     baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
       .then(res=>{
@@ -296,8 +296,6 @@ export default {
     textNext();
     
     this.getReviews();
-    // this.getSymCommentList();
-    this.getUnsymCommentList();
     this.getTextMiningData();
   },
   methods: {
@@ -386,7 +384,7 @@ export default {
       }
     },
     getTextMiningData() {
-      baseURL("/language/detail/"+(Number(this.langSeq)+1))
+      baseURL("language/detail/"+(Number(this.langSeq)+1))
       .then(res=>{
         let keys = Object.keys(res.data)
         for (let i = 0; i < keys.length; i++) {

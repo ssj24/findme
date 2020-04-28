@@ -7,5 +7,5 @@ import com.ssafy.findme.domain.Recruit;
 
 @Repository
 public interface RecruitRepository extends JpaRepository<Recruit, Integer> {
-	public Recruit findByNumber(String number);
+	public Recruit findById(Long recruit_id);
 }
