@@ -38,7 +38,7 @@ public class UserController {
 
 	@Autowired
 	private static RecruitRepository recruitrepo;
-	
+
 	@Autowired
 	private IUserService userservice;
 	@Autowired
@@ -179,7 +179,7 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@GetMapping("/test")
 	@ApiOperation(value = "deleteRecruit")
 	public ResponseEntity<Map<String, Object>> test() {

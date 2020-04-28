@@ -14,4 +14,6 @@ public interface RecruitRepository extends JpaRepository<Recruit, Integer> {
 	@Modifying
 	@Query(value="DELETE FROM Recruit r WHERE r.due_date <:due_date", nativeQuery=true)
 	public void deleteByDueDate(@Param("due_date") long due_date);
+
+	public Recruit findById(long parseLong);
 }
