@@ -37,7 +37,8 @@ public class SurveyController {
 	public Map<String, Boolean> findByConfirm(@RequestParam Long user_id, @RequestParam Long language_id) {
 		Map<String, Boolean> resultMap = new HashMap<String, Boolean>();
 		String result = surveyserivce.findByConfirm(user_id, language_id);
-		if(result.equals("yse"))
+		System.out.println(result);
+		if(result.equals("yes"))
 			resultMap.put("yes", false);
 		else if(result.equals("no"))
 			resultMap.put("no", true);

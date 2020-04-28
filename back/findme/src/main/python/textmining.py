@@ -5,10 +5,6 @@ import pandas as pd
 from konlpy.tag import Okt
 from collections import Counter
 from pandas import DataFrame
-# import matplotlib.pyplot as plt
-# from PIL import Image
-# from wordcloud import WordCloud
-# import numpy as np
 
 language = (
         'Java',
@@ -44,7 +40,7 @@ def makeup_survey(arr, data):
         if d == 1: arr.append("불편함")
         elif d == 2: arr.append("배우기어렵다")
         elif d == 3: arr.append("낮은수요")
-        elif d == 4: arr.append("개발속도느림")
+        elif d == 4: arr.append("느린개발속도")
         else: arr.append("실행속도느림")
 
     for d in data[6]:
@@ -58,8 +54,8 @@ def makeup_survey(arr, data):
         if d == 1: arr.append("사용편리")
         elif d == 2: arr.append("배우기 쉽다")
         elif d == 3: arr.append("높은수요")
-        elif d == 4: arr.append("개발속도빠름")
-        else: arr.append("실행속도빠름")
+        elif d == 4: arr.append("빠른개발속도")
+        else: arr.append("빠른실행속도")
 
     for d in data[5]:
         arr.append(d)
@@ -155,21 +151,6 @@ def main():
     df.to_sql('textmining', con, if_exists='replace', index=False, index_label="id")
     conn.commit()
     conn.close()
-
-    # wordcloud
-    # mask = np.array(Image.open("alice.png"))
-    # print(mask)
-
-    # #텍스트를 읽어주시면 됩니다.
-    # text = tags
-    
-    # # 그리고 다음과 같이 WordCloud 객체를 만들어 주시고
-    # wc = WordCloud(font_path = 'C:/Windows/Fonts/malgun.ttf',background_color="white", max_words=20000, 
-    # mask=mask, max_font_size=300).generate_from_frequencies(text)
-
-    # plt.imshow(wc, interpolation='bilinear')
-    # plt.axis('off')
-    # plt.show()
  
 if __name__ == '__main__':
     main()

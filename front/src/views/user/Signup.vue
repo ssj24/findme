@@ -230,7 +230,7 @@ export default {
         }
         baseURL.post('user/signup', data)
           .then(() => {
-            alert("이메일로 인증 코드를 보냈습니다.")
+            alert("이메일로 인증 코드를 보냈습니다")
             this.$router.push({
               name: "Main",
             });
