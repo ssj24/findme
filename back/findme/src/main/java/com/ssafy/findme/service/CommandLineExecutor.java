@@ -36,16 +36,6 @@ public class CommandLineExecutor {
 		CommandLineExecutor.execute("python src/main/python/google_trend.py");
 	}
 
-	@Scheduled(cron = "0 14 17 * * *") // 매일 오전 4시 수행
-//	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
-	public static void deleteRecruit() {
-		System.out.println("scheduleDeleteRecruit: " + new Date());
-		// 마감일이 지금보다 이르면 다 지워주자
-		long now = (Calendar.getInstance().getTimeInMillis() / 1000);
-		recruitrepo.deleteByDueDate(now);
-		System.out.println("End DeleteRecruit");
-	}
-
 	/**
 	 * cmd 명령어 실행
 	 *

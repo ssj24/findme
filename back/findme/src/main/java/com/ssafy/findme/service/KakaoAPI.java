@@ -238,7 +238,7 @@ public class KakaoAPI implements IKakaoAPI {
 
 	@Override
 	public void sendToMe(String access_Token, Long recruit_id) {
-		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id + " ");
+		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
 	}
 
 	@Override

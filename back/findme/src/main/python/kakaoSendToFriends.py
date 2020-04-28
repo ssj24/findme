@@ -83,8 +83,6 @@ def main(access_token, recruit_id, receiver_uuids):
     template_object = template_object.replace("'", "\"")
 
     params = {}
-    # params['receiver_uuids'] = '["h7WEvIy0hbKLp5WlkaOXoZC8iLqJvYS84A"]'
-    # params['receiver_uuids'] = '['+'"'+str(receiver_uuids[0])+'"'+']'
     params['receiver_uuids'] = '['+tmp+']'
     params['template_object'] = template_object
 
