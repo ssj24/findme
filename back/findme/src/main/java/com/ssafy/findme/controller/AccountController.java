@@ -155,12 +155,10 @@ public class AccountController {
 
 	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
-	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code) {
+	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code, HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
-		System.out.println("왔뉘,,,?");
 
-		System.out.println("++"+code);
 		String access_Token = kakao.getAccessToken(code);
 		System.out.println(access_Token);
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
@@ -187,15 +185,21 @@ public class AccountController {
 					resultMap.put("log", "카카오 계정으로 전환하시겠습니까? > 앞으로 카카오로만 로그인 가능 일반으로 로그인 불가");
 					resultMap.put("info", user);
 					status = HttpStatus.ACCEPTED;
-					return new ResponseEntity<Map<String, Object>>(resultMap, status);
 				}
 			} else { // 카카오 계정으로 회원가입
 				resultMap.put("status", false);
 				resultMap.put("log", "회원가입이 필요합니다.");
 				resultMap.put("info", user);
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
+			String token = accountservice.getToken(user);
+			res.setHeader("jwt-auth-token", token);
+			res.setHeader("access-token", access_Token);
+			
+			resultMap.put("info", user);
+			resultMap.put("jwt-auth-token", token);
+			resultMap.put("access-token", access_Token);
+			status = HttpStatus.ACCEPTED;
 		} catch (RuntimeException e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -13,26 +13,26 @@ def main(access_token, recruit_id, receiver_uuids):
         tmp+='"'+i+'",'
     tmp=tmp[:len(tmp)-1]
     
-    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test3', charset='utf8')
     curs = conn.cursor()
     # sql = "select * from recruits where recruit_id = (select recruit_id from recommend where user_id = "+user_id+" ) "
-    sql = "select * from recruits where recruit_id = " + recruit_id
+    sql = "select * from recruit where id = " + recruit_id
 
     curs.execute(sql)
     rows = curs.fetchall()
     rows_data = pd.DataFrame(rows)
-    #print(rows_data)
-    #print(rows_data[2])
-    #print(rows_data[4])
-    # access_token="DJtWKRhhc9mQaqltzi5ytmH7hCMryOKBFZj0AgopcNIAAAFxrO3kqA"
+    
     like_cnt=100
-    title = rows_data[2][0]
-    description = rows_data[4][0]
-    image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
-
-    template_list_data = str(
-        ["h7WEvIy0hbKLp5WlkaOXoZC8iLqJvYS84A"]
-    )
+    title = rows_data[8][0]
+    image_url=rows_data[3][0]
+    if(image_url == ''):
+        image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
+    description = rows_data[7][0]
+    recruit_url=rows_data[9][0]
+    
+    print(title)
+    print(description)
+    # image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
 
     template_dict_data = str({
         "object_type": "feed",
@@ -43,10 +43,10 @@ def main(access_token, recruit_id, receiver_uuids):
             "image_width": 640,
             "image_height": 640,
             "link": {
-                "web_url": "http://www.daum.net",
-                "mobile_web_url": "http://m.daum.net",
-                "android_execution_params": "contentId=100",
-                "ios_execution_params": "contentId=100"
+                "web_url": recruit_url,
+                "mobile_web_url": recruit_url,
+                "android_execution_params": recruit_url,
+                "ios_execution_params": recruit_url
             }
         },
         "social": {
@@ -56,15 +56,15 @@ def main(access_token, recruit_id, receiver_uuids):
             {
                 "title": "웹으로 이동",
                 "link": {
-                    "web_url": "http://www.daum.net",
-                    "mobile_web_url": "http://m.daum.net"
+                    "web_url": recruit_url,
+                    "mobile_web_url": recruit_url
                 }
             },
             {
                 "title": "앱으로 이동",
                 "link": {
-                    "android_execution_params": "contentId=100",
-                    "ios_execution_params": "contentId=100"
+                    "android_execution_params": recruit_url,
+                    "ios_execution_params": recruit_url
                 }
             }
         ]

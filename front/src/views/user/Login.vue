@@ -44,15 +44,15 @@
               >
                 로그인
               </v-btn>
-              <!-- <v-btn
+              <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"
                 @click="kakaologin"
               >
               카카오
-              </v-btn> -->
-              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message">
+              </v-btn>
+              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message">
                 카카오
               </a>
             </v-layout>

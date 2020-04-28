@@ -1,4 +1,5 @@
 import urllib.request
+from bs4 import BeautifulSoup
 import json
 import pandas as pd
 import re
@@ -8,14 +9,14 @@ from sqlalchemy import create_engine
 # MySQL Connector using pymysql
 pymysql.install_as_MySQLdb()
 # import MySQLdb
-db_data = 'mysql+mysqldb://' + 'ssafy' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
-       + 'findme' + '?charset=utf8mb4'
+db_data = 'mysql+mysqldb://' + 'root' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
+       + 'test3' + '?charset=utf8mb4'
 engine = create_engine(db_data, encoding='utf-8')
 
 conn = pymysql.connect(host='localhost', 
-                    user='ssafy', 
+                    user='root', 
                     password='ssafy',
-                    db='findme', 
+                    db='test3', 
                     connect_timeout=1)
 #https://oapi.saramin.co.kr/job-search/?access-key=0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O&start=0&count=110&job_category=4&sort=pd
 access_key="0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O"
@@ -30,7 +31,7 @@ while True:
         response_body = response.read()
         # print(response_body.decode('utf-8'))
         
-        language=['Java','C','Python','C++','C#','Visual Basic .NET','JavaScript','PHP','SQL','Go','R','Assembly','Swift','Ruby','MATLAB','PL/SQL','Perl','Visual Basic','Objective-C','Delphi/Object']
+        language=['Java','C','Python','C++','C#','Visual Basic .NET','JavaScript','PHP','SQL','Go','R','Assembly','Swift','Ruby','MATLAB','PL/SQL','Perl','Visual Basic','Objective-C','Delphi']
         dict = json.loads(response_body.decode('utf-8'))
         count = dict['jobs']['count']
         start = dict['jobs']['start']
@@ -48,6 +49,7 @@ while True:
         job_categorys=[]
         tech_stacks=[]
         urls=[]
+        img_urls=[]
         salarys=[]
         javas=[]
         cs=[]
@@ -77,6 +79,18 @@ while True:
                 comp_name = dict['jobs']['job'][i]['company']['detail']['name']
             except KeyError:
                 comp_name = ''
+            try:
+                tmp_url = dict['jobs']['job'][i]['company']['detail']['href']
+                data = urllib.request.urlopen(tmp_url)
+                #검색이 용이한 soup객체를 생성합니다. 
+                soup = BeautifulSoup(data, 'html.parser')
+                findheader = soup.find('div',attrs={'class':'header_info'})
+                try:
+                    img_url = findheader.find('img')['src']
+                except:
+                    img_url = ''
+            except KeyError:
+                img_url = ''
             try:
                 tech_stack = dict['jobs']['job'][i]['keyword']
             except KeyError:
@@ -122,6 +136,7 @@ while True:
 
             recruit_ids.append(recruit_id)
             comp_names.append(comp_name)
+            img_urls.append(img_url)
             recruit_utilitys.append(recruit_utility)
             salarys.append(salary)
             post_dates.append(post_date)
@@ -156,13 +171,14 @@ while True:
             # print()
 
         my_dict={
-            'recruit_id':recruit_ids, 
+            'id':recruit_ids, 
             'comp_name':comp_names,
-            'recruit_utility':recruit_utilitys,
+            'img_url':img_urls,
+            'utility':recruit_utilitys,
             'post_date':post_dates,
             'start_date':start_date,
             'due_date':due_dates,
-            'recruit_title':recruit_titles,
+            'title':recruit_titles,
             'job_category':job_categorys,
             'tech_stack':tech_stacks,
             'url':urls,
@@ -172,8 +188,8 @@ while True:
             'Python':pythons,
             'C++':cpps,
             'C#':csharps,
-            'Visual Basic .NET':vbns,
-            'JavaScript':jss,
+            'VB.NET':vbns,
+            'Java_Script':jss,
             'PHP':phps,
             'SQL':sqls,
             'Go':gos,
@@ -186,7 +202,7 @@ while True:
             'Perl':perls,
             'Visual Basic':vbs,
             'Objective-C':ocs,
-            'Delphi/Object':delphis
+            'Delphi':delphis
         }
         my_df=pd.DataFrame(my_dict)
         # print(my_df)
@@ -196,10 +212,10 @@ while True:
         # create cursor 
         cursor = conn.cursor()
         # Execute query
-        sql1 = "INSERT IGNORE INTO `recruits` (`COMP_NAME`, `RECRUIT_ID`, `RECRUIT_TITLE`, `JOB_CATEGORY`, `TECH_STACK`, `URL`, `RECRUIT_UTILITY`, `POST_DATE`, `START_DATE`, `DUE_DATE`) SELECT `COMP_NAME`, `RECRUIT_ID`, `RECRUIT_TITLE`, `JOB_CATEGORY`, `TECH_STACK`, `URL`, `RECRUIT_UTILITY`, `POST_DATE`, `START_DATE`, `DUE_DATE` FROM `temp`"
+        sql1 = "INSERT IGNORE INTO `recruit` (`COMP_NAME`, `ID`, `TITLE`, `JOB_CATEGORY`, `TECH_STACK`, `URL`, `UTILITY`, `POST_DATE`, `START_DATE`, `DUE_DATE`, `IMG_URL`) SELECT `COMP_NAME`, `ID`, `TITLE`, `JOB_CATEGORY`, `TECH_STACK`, `URL`, `UTILITY`, `POST_DATE`, `START_DATE`, `DUE_DATE`, `IMG_URL` FROM `temp`"
         cursor.execute(sql1)
         conn.commit()
-        sql2 = "INSERT IGNORE INTO `saramin_data` SELECT `RECRUIT_ID`, `COMP_NAME`, `RECRUIT_UTILITY`, `POST_DATE`, `DUE_DATE`, `SALARY`, `JAVA`, `C`, `PYTHON`, `C++`, `C#`, `VISUAL BASIC .NET`, `JAVASCRIPT`, `PHP`, `SQL`, `GO`, `R`, `ASSEMBLY`, `SWIFT`, `RUBY`, `MATLAB`, `PL/SQL`, `PERL`, `VISUAL BASIC`, `OBJECTIVE-C`, `DELPHI/OBJECT` FROM `temp`"
+        sql2 = "INSERT IGNORE INTO `saramin_data` (`ID`, `COMP_NAME`, `UTILITY`, `POST_DATE`, `DUE_DATE`, `SALARY`, `JAVA`, `C`, `PYTHON`, `C++`, `C#`, `VB_NET`, `JAVA_SCRIPT`, `PHP`, `SQL`, `GO`, `R`, `ASSEMBLY`, `SWIFT`, `RUBY`, `MATLAB`, `PL/SQL`, `PERL`, `VISUAL BASIC`, `OBJECTIVE-C`, `DELPHI`) SELECT `ID`, `COMP_NAME`, `UTILITY`, `POST_DATE`, `DUE_DATE`, `SALARY`, `JAVA`, `C`, `PYTHON`, `C++`, `C#`, `VB.NET`, `JAVA_SCRIPT`, `PHP`, `SQL`, `GO`, `R`, `ASSEMBLY`, `SWIFT`, `RUBY`, `MATLAB`, `PL/SQL`, `PERL`, `VISUAL BASIC`, `OBJECTIVE-C`, `DELPHI` FROM `temp`"
         cursor.execute(sql2)
         conn.commit()
 
