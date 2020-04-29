@@ -144,9 +144,10 @@ public class RecruitServiceImpl implements IRecruitService {
 			int exitCode = p.waitFor();
 			String newLine = sb.toString().replace("[", "").replace("]", "").replace(" ", "");
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
-			
-			if (recommendRecruitIdList != null && !recommendRecruitIdList.isEmpty() && !recommendRecruitIdList.get(0).equals("")) {
-				
+
+			if (recommendRecruitIdList != null && !recommendRecruitIdList.isEmpty()
+					&& !recommendRecruitIdList.get(0).equals("")) {
+
 				for (int i = 0; i < recommendRecruitIdList.size(); i++) {
 					recommendRecruit = recruitRepo.findByNumber(recommendRecruitIdList.get(i));
 					recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
@@ -165,8 +166,8 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<String> getRecommendLanguage(String userId, List<RecruitDTO> matchRecruitList) {
-		String[] LanguageList = { "Java", "Python", "C", "C++", "C#", "Visual Basic .NET", "자바스크립트", "PHP", "SQL", "Go",
-				"R", "Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C",
+		String[] LanguageList = { "Java", "Python", "C", "C++", "C#", "Visual Basic .NET", "JavaScript", "PHP", "SQL",
+				"Go", "R", "Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C",
 				"Delphi/Object" };
 
 		User myInfo = accountRepo.findById(Long.parseLong(userId));
@@ -180,7 +181,9 @@ public class RecruitServiceImpl implements IRecruitService {
 
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
-					if (matchRecruitTechStack.get(k).contains(LanguageList[j])) {
+					String language = LanguageList[j] == "JavaScript" ? "자바스크립트" : LanguageList[j];
+					
+					if (matchRecruitTechStack.get(k).contains(language)) {
 						countMatchTechStack[j]++;
 						break;
 					}
@@ -190,7 +193,7 @@ public class RecruitServiceImpl implements IRecruitService {
 		List<String> recommendLanguageList = new ArrayList<>();
 
 		for (int i = 0; i < 20; i++) {
-			if (countMatchTechStack[i] > 0) {
+			if (countMatchTechStack[i] > 10) {
 				recommendLanguageList.add(LanguageList[i]);
 			}
 		}

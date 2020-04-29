@@ -278,6 +278,7 @@ const gradients = [
     },
     mounted() {
       this.userId = cookie.cookieUser()
+      console.log(window.sessionStorage)
     },
     methods: {
       

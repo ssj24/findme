@@ -41,6 +41,10 @@ export default {
           maxValue: 5,
           colors: this.colors
         },
+        tooltip: {
+          // isHtml: true,
+          // allowHtml: true
+        },
         legend: "none",
         // backgroundColor: { fill: "#FFFFFF", stroke: "#FFFFFF", strokeWidth: 0 },
         datalessRegionColor: "#f5f5f5"

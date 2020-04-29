@@ -46,6 +46,11 @@ export default {
           },
           animations: {
             enabled: false
+          },
+          events: {
+            // beforeMount: () => {
+            //   this.makeSeries();
+            // }
           }
         },
         noData: {
@@ -125,8 +130,67 @@ export default {
       }
     };
   },
-  methods: {},
-  mounted() {
+  methods: {
+    makeSeries() {
+      if (
+        this.firstLang != "" &&
+        this.firstLang != null &&
+        this.firstLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.firstLang,
+          data: this.firstValue
+        });
+      }
+
+      if (
+        this.secondLang != "" &&
+        this.secondLang != null &&
+        this.secondLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.secondLang,
+          data: this.secondValue
+        });
+      }
+
+      if (
+        this.thirdLang != "" &&
+        this.thirdLang != null &&
+        this.thirdLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.thirdLang,
+          data: this.thirdValue
+        });
+      }
+
+      if (
+        this.fourthLang != "" &&
+        this.fourthLang != null &&
+        this.fourthLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.fourthLang,
+          data: this.fourthValue
+        });
+      }
+
+      if (
+        this.fifthLang != "" &&
+        this.fifthLang != null &&
+        this.fifthLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.fifthLang,
+          data: this.fifthValue
+        });
+      }
+      this.seriesLine = this.series;
+    }
+  },
+  created() {
+    // this.makeSeries();
     if (
       this.firstLang != "" &&
       this.firstLang != null &&
@@ -137,7 +201,6 @@ export default {
         data: this.firstValue
       });
     }
-
     if (
       this.secondLang != "" &&
       this.secondLang != null &&
@@ -148,7 +211,6 @@ export default {
         data: this.secondValue
       });
     }
-
     if (
       this.thirdLang != "" &&
       this.thirdLang != null &&
@@ -159,7 +221,6 @@ export default {
         data: this.thirdValue
       });
     }
-
     if (
       this.fourthLang != "" &&
       this.fourthLang != null &&
@@ -170,7 +231,6 @@ export default {
         data: this.fourthValue
       });
     }
-
     if (
       this.fifthLang != "" &&
       this.fifthLang != null &&
@@ -182,6 +242,7 @@ export default {
       });
     }
     this.seriesLine = this.series;
+    console.log("hello");
   }
 };
 </script>

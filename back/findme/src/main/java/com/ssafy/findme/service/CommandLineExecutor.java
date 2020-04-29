@@ -13,19 +13,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommandLineExecutor {
 
-	@Scheduled(cron="0 0 4 * * *")	//매일 오전 4시 수행
+	@Scheduled(cron="0 28 9 * * *")	//매일 오전 4시 수행
 //	@Scheduled(fixedRate = 2000) // 수행 시작 기점, 2초후 실행
 	public static void scheduleTest() {
 		System.out.println("scheduleTest: " + new Date());
 		// 실행
-		CommandLineExecutor.execute("python src/main/python/saramin.py");
-		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/saramin.py");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/textmining.py");
 	}
 	
 	@Scheduled(cron="0 0 4 * * FRI")	//매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
-		CommandLineExecutor.execute("python src/main/python/google_trend.py");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
 	}
 
 	/**

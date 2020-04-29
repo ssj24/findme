@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,7 +96,7 @@ public class GoogleDataController {
 			dateMap.put(date, count);
 		}
 		resultMap.put("JavaScript", dateMap);
-		
+
 		dateMap = new HashMap<>();
 		for (int i = 0; i < gdataList.size(); i++) {
 			GoogleTrendDataDTO gdataDTO = gdataList.get(i);
@@ -186,7 +187,6 @@ public class GoogleDataController {
 		}
 		resultMap.put("Perl", dateMap);
 
-		
 		dateMap = new HashMap<>();
 		for (int i = 0; i < gdataList.size(); i++) {
 			GoogleTrendDataDTO gdataDTO = gdataList.get(i);
@@ -213,15 +213,11 @@ public class GoogleDataController {
 			dateMap.put(date, count);
 		}
 		resultMap.put("Delphi", dateMap);
-		
-		System.out.println(resultMap.size());
+
+//		System.out.println(resultMap.size());
 		return resultMap;
 	}
-	
-	
-	
-	
-	
+
 	@GetMapping("/google/findAll/geo")
 	@ApiOperation(value = "구글 트렌드 지역별 데이터")
 	@ResponseBody
@@ -293,7 +289,7 @@ public class GoogleDataController {
 			dateMap.put(date, count);
 		}
 		resultMap.put("JavaScript", dateMap);
-		
+
 		dateMap = new HashMap<>();
 		for (int i = 0; i < gdataList.size(); i++) {
 			GoogleTrendGeoDataDTO gdataDTO = gdataList.get(i);
@@ -384,7 +380,6 @@ public class GoogleDataController {
 		}
 		resultMap.put("Perl", dateMap);
 
-		
 		dateMap = new HashMap<>();
 		for (int i = 0; i < gdataList.size(); i++) {
 			GoogleTrendGeoDataDTO gdataDTO = gdataList.get(i);
@@ -411,7 +406,7 @@ public class GoogleDataController {
 			dateMap.put(date, count);
 		}
 		resultMap.put("Delphi", dateMap);
-		
+
 		System.out.println(resultMap.size());
 		return resultMap;
 	}

@@ -2,14 +2,19 @@ import cookie from '@/cookie.js'
 
 export default {
   isLogin: () => {
+    // return true
+    // console.log("hello")
     // console.log(state)
     var token = cookie.token()
+    
     if (token == null) {
       // console.log(state)
       return false
     }
     if (token) {
-      return true
+      console.log(token)
+      return
+      // return true
     } else {
       return false
     }

@@ -1,5 +1,6 @@
 export default {
   isLogin: state => {
+    console.log(state)
     state.isLogin = true
   },
   isLogout: state => {
