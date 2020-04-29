@@ -7,10 +7,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.findme.domain.Pick;
@@ -24,7 +27,7 @@ import com.ssafy.findme.repository.RecruitRepository;
 @Service
 public class RecruitServiceImpl implements IRecruitService {
 	@Autowired
-	private RecruitRepository recruitRepo;
+	private static RecruitRepository recruitRepo;
 
 	@Autowired
 	private PickRepository pickRepo;
@@ -64,7 +67,7 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-		String filePath = "src/main/python/MatchRecruit.py";
+		String filePath = "C:\\MatchRecruit.py";
 		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
 		Process p;
@@ -89,7 +92,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			System.out.println(matchRecruitIdList);
 
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
-				matchRecruit = recruitRepo.findByNumber(matchRecruitIdList.get(i));
+				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)));
 //				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
@@ -109,10 +112,10 @@ public class RecruitServiceImpl implements IRecruitService {
 		List<RecruitDTO> pickRecruitList = new ArrayList<>();
 
 		try {
-			List<Pick> tmpPickRecruitList = pickRepo.findByuserId(Long.parseLong(userId));
+			List<Pick> tmpPickRecruitList = pickRepo.findByUserId(Long.parseLong(userId));
 
 			for (int i = 0; i < tmpPickRecruitList.size(); i++) {
-				Recruit pickRecruit = recruitRepo.findByNumber(tmpPickRecruitList.get(i).getRecruit().getNumber());
+				Recruit pickRecruit = recruitRepo.findById(tmpPickRecruitList.get(i).getRecruit().getId());
 				pickRecruitList.add(modelMapper.map(pickRecruit, RecruitDTO.class));
 			}
 		} catch (Exception e) {
@@ -147,7 +150,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
 
 			for (int i = 0; i < recommendRecruitIdList.size(); i++) {
-				recommendRecruit = recruitRepo.findByNumber(recommendRecruitIdList.get(i));
+				recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)));
 //				System.out.println(matchRecruit);
 				recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
 			}
@@ -175,7 +178,7 @@ public class RecruitServiceImpl implements IRecruitService {
 
 		for (int i = 0; i < matchRecruitList.size() / 2; i++) {
 			List<String> matchRecruitTechStack = Arrays
-					.asList(matchRecruitList.get(i).getTech_stack().replace("·", ",").split(","));
+					.asList(matchRecruitList.get(i).getTechStack().replace("·", ",").split(","));
 
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
@@ -200,5 +203,20 @@ public class RecruitServiceImpl implements IRecruitService {
 			}
 		}
 		return recommendLanguageList;
+	}
+
+	@Scheduled(cron = "0 57 4 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
+	public static void deleteRecruit() {
+		System.out.println("scheduleDeleteRecruit: " + new Date());
+		// 마감일이 지금보다 이르면 다 지워주자
+		long now = (Calendar.getInstance().getTimeInMillis() / 1000);
+		System.out.println(now);
+		long test=2001164400;
+		List<Recruit> ids = recruitRepo.FindIdByDueDate(test);
+		System.out.println("ㅅㅄㅂ");
+//		recruitRepo.deleteById(id);
+		System.out.println(ids.size());
+		System.out.println("End DeleteRecruit");
 	}
 }

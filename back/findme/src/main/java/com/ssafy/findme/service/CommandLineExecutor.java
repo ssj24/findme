@@ -4,25 +4,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.findme.repository.RecruitRepository;
+
 @Service
 public class CommandLineExecutor {
+	@Autowired
+	private static RecruitRepository recruitrepo;
 
-	@Scheduled(cron="0 0 4 * * *")	//매일 오전 4시 수행
 //	@Scheduled(fixedRate = 2000) // 수행 시작 기점, 2초후 실행
+	@Scheduled(cron = "0 23 15 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
 	public static void scheduleTest() {
-		System.out.println("scheduleTest: " + new Date());
 		// 실행
+		System.out.println("scheduleSaramin & textMining: " + new Date());
 		CommandLineExecutor.execute("python src/main/python/saramin.py");
 		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		System.out.println("End Saramin & textMining");
 	}
-	
-	@Scheduled(cron="0 0 4 * * FRI")	//매주 금요일 오전4시 수행
+
+	@Scheduled(cron = "0 0 4 * * FRI") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
 		CommandLineExecutor.execute("python src/main/python/google_trend.py");
@@ -103,8 +111,7 @@ public class CommandLineExecutor {
 			}
 		}
 	}
-	
-	
+
 	public static String execute_return(String cmd) {
 		Process process = null;
 		Runtime runtime = Runtime.getRuntime();
@@ -152,8 +159,8 @@ public class CommandLineExecutor {
 			// shell 실행이 정상 종료되었을 경우
 			if (process.exitValue() == 0) {
 				System.out.println("성공");
-				//윈도우 개행문자들을 모두 지워버린다.
-				return successOutput.toString().replace(System.getProperty( "line.separator" ), "");
+				// 윈도우 개행문자들을 모두 지워버린다.
+				return successOutput.toString().replace(System.getProperty("line.separator"), "");
 			} else {
 				// shell 실행이 비정상 종료되었을 경우
 				System.out.println("비정상 종료");

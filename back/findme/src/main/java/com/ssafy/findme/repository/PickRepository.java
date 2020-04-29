@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.findme.domain.Pick;
 
 @Repository
-public interface PickRepository extends JpaRepository<Pick, Integer> {
-	public List<Pick> findByuserId(Long userId);
+public interface PickRepository extends JpaRepository<Pick, Long> {
+	public List<Pick> findByUserId(Long userId);
 }

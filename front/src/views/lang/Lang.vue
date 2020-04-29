@@ -273,6 +273,7 @@ export default {
     this.langName = this.langs[this.langSeq].title;
     this.cookieId = cookie.cookieUser();
     let language_id = Number(this.langSeq) + 1
+  
     baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
       .then(res=>{
         if (res.data.no == true){
