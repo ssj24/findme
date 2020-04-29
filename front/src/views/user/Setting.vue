@@ -142,8 +142,8 @@ export default {
         'Java',
         'C',
         'Python',
-        'Cpp',
-        'Csharp',
+        'C++',
+        'C#',
         'VB.NET',
         'JavaScript',
         'PHP',
@@ -169,17 +169,18 @@ export default {
       positions: [
         '웹',
         '응용프로그램',
-        'Q/A',
-        'tester',
+        'QA',
+        '테스터',
         '인공지능',
         '빅데이터',
         '블록체인',
         '보안',
-        'DB',
+        '데이터베이스',
         '네트워크',
         'PM',
         'ERP',
-        '분석/설계'
+        '분석',
+        '설계'
       ],
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
@@ -194,6 +195,13 @@ export default {
           this.langSelect=res.data.techStack.split(',')
           this.firm=res.data.wishHope.split(',')
           this.positionSelect=res.data.wishJob.split(',')
+          for (var i=0; i < this.langSelect.length; i++) {
+            if (this.langSelect[i] == "Cpp") {
+              this.langSelect[i] = 'C++'
+            } else if (this.langSelect[i] == 'Csharp') {
+              this.langSelect[i] = 'C#'
+            }
+          }
         })
       
     },
@@ -204,6 +212,13 @@ export default {
         })
     },
     updateProfile() {
+      for (var i=0; i < this.langSelect.length; i++) {
+        if (this.langSelect[i] == "C++") {
+          this.langSelect[i] = 'Cpp'
+        } else if (this.langSelect[i] == 'C#') {
+          this.langSelect[i] = 'Csharp'
+        }
+      }
       let data = {
         'techStack': this.langSelect.join(),
         'wishHope': this.firm,

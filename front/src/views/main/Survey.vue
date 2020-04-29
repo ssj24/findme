@@ -63,7 +63,7 @@
         </v-card-text>
         <v-card-actions class="btnParent pr-8 pt-0 pb-4">
           <v-spacer></v-spacer>
-          <v-btn color="indigo darken-3 mx-auto" style="border:1px dotted #ccc; font-weight: 900;" text large @click="submitSurvey(), dialog = false">제출</v-btn>
+          <v-btn color="indigo darken-3 mx-auto" style="border:1px dotted #ccc; font-weight: 900;" text large @click="submitSurvey()">제출</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -76,19 +76,15 @@ import cookie from '@/cookie.js'
 export default {
   props: {
     langId: {
-      type: String,
-    },
-    chk: {
-      type: Boolean,
+      type: Number,
     },
     langName: {
       type: String,
     }
   },
   data: () => ({
-      dialog: false,
+      dialog: true,
       userName: '',
-      langSeq: 0,
       lang: '',
       reason: '',
       reasonList: [
@@ -119,9 +115,8 @@ export default {
   mounted() {
       this.lang = this.langName
       this.userName = cookie.cookieName()
-      this.dialog = !this.chk
-      // this.lang = this.langsList[this.langId+1]
   },
+
   methods: {
     userProfile() {
       baseURL('user/find/'+cookie.cookieUser())
@@ -139,15 +134,20 @@ export default {
     },
     
     submitSurvey() {
+      if (this.advantage && this.disadvantage && this.reason && this.comment) {
       let data = {
         advantage: this.advantageList.indexOf(this.advantage) + 1,
         disadvantage: this.disadvantageList.indexOf(this.disadvantage) + 1,
         totalReview: this.comment,
         useReason: this.reasonList.indexOf(this.reason) + 1,
-        languageId: this.langId + 1,
+        languageId: Number(this.langId) + 1,
         userId: cookie.cookieUser()
       }
       baseURL.post('survey/write', data)
+        .then(() => {
+          this.dialog = false;
+        })
+      }
     }
   }
 }

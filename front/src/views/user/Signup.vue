@@ -218,6 +218,13 @@ export default {
         this.positionSelect = [];
       },
       submit () {
+        for (var i=0; i < this.langSelect.length; i++) {
+          if (this.langSelect[i] == "C++") {
+            this.langSelect[i] = 'Cpp'
+          } else if (this.langSelect[i] == 'C#') {
+            this.langSelect[i] = 'Csharp'
+          }
+        }
         let Stacks = this.langSelect.join()
         let wishPositions = this.positionSelect.join()
         let data = {

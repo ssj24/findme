@@ -200,21 +200,10 @@ export default {
               })
             }
           })
-          .catch(err => {
-            alert(err)
-            // if (err.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
-            //   alert("로그인에 실패하셨습니다")
-            //   this.id = ''
-            //   this.password = ''
-            // }
-            // else if (err.data.message == "인증되지 않은 계정입니다") {
-            //   alert("인증되지 않은 계정입니다")
-            // }
-            // else if (err.data.utility == false) {
-            //   alert("탈퇴한 회원입니다")
-            //   this.id = ''
-            //   this.password = ''
-            // }
+          .catch(() => {
+            alert('등록된 회원이 아닙니다')
+            this.email = ''
+            this.password = ''
           })
           
       },

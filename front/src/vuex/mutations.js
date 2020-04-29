@@ -22,5 +22,8 @@ export default {
 
   profileUserEmail(state, email) {
     state.profile = email
+  },
+  setChk: (state, chk) => {
+    state.chk = chk
   }
 }

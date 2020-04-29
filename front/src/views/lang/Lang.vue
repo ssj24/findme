@@ -5,10 +5,10 @@
 
     </h2>
     <div class="wrapper">
-      <div class="text"></div>
+      <div class="text mx-auto"></div>
     </div>
-    <span v-if="langSeq">
-      <survey :langId="langSeq" :chk="chk" :langName="langName"></survey>
+    <span v-if="chk">
+      <survey :langId="langSeq" :langName="langName"></survey>
     </span>
     <v-row>
       <v-col cols="11" class="mx-auto">
@@ -34,11 +34,6 @@
 
       </v-col>
     </v-row>
-    <p style="display: none;">
-    {{unsymCommentList}}
-
-    </p>
-    <v-form>
     <v-container>
       <v-row>
         <v-col cols="12">
@@ -52,52 +47,54 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row
+      <div class="reviewWrapper"
         v-for="(review, index) in reviews"
         :key="index"
       >
-        <span
-          :id="'Content'+review.id"
-          v-if="langSeq == (review.languageId - 1)"
-        >
-          
-          {{review.trans_updatedAt}}
-          {{review.userId}}
-          {{review.name}}
-          <p class="reviewContent">
-            {{review.content}}
-          </p>
-          {{review.id}}
-          <span v-if="review.user.id != cookieId">
-            <v-icon 
-              @click="symComment(review)"
-              :class="{upup: review.user.checkSymp}"
-              v-if="!review.user.checkUnsymp"
-              >
-              <!-- :class="{upup: review.symped}" -->
-              mdi-thumb-up
-            </v-icon>
-            <v-icon 
-              @click="UnsymComment(review)"
-              :class="{downdown: review.user.checkUnsymp}"
-              v-if="!review.user.checkSymp"
-              >
-              mdi-thumb-down
-            </v-icon>
-          </span>
-          <span v-else>
-            <v-btn @click="updateComment(review, index)">
-              수정
-            </v-btn>
-            <v-btn @click="deleteComment(review.id)">
-              삭제
-            </v-btn>
-          </span>
-        </span>
         
-      </v-row>
+        <div class="speechbubble">
+          <span
+            :id="'Content'+review.id"
+          >
+            <p class="reviewContent">
+              {{review.content}}
+            </p>
+            <div>
+              <span v-if="review.user.id != cookieId">
+                <v-icon 
+                  @click="symComment(review)"
+                  :class="{upup: review.user.checkSymp}"
+                  v-if="!review.user.checkUnsymp"
+                  >
+                  mdi-thumb-up
+                </v-icon>
+                <v-icon 
+                  @click="UnsymComment(review)"
+                  :class="{downdown: review.user.checkUnsymp}"
+                  v-if="!review.user.checkSymp"
+                  >
+                  mdi-thumb-down
+                </v-icon>
+              </span>
+              <span v-else>
+                <v-btn color="#e0cc18" small text @click="updateComment(review, index)">
+                  수정
+                </v-btn>
+                <v-btn color="#a50404" small text @click="deleteComment(review.id)">
+                  삭제
+                </v-btn>
+              </span>
+              <span class="username">
+            {{review.name}}
+            ({{review.trans_updatedAt}})
+
+            </span>
+            </div>    
+          </span>
+        </div>
+        
+      </div>
     </v-container>
-  </v-form>
   </div>
 </template>
 
@@ -167,41 +164,41 @@ export default {
   data () {
     return {
       cookieId: 0,
-      langSeq: 0,
+      langSeq: 1,
       langName: '',
       chk: false,
       langs: [
           {
             title: 'Java',
-            detail: '플랫폼에 독립적인 언어. 플랫폼에 맞는 JVM(자바 가상 머신)만 설치되어 있다면 동작한다. 대중적인 언어. 높은 안정성'
+            detail: '플랫폼에 독립적인 언어. 대중성. 높은 안정성'
           },
           {
             title: 'C',
-            detail: '세계적으로 가장 많이 쓰이는 프로그래밍 언어. 절차지향 언어. 간단한 문법. 지원 기능이 적음. 빠른 속도. 생산성 낮음.'
+            detail: '가장 많이 쓰이는 프로그래밍 언어. 지원 기능이 적음. 빠른 속도.'
           },
           {
             title: 'Python',
-            detail: '플랫폼에 독립적인 언어. 플랫폼에 맞는 JVM(자바 가상 머신)만 설치되어 있다면 동작한다. 대중적인 언어.'
+            detail: '배우기 쉬움. 풍부한 라이브러리. 생산성이 높음.'
           },
           {
             title: 'C++',
-            detail: 'C언어 + 객체지향'
+            detail: 'C언어에 객체 지향을 더하면 C++'
           },
           {
             title: 'C#',
-            detail: '.NET 프레임워크에서 동작하는 프로그래밍 언어. 자바와 비슷하다'
+            detail: '.NET 프레임워크에서 동작하는 프로그래밍 언어.'
           },
           {
             title: 'VB.NET',
-            detail: 'Visual Basic .NET. 대소문자 구분x, 여러줄 주석 불가'
+            detail: 'Visual Basic .NET. 대소문자를 구분하지 않음. 여러줄 주석 불가'
           },
           {
             title: 'JavaScript',
-            detail: '인터프리터 언어. 객체지향. 웹페이지의 동작을 담당한다.'
+            detail: '인터프리터 언어. 객체지향. 웹페이지의 동작을 담당.'
           },
           {
             title: 'PHP',
-            detail: '동적으로 html 데이터를 생성하여 동적 웹페이지를 제공하는 것을 주된 목적으로 하는 서버측 스크립트 언어이자 범용 프로그랭밍 언어'
+            detail: '동적으로 html 데이터를 생성. 서버측 스크립트 언어.'
           },
           {
             title: 'SQL',
@@ -217,7 +214,7 @@ export default {
           },
           {
             title: 'Assembly',
-            detail: '기계어의 단점을 극복하고 작성 과정을 편리하도록 개발한 기호언어.'
+            detail: '기계어 작성의 불편함을 개선한 기호언어.'
           },
           {
             title: 'Swift',
@@ -225,23 +222,23 @@ export default {
           },
           {
             title: 'Ruby',
-            detail: '인터프리터 방식의 객체 지향 그크립트 언어. 공개 소프트웨어.'
+            detail: '인터프리터 방식. 객체 지향 스크립트 언어.'
           },
           {
             title: 'MATLAB',
-            detail: 'MathWorks사에서 개발한 수치 해석 및 프로그래밍 환경을 제공하는 공학용 소프트웨어.'
+            detail: '수치 해석 및 프로그래밍 환경을 제공하는 공학용 소프트웨어.'
           },
           {
             title: 'PL/SQL',
-            detail: '상용 관계형 데이터베이스 시스템인 오라클 DBMS에서 SQL 언어를 확장하기 위해 사용하는 컴퓨터 프로그래밍 언어.'
+            detail: 'SQL 언어를 확장하기 위해 사용.'
           },
           {
             title: 'Perl',
-            detail: 'Practical extraction and report language. 웹 서버 애플리케이션을 작성하는 프로그래밍 언어.'
+            detail: '웹 서버 애플리케이션을 작성하는 프로그래밍 언어.'
           },
           {
             title: 'Visual Basic',
-            detail: '윈도우용 응용 프로그램 개발 언어. 데이터베이스 프로그래밍까지 가능한 소프트웨어 개발 도구'
+            detail: '윈도우용 응용 프로그램 개발 언어. 데이터베이스 프로그래밍 가능'
           },
           {
             title: 'Objective-C',
@@ -249,7 +246,7 @@ export default {
           },
           {
             title: 'Delphi',
-            detail: '오브젝트 파스칼 언어의 기능을 향상시켜 개발한 일반 응용 프로그램 개발 언어.'
+            detail: '오브젝트 파스칼 개선. 일반 응용 프로그램 개발 언어.'
           },
         ],
       min: 0,
@@ -275,13 +272,16 @@ export default {
     this.langSeq = this.$route.params.langId;
     this.langName = this.langs[this.langSeq].title;
     this.cookieId = cookie.cookieUser();
-    let language_id = this.langSeq + 1
-  
+    let language_id = Number(this.langSeq) + 1
     baseURL('survey/findByConfirm?user_id='+cookie.cookieUser()+'&language_id='+language_id)
       .then(res=>{
-        this.chk = res.data
-      })
-    
+        if (res.data.no == true){
+          this.chk = true;
+          // this.$store.commit('setChk', true)
+          // console.log(this.$store.getters.Chk)
+          // console.log('langChk:', this.chk)
+        } 
+    })
     const phrases = [this.langs[this.langSeq].detail, this.langs[this.langSeq].detail];
     const el = document.querySelector('.text')
     const fx = new TextScramble(el)
@@ -296,8 +296,6 @@ export default {
     textNext();
     
     this.getReviews();
-    // this.getSymCommentList();
-    this.getUnsymCommentList();
     this.getTextMiningData();
   },
   methods: {
@@ -335,6 +333,8 @@ export default {
         let updatingReview = document.querySelector('#Content'+v.id)
         updatingReview.appendChild(document.createElement("input"))
         updatingReview.lastChild.style.display="block";
+        updatingReview.lastChild.style["border"]="1px solid navy";
+        updatingReview.lastChild.style["width"]="80%";
       } else {
         let updatingReview = document.querySelector('#Content'+v.id)
         this.modifyComment[i] = updatingReview.lastChild.value
@@ -386,7 +386,8 @@ export default {
       }
     },
     getTextMiningData() {
-      baseURL("/language/detail/"+(Number(this.langSeq)+1))
+      let language_id = Number(this.langSeq) + 1
+      baseURL("language/detail/"+language_id)
       .then(res=>{
         let keys = Object.keys(res.data)
         for (let i = 0; i < keys.length; i++) {
@@ -401,8 +402,6 @@ export default {
         }
         this.flag = true
       })
-
-      console.log("words", this.words)
     }
   },
   computed: {
@@ -425,6 +424,12 @@ export default {
 </script>
 
 <style lang="scss">
+.v-responsive__sizer {
+  margin: auto 0 !important;
+}
+.Chk {
+  display: none;
+}
 .langTitle {
   font-family: 'Pacifico', cursive;
   font-size: 3rem;
@@ -500,12 +505,114 @@ h2.no-span {
   
 }
 .upup::before {
-  color: rgb(55, 0, 128);
+  color: rgb(133, 198, 202);
 }
 .downdown::before {
-  color: rgb(15, 95, 148);
+  color: rgb(236, 169, 210);
 }
 .reviewContent {
   display: inline-block;
 }
+
+
+$color1 :     #161719;
+$color2 :     #26272b;
+$text :       #303031;
+$highlight1 : #e0cc18;
+$highlight1 : #031058;
+$highlight2 : #88dadd;
+$highlight3 : #a50404;
+$highlight4 : #199e3a;
+
+.text-center {
+	text-align: center;
+}
+
+.cf {
+	*zoom: 1;
+	&:before, &:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+	.reviewWrapper {
+		width: 80%;
+		margin: 0 auto;
+		.speechbubble {
+      width: 100%;
+			// border: 1px solid #26272b;
+			color: $text;
+			font-size: .8em;
+			line-height: 1.75;
+			padding: 15px 25px;
+			margin-bottom: 75px;
+      // overflow: wrap;
+      display: inline-block;
+      overflow-wrap: break-all;
+      word-break: break-all !important;
+      cursor: default;
+      position:relative;
+			//  Border and arrow left
+			&:nth-child(2n) {
+        border-left: 5px solid;
+        border-bottom: 1px solid;
+        border-color: $highlight1;
+			}
+			&:nth-child(2n):after {
+				content: '';
+				margin-top: -30px;
+				padding-top: 0px;
+				position: absolute;
+				bottom: -45px;
+				left: 20px;
+				border-width: 30px 0 0 30px;
+				border-style: solid;
+        border-color: $highlight1 transparent;
+				display: block;
+				width: 0;
+			}
+			//  Border and arrow right
+			&:nth-child(2n+1) {
+        border-right: 5px solid;
+        border-bottom: 1px solid;
+        border-color: $highlight1;
+			}
+			&:nth-child(2n+1):after {
+				content: '';
+				margin-top: -30px;
+				padding-top: 0px;
+				position: absolute;
+				bottom: -30px;
+				right: 20px;
+				border-width: 30px 30px 0 0;
+				border-style: solid;
+        border-color: $highlight1 transparent;
+				display: block;
+				width: 0;
+			}
+
+			// Quotation symbols
+			p:before {
+				content: "“";
+				font-family: Georgia;
+				font-size: 40px;
+        line-height: 0;
+        display: inline-block;
+				display: -webkit-inline-box;
+			}
+			.username {
+				display: inline;
+				font-style: italic;
+				float: right;
+				&:before {
+					content: '- ';
+				}
+			}
+		}
+  }
+
 </style>
