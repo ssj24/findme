@@ -49,7 +49,6 @@
 
 <script>
 export default {
-  props: ["cards"],
   data: () => ({
   }),
   props: {

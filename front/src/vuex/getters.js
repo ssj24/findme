@@ -12,9 +12,9 @@ export default {
       return false
     }
     if (token) {
-      console.log(token)
-      return
-      // return true
+      // console.log(token)
+      // return
+      return true
     } else {
       return false
     }

@@ -16,21 +16,22 @@ import com.ssafy.findme.repository.RecruitRepository;
 
 @Service
 public class CommandLineExecutor {
+	
 	@Autowired
 	private static RecruitRepository recruitrepo;
 
 //	@Scheduled(fixedRate = 2000) // 수행 시작 기점, 2초후 실행
-	@Scheduled(cron = "0 23 15 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "0 39 20 * * *") // 매일 오전 4시 수행
 //	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
 	public static void scheduleTest() {
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
-		CommandLineExecutor.execute("python src/main/python/saramin.py");
-		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/saramin.py");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/textmining.py");
 		System.out.println("End Saramin & textMining");
 	}
 
-	@Scheduled(cron = "0 0 4 * * FRI") // 매주 금요일 오전4시 수행
+	@Scheduled(cron = "0 1 20 * * *") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
 		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
