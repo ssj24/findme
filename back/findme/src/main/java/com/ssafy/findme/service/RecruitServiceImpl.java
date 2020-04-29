@@ -68,8 +68,8 @@ public class RecruitServiceImpl implements IRecruitService {
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
 		String filePath = "C:\\MatchRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python36\\python", filePath,
-				userId);
+		ProcessBuilder pb = new ProcessBuilder().command(
+				"C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python36\\python", filePath, userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();
 		Recruit matchRecruit = new Recruit();
@@ -190,7 +190,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
 					String language = LanguageList[j] == "JavaScript" ? "자바스크립트" : LanguageList[j];
-					
+
 					if (matchRecruitTechStack.get(k).contains(language)) {
 						countMatchTechStack[j]++;
 						break;
@@ -224,5 +224,17 @@ public class RecruitServiceImpl implements IRecruitService {
 
 		System.out.println(ids.size());
 		System.out.println("End DeleteRecruit");
+	}
+
+	@Scheduled(cron = "0 20 22 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
+	public void updateRecruit() {
+		// 실행
+		System.out.println("scheduleSaramin & textMining: " + new Date());
+		// recruit table에 있는 id중 가장 큰 값을 가져와서
+		int max_id = (int) (long) recruitRepo.findMaxId();
+		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
+//		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		System.out.println("End Saramin & textMining");
 	}
 }

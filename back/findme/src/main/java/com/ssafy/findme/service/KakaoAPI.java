@@ -115,15 +115,14 @@ public class KakaoAPI implements IKakaoAPI {
 			JsonElement element = parser.parse(result);
 
 			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-			System.out.println("properties:"+properties);
-			JsonElement kakao_account = element.getAsJsonObject().get("id");
-//					getAsJsonObject().get("id").getAsJsonObject();
-			System.out.println("kakao_account:"+kakao_account);
-			
+			int id = element.getAsJsonObject().get("id").getAsInt();
+//			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-//			String email = kakao_account.getAsJsonObject().get("id").getAsString();
+//			String email = kakao_account.getAsJsonObject().get("email").getAsString();
+
 			userInfo.put("nickname", nickname);
-			userInfo.put("email", kakao_account);
+			userInfo.put("email", id);
 
 		} catch (IOException e) {
 			e.printStackTrace();

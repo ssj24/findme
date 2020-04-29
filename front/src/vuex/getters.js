@@ -8,7 +8,6 @@ export default {
       return false
     }
     if (token) {
-      console.log(token)
       return true
     } else {
       return false

@@ -115,8 +115,8 @@
               </v-btn>
               <v-btn
                 outlined
-                color="rgb(14, 22, 112)"
-                class="ma-4 text-center"
+                color="rgb(107, 0, 0)"
+                class="errBtn ma-4 text-center"
                 @click="secessionUser"
               >
                 회원 탈퇴
