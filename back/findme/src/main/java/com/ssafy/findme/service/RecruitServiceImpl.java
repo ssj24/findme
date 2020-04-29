@@ -68,7 +68,7 @@ public class RecruitServiceImpl implements IRecruitService {
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
 		String filePath = "C:\\MatchRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python36\\python", filePath,
+		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();
@@ -94,7 +94,6 @@ public class RecruitServiceImpl implements IRecruitService {
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
 				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)))
 						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
-				;
 //				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
@@ -175,22 +174,26 @@ public class RecruitServiceImpl implements IRecruitService {
 		String[] LanguageList = { "Java", "Python", "C", "C++", "C#", "Visual Basic .NET", "JavaScript", "PHP", "SQL",
 				"Go", "R", "Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C",
 				"Delphi/Object" };
-
+		
+		System.out.println(userId);
+		
 		User myInfo = accountRepo.findById(Long.parseLong(userId))
 				.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
-		;
 		String myTechStack = myInfo.getTechStack();
 		List<String> myTechStackList = Arrays.asList(myTechStack.split(","));
 		int[] countMatchTechStack = new int[20];
+		
+		System.out.println("내 기술 스택 : " + myTechStackList);
 
 		for (int i = 0; i < matchRecruitList.size() / 2; i++) {
 			List<String> matchRecruitTechStack = Arrays
 					.asList(matchRecruitList.get(i).getTechStack().replace("·", ",").split(","));
+			
+			System.out.println("맞춤 기술 스택: " + matchRecruitTechStack);
 
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
 					String language = LanguageList[j] == "JavaScript" ? "자바스크립트" : LanguageList[j];
-					
 					if (matchRecruitTechStack.get(k).contains(language)) {
 						countMatchTechStack[j]++;
 						break;
@@ -199,7 +202,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			}
 		}
 		List<String> recommendLanguageList = new ArrayList<>();
-
+		
 		for (int i = 0; i < 20; i++) {
 			if (countMatchTechStack[i] > 10) {
 				recommendLanguageList.add(LanguageList[i]);
@@ -207,8 +210,8 @@ public class RecruitServiceImpl implements IRecruitService {
 		}
 
 		for (int j = 0; j < myTechStackList.size(); j++) {
-			if (recommendLanguageList.contains(myTechStackList.get(j))) {
-				recommendLanguageList.remove(myTechStackList.get(j));
+			if (recommendLanguageList.contains(myTechStackList.get(j).trim())) {
+				recommendLanguageList.remove(myTechStackList.get(j).trim());
 			}
 		}
 		return recommendLanguageList;
@@ -224,5 +227,17 @@ public class RecruitServiceImpl implements IRecruitService {
 
 		System.out.println(ids.size());
 		System.out.println("End DeleteRecruit");
+	}
+
+	@Scheduled(cron = "0 20 22 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
+	public void updateRecruit() {
+		// 실행
+		System.out.println("scheduleSaramin & textMining: " + new Date());
+		// recruit table에 있는 id중 가장 큰 값을 가져와서
+		int max_id = (int) (long) recruitRepo.findMaxId();
+		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
+//		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		System.out.println("End Saramin & textMining");
 	}
 }

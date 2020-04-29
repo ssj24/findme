@@ -63,10 +63,10 @@ export default {
       appTitle: "나를 찾아줘",
       sidebar: false,
       menuItems: [
-        { title: "Statistics", path: "/statistics", icon: "insert_chart_outlined", forIf: true },
-        { title: "User", path: "/account", icon: "face", forIf: true },
-        { title: "SignIn", path: "/signmerge", icon: "lock_open", forIf: false },
-        { title: "SignOut", path: "/signmerge", icon: "lock", forIf: true },
+        { title: "Statistics", path: "/statistics", icon: "mdi-chart-bar", forIf: true },
+        { title: "User", path: "/account", icon: "mdi-face", forIf: true },
+        { title: "SignIn", path: "/signmerge", icon: "mdd-open-variant-outline", forIf: false },
+        { title: "SignOut", path: "/signmerge", icon: "mdi-lock-outline", forIf: true },
       
       ]
     }

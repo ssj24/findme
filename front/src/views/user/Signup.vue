@@ -93,19 +93,17 @@
             ></v-select>
             <v-text-field
               v-model="firm"
-              :rules="firmRules"
               label="선호 기업"
-              required
             ></v-text-field>
             <v-layout justify-center class="box2">
               <button class="btn1 mr-2" @click="reset">
                 재작성
                 <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
+                  <use href="#line"></use>
+                </svg>
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                  <use href="#line"></use>
+                </svg>
               </button>
               <button class="btn1 mr-2" @click="submit">
                 회원가입
@@ -173,9 +171,6 @@ export default {
         'Delphi'
       ],
       firm: '',
-      firmRules: [
-        v => !!v || '선호 기업을 입력해주세요',
-      ],
       position: '',
       positionSelect: [],
       positions: [
@@ -223,7 +218,36 @@ export default {
       submit () {
         if (this.enableSwitch == true) {
           alert("이메일 중복 확인을 해 주세요.")
-        } else if (this.$route.params.data) {
+        } else if (this.id && this.name && this.password && this.passwordConfirm && this.langSelect && this.positionSelect && this.valid) {
+            for (var j=0; j < this.langSelect.length; j++) {
+              if (this.langSelect[j] == "C++") {
+                this.langSelect[j] = 'Cpp'
+              } else if (this.langSelect[j] == 'C#') {
+                this.langSelect[j] = 'Csharp'
+              }
+            }
+            let Stacks = this.langSelect.join()
+            let wishPositions = this.positionSelect.join()
+            let data = {
+              email: this.id,
+              name: this.name,
+              password: this.password,
+              techStack: Stacks,
+              wishHope: this.firm,
+              wishJob: wishPositions
+            }
+            baseURL.post('user/signup', data)
+              .then(() => {
+                alert("이메일로 인증 코드를 보냈습니다.")
+                this.$router.push({
+                  name: "Main",
+                });
+              })
+              .catch(()=>{
+                alert("잘못된 시도입니다.")
+                this.reset()
+              })
+        } else if (this.$route.params.data && this.langSelect && this.positionSelect && this.valid) {
           for (var i=0; i < this.langSelect.length; i++) {
             if (this.langSelect[i] == "C++") {
               this.langSelect[i] = 'Cpp'
@@ -247,32 +271,10 @@ export default {
                 name: "/",
               });
             })
-
-        } else {
-          for (var j=0; j < this.langSelect.length; j++) {
-            if (this.langSelect[j] == "C++") {
-              this.langSelect[j] = 'Cpp'
-            } else if (this.langSelect[j] == 'C#') {
-              this.langSelect[j] = 'Csharp'
-            }
-          }
-          let Stacks = this.langSelect.join()
-          let wishPositions = this.positionSelect.join()
-          let data = {
-            email: this.id,
-            name: this.name,
-            password: this.password,
-            techStack: Stacks,
-            wishHope: this.firm,
-            wishJob: wishPositions
-          }
-          baseURL.post('user/signup', data)
-            .then(() => {
-              alert("이메일로 인증 코드를 보냈습니다.")
-              this.$router.push({
-                name: "Main",
-              });
+            .catch(() => {
+              alert("잘못된 시도입니다.")
             })
+
         }
       },
       emailCheck() {

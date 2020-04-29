@@ -121,9 +121,10 @@ public class AccountController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@GetMapping("/user/key_alter/{email}/{key}")
+	@PostMapping("/user/key_alter")
 	@ApiOperation(value = "이메일 인증하기")
-	public void authentication(@PathVariable("email") String email, @PathVariable("key") String key) {
+	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
+		System.out.println("sibal");
 		accountservice.alterUserKey(email, key);
 	}
 
@@ -142,6 +143,7 @@ public class AccountController {
 			HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		
 		try {
 			UserDTO user = new UserDTO();
 			String encryPassword = UserSha256.encrypt(password);
@@ -150,7 +152,6 @@ public class AccountController {
 			user = accountservice.login(user);
 			String token = accountservice.getToken(user);
 			res.setHeader("jwt-auth-token", token);
-
 			resultMap.put("info", user);
 			resultMap.put("token", token);
 			status = HttpStatus.ACCEPTED;

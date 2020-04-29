@@ -13,7 +13,6 @@ const state = {
     profile: '',
     id: getters.userSeq(),
     chk: false,
-    // userAuth: getters.userAuth(),
 }
 
 export default new Vuex.Store({

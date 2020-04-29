@@ -56,7 +56,7 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
-		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/similarAnalysis.py " + memberDTO.getId() + "");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
 
@@ -103,7 +103,7 @@ public class AccountServiceImpl implements IAccountService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String subject = "[본인인증] FindMe 인증메일입니다.";
 		String text = "<h2>안녕하세요 FindMe 입니다!</h2><br><br>" + "<h3>" + name + "님</h3>"
-				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/user/key_alter" + "/" + email + "/" + key + ">인증하기</a></p>"
+				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/user/key_alter>인증하기</a></p>"
 				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {
 			mail.setSubject(subject, "utf-8");
@@ -193,7 +193,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public UserDTO findById(Long user_id) {
-		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
+		return modelMapper.map(accountrepo.findById(user_id).get(), UserDTO.class);
 	}
 
 	@Override
@@ -206,6 +206,6 @@ public class AccountServiceImpl implements IAccountService {
 	public void deleteUser(UserDTO user) {
 		User userEntity = modelMapper.map(user, User.class);
 		accountrepo.delete(userEntity);
-		
+
 	}
 }
