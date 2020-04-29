@@ -109,7 +109,7 @@ public class SaraminExtractServiceImpl implements ISaraminExtractService {
 		return salary;
 	}
 
-	@Scheduled(cron = "0 39 17 * * *")
+	@Scheduled(cron = "0 25 19 * * *")
 	public void collectSaraminExtractData() {
 		System.out.println("start to collect saramin extract data!! " + new Date());
 		List<SaraminData> assemblys = saraminrepo.findByAssemblysTrue();
@@ -131,8 +131,8 @@ public class SaraminExtractServiceImpl implements ISaraminExtractService {
 		List<SaraminData> sqls = saraminrepo.findBySqlsTrue();
 		List<SaraminData> swifts = saraminrepo.findBySwiftsTrue();
 		List<SaraminData> vbs = saraminrepo.findByVbnsTrue();
-		List<SaraminData> visuals = saraminrepo.findByVbs();
-
+		List<SaraminData> visuals = saraminrepo.findByVbsTrue();
+		System.out.println(javas.size());
 		// 많이 사용하는 순
 
 		Map<String, Integer> adopted_map = new HashMap<String, Integer>();
