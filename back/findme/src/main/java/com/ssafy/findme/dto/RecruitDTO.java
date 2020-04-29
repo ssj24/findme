@@ -15,8 +15,8 @@ public class RecruitDTO {
 	private String techStack;
 	private String url;
 	private boolean utility;
-	private String postDate;
-	private String startDate;
-	private String dueDate;
+	private long postDate;
+	private long startDate;
+	private long dueDate;
 	private String imgUrl;
 }

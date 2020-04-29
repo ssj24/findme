@@ -1,6 +1,7 @@
 package com.ssafy.findme.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -13,16 +14,20 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.findme.domain.Recruit;
 
 @Repository
-public interface RecruitRepository extends JpaRepository<Recruit, Integer> {
+public interface RecruitRepository extends JpaRepository<Recruit, Long> {
 
 	@Transactional
 	@Modifying
 	@Query(value = "DELETE FROM Recruit r WHERE r.due_date < :due_date", nativeQuery = true)
 	public void deleteByDueDate(@Param("due_date") Long due_date);
 
-	public Recruit findById(long parseLong);
+	public Optional<Recruit> findById(Long parseLong);
 
-	@Query(value = "SELECT * FROM Recruit r WHERE r.due_date < :due_date", nativeQuery = true)
-	public List<Recruit> FindIdByDueDate(@Param("due_date") Long due_date);
+//	@Query(value = "SELECT * FROM Recruit r WHERE r.due_date < :due_date", nativeQuery = true)
+//	public List<Recruit> findByIDExpire(@Param("due_date") Long due_date);
+
+	@Transactional
+	@Modifying
+	public List<Recruit> deleteByDueDateBefore(Long now);
 
 }

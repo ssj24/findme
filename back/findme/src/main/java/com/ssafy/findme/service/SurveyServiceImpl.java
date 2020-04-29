@@ -20,7 +20,7 @@ public class SurveyServiceImpl implements ISurveyService {
 
 	@Autowired
 	private AccountRepository accountrepo;
-	
+
 	@Autowired
 	private EntityMapper entityMapper;
 
@@ -28,7 +28,9 @@ public class SurveyServiceImpl implements ISurveyService {
 	public void save(SurveyDTO surveydto) {
 		try {
 			Survey survey = new Survey();
-			User user = accountrepo.findById(surveydto.getUserId());
+			User user = accountrepo.findById(surveydto.getUserId())
+					.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+			;
 			user.setId(surveydto.getUserId());
 			survey.setCreatedAt(new Date());
 			survey.setUser(user);
@@ -45,23 +47,23 @@ public class SurveyServiceImpl implements ISurveyService {
 
 	@Override
 	public String findByConfirm(Long user_id, Long language_id) {
-		User user = accountrepo.findById(user_id);
-		String[] tech_stacks = user.getTechStack().split(","); //Java,C
+		User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+		;
+		String[] tech_stacks = user.getTechStack().split(","); // Java,C
 		String[] language = { "Java", "C", "Python", "C++", "C#", "VB.NET", "JavaScript", "PHP", "SQL", "Go", "R",
 				"Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C", "Delphi" };
-		int index = (int)(long)language_id-1;
+		int index = (int) (long) language_id - 1;
 		System.out.println(index);
 		String languagePage = language[index];
-		
+
 		Survey survey = null;
 		for (int i = 0; i < tech_stacks.length; i++) {
-			if(tech_stacks[i].equals(languagePage)) {
+			if (tech_stacks[i].equals(languagePage)) {
 				survey = surveyrepo.findByUserIdAndLanguageId(user_id, language_id);
 				if (survey != null) {
 					System.out.println(entityMapper.convertToDomain(survey, SurveyDTO.class).toString());
 					return "yes";
-				}
-				else
+				} else
 					return "no";
 			}
 		}

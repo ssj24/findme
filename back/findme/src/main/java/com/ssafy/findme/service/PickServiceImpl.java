@@ -30,9 +30,9 @@ public class PickServiceImpl implements IPickService {
 	@Override
 	public void savePick(Long user_id, Long recruit_id) {
 		Pick pick = new Pick();
-		User user = accountrepo.findById(user_id);
+		User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
 		pick.setUser(user);
-		Recruit recruit = recruitrepo.findById(recruit_id);
+		Recruit recruit = recruitrepo.findById(recruit_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
 		pick.setRecruit(recruit);
 		pickrepo.save(pick);
 	}
