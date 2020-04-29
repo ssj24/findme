@@ -58,7 +58,7 @@ public class AccountServiceImpl implements IAccountService {
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
 		System.out.println(memberDTO.getAuthKey());
 		System.out.println(memberDTO.getEmail());
-//		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
 
