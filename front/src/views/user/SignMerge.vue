@@ -44,6 +44,10 @@ export default {
 		Login
 	},
 	mounted() {
+		if (this.$route.params.data) {
+			this.signupSwitch()
+
+		}
 	},
   methods: {
     signupSwitch() {

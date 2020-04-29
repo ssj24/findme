@@ -27,7 +27,7 @@ export default {
       .then(()=> {
         alert("인증되셨습니다 로그인 해주세요")
         this.$router.push({
-          name: "Main",
+          name: "SignMerge",
         });
       })
       .catch(() => {

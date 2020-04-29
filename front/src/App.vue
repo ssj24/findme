@@ -49,19 +49,10 @@
 </template>
 
 <script>
-// import cookie from './cookie.js'
-// import Header from '@/views/main/Header.vue'
+import baseURL from '@/base-url.js'
+import cookie from './cookie.js'
 export default {
   name: "App",
-
-  components: {
-    // appHeader: Header,
-  },
-  // watch: {
-  //   isLogin: function() {
-  //     this.email = cookie.cookieId()
-  //   },
-  // },
   computed: {
     isLogin() {
       return this.$store.state.isLogin
@@ -82,16 +73,28 @@ export default {
   },
   methods: {
     logout(e) {
-      if (e==='SignOut') {
-      var date = new Date();
+      if (e==='SignOut' && cookie.accessToken() != 'undefined') {
+        baseURL.post('user/kakaologout?tmp='+cookie.accessToken())
+        var date1 = new Date();
+        this.$store.commit('isLogout')
+        this.$store.commit('clearInfo')
+        document.cookie = 'login_user' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+        document.cookie = 'login_id' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+        document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+        document.cookie = 'access-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+        document.cookie = 'login_name' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+        this.$router.push('/signmerge')
+      } else if (e==='SignOut') {
+      var date2 = new Date();
       this.$store.commit('isLogout')
       this.$store.commit('clearInfo')
-      document.cookie = 'login_user' + "= " + "; expires=" + date.toUTCString() + "; path=/";
-      document.cookie = 'login_id' + "= " + "; expires=" + date.toUTCString() + "; path=/";
-      document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date.toUTCString() + "; path=/";
-      document.cookie = 'login_name' + "= " + "; expires=" + date.toUTCString() + "; path=/";
-      this.$router.push('/')
+      document.cookie = 'login_user' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
+      document.cookie = 'login_id' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
+      document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
+      document.cookie = 'login_name' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
+      this.$router.push('/signmerge')
       }
+      
     },
     
   }
