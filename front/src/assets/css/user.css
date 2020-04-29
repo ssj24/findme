@@ -88,6 +88,9 @@ a, a:link, a:visited, a:hover, a:active {
   opacity: 1 !important;
   transition: opacity 0.4s;
 }
+.btnParent .v-btn.errBtn:hover:before {
+  background-color: rgb(107, 0, 0);
+}
 .btnParent .v-btn:hover .v-btn__content {
   color: #fff;
   /* font-weight: bold; */

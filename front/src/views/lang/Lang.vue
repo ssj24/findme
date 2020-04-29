@@ -51,7 +51,7 @@
         v-for="(review, index) in reviews"
         :key="index"
       >
-        
+        <span v-if="review"></span>
         <div class="speechbubble">
           <span
             :id="'Content'+review.id"
@@ -60,20 +60,21 @@
               {{review.content}}
             </p>
             <div>
+              <span class="reviewCnt">
+                {{review.sympCnt}}
+              </span>
               <span v-if="review.user.id != cookieId">
                 <v-icon 
                   @click="symComment(review)"
                   :class="{upup: review.user.checkSymp}"
-                  v-if="!review.user.checkUnsymp"
                   >
-                  mdi-thumb-up
+                  mdi-thumb-up-outline
                 </v-icon>
                 <v-icon 
                   @click="UnsymComment(review)"
                   :class="{downdown: review.user.checkUnsymp}"
-                  v-if="!review.user.checkSymp"
                   >
-                  mdi-thumb-down
+                  mdi-thumb-down-outline
                 </v-icon>
               </span>
               <span v-else>
@@ -84,6 +85,10 @@
                   삭제
                 </v-btn>
               </span>
+              <span class="reviewCnt">
+                {{review.unsympCnt}}
+              </span>
+
               <span class="username">
             {{review.name}}
             ({{review.trans_updatedAt}})
@@ -361,29 +366,37 @@ export default {
       })
     },
     symComment(v) {
-      if (v.user.checkSymp) {
-        baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
-          .then(() => {
-            this.getReviews()
-          })
+      if (!v.user.checkUnsymp) {
+        if (v.user.checkSymp) {
+          baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+            .then(() => {
+              this.getReviews()
+            })
+        } else {
+          baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
+            .then(() => {
+              this.getReviews()
+            })
+        }
       } else {
-        baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
-          .then(() => {
-            this.getReviews()
-          })
+        alert("리뷰에 공감하신다면 비공감을 해제하고 다시 클릭해주세요.")
       }
     },
     UnsymComment(v) {
-      if (v.user.checkUnsymp) {
-        baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
-          .then(() => {
-            this.getReviews()
-          })
+      if (!v.user.checkSymp) {
+        if (v.user.checkUnsymp) {
+          baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+            .then(() => {
+              this.getReviews()
+            })
+        } else {
+          baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
+            .then(() => {
+              this.getReviews()
+            })
+        }
       } else {
-        baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
-          .then(() => {
-            this.getReviews()
-          })
+        alert("리뷰에 비공감하신다면 공감을 해제하고 다시 클릭해주세요.")
       }
     },
     getTextMiningData() {
@@ -568,7 +581,7 @@ $highlight4 : #199e3a;
 				margin-top: -30px;
 				padding-top: 0px;
 				position: absolute;
-				bottom: -45px;
+				bottom: -30px;
 				left: 20px;
 				border-width: 30px 0 0 30px;
 				border-style: solid;
@@ -615,5 +628,8 @@ $highlight4 : #199e3a;
 			}
 		}
   }
-
+.reviewCnt {
+  font-size: 0.85rem;
+  font-weight: 900;
+}
 </style>

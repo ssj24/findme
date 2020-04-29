@@ -200,27 +200,7 @@ export default {
           })
       }
     },
-    kakaologin() {
-      console.log("sdlfsdjkl;dfj;klsd");
-      axios(
-        "https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message"
-      )
-        .then(() => {
-          // console.log(res)
-          this.$router.push({
-            name: "Main"
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    sendPassword() {
-      baseURL.put("user/sendpassword?email=" + this.email).then(res => {
-        console.log(res);
-      });
-    }
-  }
+  
 };
 </script>
 
