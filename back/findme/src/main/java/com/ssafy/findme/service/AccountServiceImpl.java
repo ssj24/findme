@@ -32,7 +32,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Autowired
 	private EntityMapper entityMapper;
 
-	private String IP = "http://localhost:8080";
+	private String IP = "http://localhost:8081";
 
 	@Override
 	public boolean emailDuplicateCheck(String email) {
