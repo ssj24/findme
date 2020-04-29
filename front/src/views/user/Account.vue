@@ -118,9 +118,13 @@ export default {
           this.stacks = res.data.techStack.split(',')
           this.companies = res.data.wishHope.split(',')
           this.positions = res.data.wishJob.split(',')
-          // for (stack in stacks) {
-          //   if (stack == )
-          // }
+          for (var i=0; i < this.stacks.length; i++) {
+            if (this.stacks[i] == "Cpp") {
+              this.stacks[i] = 'C++'
+            } else if (this.stacks[i] == 'Csharp') {
+              this.stacks[i] = 'C#'
+            }
+          }
         })
     }
   },
