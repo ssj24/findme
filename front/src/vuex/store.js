@@ -12,6 +12,7 @@ const state = {
     email: getters.userInfo(),
     profile: '',
     id: getters.userSeq(),
+    chk: false,
     // userAuth: getters.userAuth(),
 }
 

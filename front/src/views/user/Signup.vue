@@ -20,52 +20,55 @@
             <p class="form-header">회원가입</p>
             <hr class="form-hr">
             <br>
-            <v-text-field
-              v-model="id"
-              :rules="idRules"
-              label="Email"
-              required
-              style="width: 80%; display: inline-block;"
-            >
-            </v-text-field>
-            <span class="btnParent">
-              <v-btn @click="emailCheck()"
-                class="ml-2"
-                style="width: 18%; display: inline-block;"
-                outlined
-                small
-                color="indigo darken-3"
+            <span v-if="!this.$route.params.data">
+              <v-text-field
+                v-model="id"
+                :rules="idRules"
+                label="Email"
+                required
+                style="width: 80%; display: inline-block;"
               >
-                중복 확인
-              </v-btn>
-            </span>
-            
-            <v-text-field
-              v-model="name"
-              label="이름"
-              required
-            >
+              </v-text-field>
+              <span class="btnParent">
+                <v-btn @click="emailCheck()"
+                  class="ml-2"
+                  style="width: 18%; display: inline-block;"
+                  outlined
+                  small
+                  color="indigo darken-3"
+                >
+                  중복 확인
+                </v-btn>
+              </span>
               
-            </v-text-field>
-            <v-text-field
-              v-model="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
-              :type="show1 ? 'text' : 'password'"
-              label="비밀번호"
-              hint="비밀번호는 8자 이상 입력해주세요"
-              counter
-              @click:append="show1 = !show1"
-            ></v-text-field>
-            <v-text-field
-              v-model="passwordConfirm"
-              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordConfirmRules"
-              :type="show2 ? 'text' : 'password'"
-              label="비밀번호 확인"
-              counter
-              @click:append="show2 = !show2"
-            ></v-text-field>
+              <v-text-field
+                v-model="name"
+                label="이름"
+                required
+              >
+                
+              </v-text-field>
+            
+              <v-text-field
+                v-model="password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="passwordRules"
+                :type="show1 ? 'text' : 'password'"
+                label="비밀번호"
+                hint="비밀번호는 8자 이상 입력해주세요"
+                counter
+                @click:append="show1 = !show1"
+              ></v-text-field>
+              <v-text-field
+                v-model="passwordConfirm"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="passwordConfirmRules"
+                :type="show2 ? 'text' : 'password'"
+                label="비밀번호 확인"
+                counter
+                @click:append="show2 = !show2"
+              ></v-text-field>
+            </span>
 
             <v-select
               v-model="langSelect"
@@ -104,14 +107,14 @@
                           <use href="#line"></use>
                         </svg>
               </button>
-              <button class="btn1 mr-2" @click="submit" :disabled="enableSwitch">
+              <button class="btn1 mr-2" @click="submit">
                 회원가입
                 <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
+                  <use href="#line"></use>
+                </svg>
+                <svg class="button-stroke" viewBox="0 0 154 13">
+                  <use href="#line"></use>
+                </svg>
               </button>
             </v-layout>
           </v-form>
@@ -218,33 +221,69 @@ export default {
         this.positionSelect = [];
       },
       submit () {
-        let Stacks = this.langSelect.join()
-        let wishPositions = this.positionSelect.join()
-        let data = {
-          email: this.id,
-          name: this.name,
-          password: this.password,
-          techStack: Stacks,
-          wishHope: this.firm,
-          wishJob: wishPositions
+        if (this.enableSwitch == true) {
+          alert("이메일 중복 확인을 해 주세요.")
+        } else if (this.$route.params.data) {
+          for (var i=0; i < this.langSelect.length; i++) {
+            if (this.langSelect[i] == "C++") {
+              this.langSelect[i] = 'Cpp'
+            } else if (this.langSelect[i] == 'C#') {
+              this.langSelect[i] = 'Csharp'
+            }
+          }
+          let Stacks = this.langSelect.join()
+          let wishPositions = this.positionSelect.join()
+          let data = {
+            email: this.id,
+            name: this.name,
+            password: this.password,
+            techStack: Stacks,
+            wishHope: this.firm,
+            wishJob: wishPositions
+          }
+          baseURL.post('user/kakao_signup', data)
+            .then(() => {
+              this.$router.push({
+                name: "/",
+              });
+            })
+
+        } else {
+          for (var j=0; j < this.langSelect.length; j++) {
+            if (this.langSelect[j] == "C++") {
+              this.langSelect[j] = 'Cpp'
+            } else if (this.langSelect[j] == 'C#') {
+              this.langSelect[j] = 'Csharp'
+            }
+          }
+          let Stacks = this.langSelect.join()
+          let wishPositions = this.positionSelect.join()
+          let data = {
+            email: this.id,
+            name: this.name,
+            password: this.password,
+            techStack: Stacks,
+            wishHope: this.firm,
+            wishJob: wishPositions
+          }
+          baseURL.post('user/signup', data)
+            .then(() => {
+              alert("이메일로 인증 코드를 보냈습니다.")
+              this.$router.push({
+                name: "Main",
+              });
+            })
         }
-        baseURL.post('user/signup', data)
-          .then(() => {
-            alert("이메일로 인증 코드를 보냈습니다")
-            this.$router.push({
-              name: "Main",
-            });
-          })
       },
       emailCheck() {
         baseURL('user/'+this.id+'/email-duplicate')
           .then(res => {
             if (res.data) {
-              alert("등록되지 않은 이메일입니다")
+              alert("등록되지 않은 이메일입니다. 계속 회원가입을 진행해주세요.")
               this.enableSwitch = false;
             }
             else {
-              alert("이미 등록된 이메일입니다")
+              alert("이미 등록된 이메일입니다.")
               this.id = '';
 
             }
@@ -253,6 +292,14 @@ export default {
       
     },
     mounted() {
+      if (this.$route.params.data) {
+        let data = this.$route.params.data;
+        this.id = data.info.email;
+        this.name = data.info.name;
+        this.password = data.info.password;
+        this.passwordConfirm = data.info.password;
+        this.enableSwitch = false;
+      }
     }
 }
 </script>

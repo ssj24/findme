@@ -32,7 +32,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Autowired
 	private EntityMapper entityMapper;
 
-	private String IP = "http://localhost:8080";
+	private String IP = "http://localhost:8081";
 
 	@Override
 	public boolean emailDuplicateCheck(String email) {
@@ -193,11 +193,6 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public UserDTO findById(Long user_id) {
-		String result = CommandLineExecutor.execute_return("python src/main/python/similarAnalysis.py " + user_id + "");
-		System.out.println(result);
-		if (result.equals("dismatch")) {
-			// 유사도 검사해서 80%이하면 맞춤공고 -> recommend 테이블에 넣기
-		}
 		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
 	}
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.findme.dto.UserDTO;
 import com.ssafy.findme.dto.UserDTO.RoleType;
 import com.ssafy.findme.service.IAccountService;
+import com.ssafy.findme.service.IKakaoAPI;
 import com.ssafy.findme.service.IReviewService;
 import com.ssafy.findme.service.KakaoAPI;
 import com.ssafy.findme.service.UserSha256;
@@ -40,7 +41,7 @@ public class AccountController {
 	@Autowired
 	private IReviewService reviewservice;
 	@Autowired
-	private KakaoAPI kakao;
+	private IKakaoAPI kakao;
 
 	@GetMapping("/user/{email}/email-duplicate")
 	@ApiOperation(value = "이메일 중복체크")
@@ -56,6 +57,20 @@ public class AccountController {
 		user.setPassword(encryPassword);
 		user.setRoleType(RoleType.USER);
 		user.setCreatedAt(new Date());
+		String[] tech = user.getTechStack().split(",");
+		for (int i = 0; i < tech.length; i++) {
+			if (tech[i].equals("Cpp"))
+				tech[i] = "C++";
+			else if (tech[i].equals("Csharp"))
+				tech[i] = "C#";
+		}
+		String tech_stack = "";
+		for (int i = 0; i < tech.length; i++) {
+			tech_stack += tech[i] + ", ";
+		}
+		tech_stack = tech_stack.substring(0, tech_stack.length() - 2);
+		System.out.println(tech_stack);
+		user.setTechStack(tech_stack);
 		// 회원가입
 		accountservice.signUp(user);
 		// 인증메일
@@ -71,7 +86,7 @@ public class AccountController {
 		try {
 			UserDTO user = accountservice.findById(user_id);
 			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {// 카카오 계정 탈퇴인 경우는 카카오 api에서 한번 더
-				KakaoAPI.secession(tmp);
+				kakao.secession(tmp);
 			}
 			accountservice.deleteUser(user);
 			reviewservice.recountSympAndUnsymp(user_id);
@@ -156,12 +171,10 @@ public class AccountController {
 
 	@GetMapping("/user/kakao_oauth")
 	@ApiOperation(value = "카카오 계정으로 시작하기 및 로그인")
-	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code) {
+	public ResponseEntity<Map<String, Object>> kakaologin(@RequestParam("code") String code, HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
-		System.out.println("왔뉘,,,?");
 
-		System.out.println("++"+code);
 		String access_Token = kakao.getAccessToken(code);
 		System.out.println(access_Token);
 		HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
@@ -188,15 +201,21 @@ public class AccountController {
 					resultMap.put("log", "카카오 계정으로 전환하시겠습니까? > 앞으로 카카오로만 로그인 가능 일반으로 로그인 불가");
 					resultMap.put("info", user);
 					status = HttpStatus.ACCEPTED;
-					return new ResponseEntity<Map<String, Object>>(resultMap, status);
 				}
 			} else { // 카카오 계정으로 회원가입
 				resultMap.put("status", false);
 				resultMap.put("log", "회원가입이 필요합니다.");
 				resultMap.put("info", user);
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
+			String token = accountservice.getToken(user);
+			res.setHeader("jwt-auth-token", token);
+			res.setHeader("access-token", access_Token);
+
+			resultMap.put("info", user);
+			resultMap.put("jwt-auth-token", token);
+			resultMap.put("access-token", access_Token);
+			status = HttpStatus.ACCEPTED;
 		} catch (RuntimeException e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -214,6 +233,15 @@ public class AccountController {
 			user.setAuthKey("Y");
 			user.setPassword(UserSha256.encrypt("kakao"));
 			user = accountservice.signUp(user);
+			String[] tech = user.getTechStack().split(",");
+			for (int i = 0; i < tech.length; i++) {
+				if (tech.equals("Cpp"))
+					tech[i] = "C++";
+				else if (tech.equals("Csharp"))
+					tech[i] = "C#";
+			}
+			System.out.println("===============");
+			System.out.println(tech.toString());
 
 			resultMap.put("status", true);
 			resultMap.put("info", user);

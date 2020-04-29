@@ -113,6 +113,7 @@
 </template>
 
 <script>
+import baseURL from '@/base-url.js'
 import cookie from '@/cookie.js'
 import '@/assets/css/main.css'
 
@@ -278,7 +279,64 @@ const gradients = [
     },
     mounted() {
       this.userId = cookie.cookieUser()
-      console.log(window.sessionStorage)
+      if (this.$route.query.code) {
+        baseURL('user/kakao_oauth?code='+this.$route.query.code)
+          .then(res => {
+            if (res.data.log == "회원가입이 필요합니다.") {
+              alert("처음 카카오 로그인을 하셨습니다." + res.data.info.name + "님, 회원가입을 해 주세요.")
+              this.$router.push({
+                name: "SignMerge",
+                params: {
+                  "data": res.data
+                }
+              })
+            } else if (res.data.log =="카카오 계정으로 전환하시겠습니까? > 앞으로 카카오로만 로그인 가능 일반으로 로그인 불가") {
+              if (confirm("같은 이메일로 가입된 계정이 있습니다. 카카오 계정으로 전환하시겠습니까? 전환하시면 일반 로그인은 불가능합니다.")) {
+                baseURL.put('user/tokakao?email='+res.data.info.email)
+                  .then(() => {
+                    let loginData = {
+                  id: res.data.info.id,
+                  token: res.data["jwt-auth-token"],
+                  accessToken: res.data["access-token"],
+                  email: res.data.info.email,
+                  name: res.data.info.name,
+                  techStack: res.data.info.techStack,
+                  wishHope: res.data.info.wishHope,
+                  wishJob: res.data.info.wishJob,
+                }
+                this.$store.commit('startLogin', loginData)
+                this.$store.commit('isLogin')
+                cookie.cookieCreate(loginData)
+                alert("카카오 계정으로 전환되셨습니다.")
+                  })
+                
+              } else {
+                alert("일반 로그인을 해 주세요.")
+                this.$router.push('/signmerge')
+
+              }
+              
+            } else if (res.data.status == true) {
+              let loginData = {
+                id: res.data.info.id,
+                token: res.data["jwt-auth-token"],
+                accessToken: res.data["access-token"],
+                email: res.data.info.email,
+                name: res.data.info.name,
+                techStack: res.data.info.techStack,
+                wishHope: res.data.info.wishHope,
+                wishJob: res.data.info.wishJob,
+              }
+              this.$store.commit('startLogin', loginData)
+              this.$store.commit('isLogin')
+              cookie.cookieCreate(loginData)
+              this.$router.push('/')
+              
+
+            }
+          })
+      }
+      
     },
     methods: {
       

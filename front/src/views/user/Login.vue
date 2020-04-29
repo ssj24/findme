@@ -1,63 +1,62 @@
 <template>
   <!-- <div class="signup"> -->
-  <v-container fill-height class="justify-center">
-    <svg id="stroke" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
-      <defs>
-        <path
-          id="line"
-          d="M2 2c49.7 2.6 100 3.1 150 1.7-46.5 2-93 4.4-139.2 7.3 45.2-1.5 90.6-1.8 135.8-.6"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          vector-effect="non-scaling-stroke"
-        />
-      </defs>
-    </svg>
-    <v-row align="center" justify="center" style="background-color: white;">
-      <v-col justify="center" sm="10">
-        <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
-          <p class="form-header">로그인</p>
-          <hr class="form-hr" />
-          <br />
-          <v-text-field
-            color="indigo darken-3"
-            v-model="id"
-            :rules="idRules"
-            label="Email"
-            required
-          ></v-text-field>
-          <v-text-field
-            color="indigo darken-3"
-            v-model="password"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            :type="show1 ? 'text' : 'password'"
-            label="비밀번호"
-            @click:append="show1 = !show1"
-          ></v-text-field>
-          <v-layout justify-center class="btnParent">
-            <span class="box2">
-              <button class="btn1 mr-2" @click="test">
-                <!-- <button class="btn1 mr-2" type="submit"> -->
-                로그인
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                  <use href="#line" />
-                </svg>
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                  <use href="#line" />
-                </svg>
-              </button>
-              <button class="btn1" @click="kakaologin">
-                카카오
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                  <use href="#line" />
-                </svg>
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                  <use href="#line" />
-                </svg>
-              </button>
-            </span>
-            <!-- <span class="frame">
+    <v-container fill-height class="justify-center">
+      <svg id="stroke" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+        <defs>
+          <path id="line" d="M2 2c49.7 2.6 100 3.1 150 1.7-46.5 2-93 4.4-139.2 7.3 45.2-1.5 90.6-1.8 135.8-.6" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        </defs>
+      </svg>
+      <v-row align="center" justify="center" style="background-color: white;">
+        <v-col 
+          justify="center"
+          sm="10"
+        >
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
+            <p class="form-header">로그인</p>
+            <hr class="form-hr">
+            <br>
+            <v-text-field
+              color="indigo darken-3"
+              v-model="id"
+              :rules="idRules"
+              label="Email"
+              required
+            ></v-text-field>
+            <v-text-field
+              color="indigo darken-3"
+              v-model="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="passwordRules"
+              :type="show1 ? 'text' : 'password'"
+              label="비밀번호"
+              @click:append="show1 = !show1"
+            ></v-text-field>
+            <v-layout justify-center class="btnParent">
+              <span class="box2">
+                <a class="btn1" href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message">
+                  카카오 로그인
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                </a>
+                <button class="btn1 mr-2" @click="submit">
+                  로그인
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                </button>
+              </span>
+              <!-- <span class="frame">
               <button class="BTN mr-2" @click="submit">
                 <span>로그인</span>
                 <svg>
@@ -88,47 +87,31 @@
                 @click="kakaologin"
               >
               카카오
-            </v-btn>-->
-            <a
-              href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8888/api/user/kakao_oauth&response_type=code&scope=talk_message"
-            >카카오</a>
-          </v-layout>
-          <v-dialog v-model="dialog" persistent max-width="600px">
-            <template v-slot:activator="{ on }">
-              <v-btn
-                class="mx-auto diyBtn"
-                style="display: block; color: #888;"
-                text
-                v-on="on"
-              >비밀번호를 찾아주세요</v-btn>
-            </template>
-            <v-card>
-              <v-card-title class="ml-4 pt-8" style="font-size: 1rem; line-height: 150%;">
-                가입하신 이메일 주소를 입력해주세요
-                <br />임시 비밀번호를 보내드립니다
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    color="indigo darken-3"
-                    required
-                  ></v-text-field>
-                </v-container>
-              </v-card-text>
-              <v-card-actions class="box1">
-                <v-spacer></v-spacer>
-
-                <button class="btn1" @click="dialog = false">
-                  닫기
-                  <svg class="button-stroke" viewBox="0 0 154 13">
-                    <use href="#line" />
-                  </svg>
-                  <svg class="button-stroke" viewBox="0 0 154 13">
-                    <use href="#line" />
-                  </svg>
-                </button>
+              </v-btn>-->
+              
+            </v-layout>
+              <v-dialog v-model="dialog" persistent max-width="600px">
+                <template v-slot:activator="{ on }">
+                  <v-btn class="mx-auto diyBtn" style="display: block; color: #888;" text v-on="on">비밀번호를 찾아주세요</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title class="ml-4 pt-8" style="font-size: 1rem; line-height: 150%;">
+                    가입하신 이메일 주소를 입력해주세요 
+                    <br>
+                    임시 비밀번호를 보내드립니다
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-text-field
+                        v-model="email"
+                        :rules="emailRules"
+                        color="indigo darken-3"
+                        required>
+                      </v-text-field>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions class="box1">
+                    <v-spacer></v-spacer>
 
                 <button class="btn1" @click="dialog = false; sendPassword();">
                   보내기
@@ -152,83 +135,70 @@
 import baseURL from "@/base-url.js";
 import * as EmailValidator from "email-validator";
 import cookie from '@/cookie.js'
-import "@/assets/css/user.css";
-const axios = require("axios").default;
+import '@/assets/css/user.css'
 export default {
   data: () => ({
-    dialog: false,
-    valid: true,
-    id: "",
-    idRules: [
-      v => !!v || "이메일을 입력해주세요",
-      v => EmailValidator.validate(v) || "이메일 형식이 아닙니다"
-    ],
-    show1: false,
-    password: "",
-    passwordRules: [
-      v => !!v || "비밀번호를 입력해주세요",
-      v => v.length >= 8 || "8자 이상의 비밀번호를 입력해주세요"
-    ],
-    checkbox: false,
-    email: "",
-    emailRules: [
-      v => !!v || "이메일을 입력해주세요",
-      v => EmailValidator.validate(v) || "이메일 형식이 아닙니다"
-    ]
-  }),
-
-  methods: {
-    test() {
-      // alert("sibal")
-      // return
-      baseURL
-        .post("user/login?email=" + this.id + "&password=" + this.password)
-        .then(res => {
-          // console.log(cookie)
-
-          if (res.data.info.roleType == "ADMIN") {
-            this.$router.push({
-              name: "Admin"
-            });
-          } else {
-            let loginData = {
-              id: res.data.info.id,
-              token: res.headers["jwt-auth-token"],
-              email: res.data.info.email,
-              name: res.data.info.name,
-              techStack: res.data.info.techStack,
-              wishHope: res.data.info.wishHope,
-              wishJob: res.data.info.wishJob
-            };
-            this.$store.commit("startLogin", loginData);
-            this.$store.commit("isLogin");
-            cookie.cookieCreate(loginData);
-
-            console.log(loginData);
-            console.log(cookie);
-
-            this.$router.push({
-              name: "Main"
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          alert(err);
-          // if (err.data.message == "잘못된 비밀번호입니다. 또는 카카오계정으로 시도해보세요.") {
-          //   alert("로그인에 실패하셨습니다")
-          //   this.id = ''
-          //   this.password = ''
-          // }
-          // else if (err.data.message == "인증되지 않은 계정입니다") {
-          //   alert("인증되지 않은 계정입니다")
-          // }
-          // else if (err.data.utility == false) {
-          //   alert("탈퇴한 회원입니다")
-          //   this.id = ''
-          //   this.password = ''
-          // }
-        });
+      dialog: false,
+      valid: true,
+      id: '',
+      idRules: [
+        v => !!v || '이메일을 입력해주세요',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
+      ],
+      show1: false,
+      password: '',
+      passwordRules: [
+        v => !!v || '비밀번호를 입력해주세요',
+        v => v.length >= 8 || '8자 이상의 비밀번호를 입력해주세요',
+      ],
+      checkbox: false,
+      email: '',
+      emailRules: [
+        v => !!v || '이메일을 입력해주세요',
+        v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
+      ],
+    }),
+    
+    methods: {
+      submit () {
+        baseURL.post('user/login?email='+this.id+'&password='+this.password)
+          .then(res => {
+            if (res.data.info.roleType == 'ADMIN') {
+              this.$router.push({
+                name: "Admin"
+              })
+            }
+            else {
+              let loginData = {
+                id: res.data.info.id,
+                token: res.headers["jwt-auth-token"],
+                email: res.data.info.email,
+                name: res.data.info.name,
+                techStack: res.data.info.techStack,
+                wishHope: res.data.info.wishHope,
+                wishJob: res.data.info.wishJob,
+              }
+              this.$store.commit('startLogin', loginData)
+              this.$store.commit('isLogin')
+              cookie.cookieCreate(loginData)
+              this.$router.push({
+                name: "Main"
+              })
+            }
+          })
+          .catch(() => {
+            alert('등록된 회원이 아닙니다')
+            this.email = ''
+            this.password = ''
+          })
+          
+      },
+      sendPassword() {
+        baseURL.put('user/sendpassword?email='+this.email)
+          .then(res => {
+            console.log(res)
+          })
+      }
     },
     kakaologin() {
       console.log("sdlfsdjkl;dfj;klsd");

@@ -45,5 +45,8 @@ export default {
   userSeq: () => {
     // console.log(state)
     return cookie.cookieUser()
+  },
+  Chk: state => {
+    return state.chk
   }
 }

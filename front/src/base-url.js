@@ -5,5 +5,6 @@ export default axios.create({
   // baseURL: "/api",
   headers: {
     "jwt-auth-token": cookie.token(),
+    "access-token": cookie.accessToken(),
   }
 });

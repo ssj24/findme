@@ -113,6 +113,14 @@
               >
                 프로필 수정
               </v-btn>
+              <v-btn
+                outlined
+                color="rgb(14, 22, 112)"
+                class="ma-4 text-center"
+                @click="secessionUser"
+              >
+                회원 탈퇴
+              </v-btn>
             </v-layout>
           </td>
         </tr>
@@ -132,6 +140,7 @@ export default {
     return {
       show: false,
       name: '',
+      prePassword: '',
       newPassword: '',
       newPasswordRules: [
         v => !!v || '비밀번호를 입력해주세요',
@@ -142,8 +151,8 @@ export default {
         'Java',
         'C',
         'Python',
-        'Cpp',
-        'Csharp',
+        'C++',
+        'C#',
         'VB.NET',
         'JavaScript',
         'PHP',
@@ -169,17 +178,18 @@ export default {
       positions: [
         '웹',
         '응용프로그램',
-        'Q/A',
-        'tester',
+        'QA',
+        '테스터',
         '인공지능',
         '빅데이터',
         '블록체인',
         '보안',
-        'DB',
+        '데이터베이스',
         '네트워크',
         'PM',
         'ERP',
-        '분석/설계'
+        '분석',
+        '설계'
       ],
       positionRules: [
         v => !!v || '선호 직무를 입력해주세요',
@@ -191,19 +201,39 @@ export default {
       baseURL('user/'+cookie.cookieUser()+'/profile')
         .then(res => {
           this.name = res.data.name
+          this.prePassword = res.data.password
           this.langSelect=res.data.techStack.split(',')
           this.firm=res.data.wishHope.split(',')
           this.positionSelect=res.data.wishJob.split(',')
+          for (var i=0; i < this.langSelect.length; i++) {
+            if (this.langSelect[i] == "Cpp") {
+              this.langSelect[i] = 'C++'
+            } else if (this.langSelect[i] == 'Csharp') {
+              this.langSelect[i] = 'C#'
+            }
+          }
         })
       
     },
     updatePassword() {
-      baseURL.put('user/'+cookie.cookieUser()+'/updatepassword?password='+this.newPassword)
+      if (cookie.accessToken() != 'undefined') {
+        alert("카카오 계정은 비밀번호 변경을 할 수 없습니다")
+      } 
+      else {
+      baseURL.put('user/'+cookie.cookieUser()+'/updatepassword?pre_password='+this.prePassword+'&new_password='+this.newPassword)
         .then(() => {
           alert("비밀번호 변경이 완료되었습니다")
         })
+      }
     },
     updateProfile() {
+      for (var i=0; i < this.langSelect.length; i++) {
+        if (this.langSelect[i] == "C++") {
+          this.langSelect[i] = 'Cpp'
+        } else if (this.langSelect[i] == 'C#') {
+          this.langSelect[i] = 'Csharp'
+        }
+      }
       let data = {
         'techStack': this.langSelect.join(),
         'wishHope': this.firm,
@@ -213,6 +243,23 @@ export default {
         .then(()=>{
           alert("프로필 수정이 완료되었습니다")
         })
+    },
+    secessionUser() {
+      if(confirm("정말 탈퇴하시겠습니까?")) {
+        baseURL.put('user/' + cookie.cookieUser() + '/secession?tmp='+cookie.accessToken())
+          .then(()=> {
+            var date1 = new Date();
+            this.$store.commit('isLogout')
+            this.$store.commit('clearInfo')
+            document.cookie = 'login_user' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'login_id' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'access-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'login_name' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            alert("탈퇴되셨습니다.")
+            this.$router.push('/')
+          })
+      }
     }
   },
   mounted() {

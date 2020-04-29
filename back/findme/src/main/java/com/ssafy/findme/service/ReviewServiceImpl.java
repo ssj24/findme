@@ -39,7 +39,7 @@ public class ReviewServiceImpl implements IReviewService {
 	@Override
 	public void save(Long user_id, String content, Long language_id) {
 		try {
-			User user = accountrepo.findById(user_id);
+			User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
 			Review review = new Review();
 			review.setContent(content);
 			review.setUser(user);
@@ -135,7 +135,7 @@ public class ReviewServiceImpl implements IReviewService {
 				review.setSympCnt(symp_cnt + 1);
 				reviewrepo.save(review);
 
-				User user = accountrepo.findById(user_id);
+				User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
 				newsymp.setReview(review);
 				newsymp.setUser(user);
 				symprepo.save(newsymp);
@@ -154,7 +154,7 @@ public class ReviewServiceImpl implements IReviewService {
 	public void deleteSymp(Long review_id, Long user_id) {
 		Symp symp = symprepo.findByReviewIdAndUserId(review_id, user_id);
 		Review review = reviewrepo.findById(review_id).get();
-		long symp_cnt = review.getSympCnt()-1;
+		long symp_cnt = review.getSympCnt() - 1;
 		review.setSympCnt(symp_cnt);
 		reviewrepo.save(review);
 		symprepo.delete(symp);
@@ -180,7 +180,7 @@ public class ReviewServiceImpl implements IReviewService {
 				long unsymp_cnt = review.getUnsympCnt();
 				review.setUnsympCnt(unsymp_cnt + 1);
 				reviewrepo.save(review);
-				User user = accountrepo.findById(user_id);
+				User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
 				newunsymp.setReview(review);
 				newunsymp.setUser(user);
 				unsymprepo.save(newunsymp);
@@ -199,7 +199,7 @@ public class ReviewServiceImpl implements IReviewService {
 	public void deleteUnsymp(Long review_id, Long user_id) {
 		Unsymp unsymp = unsymprepo.findByReviewIdAndUserId(review_id, user_id);
 		Review review = reviewrepo.findById(review_id).get();
-		long unsymp_cnt = review.getUnsympCnt()-1;
+		long unsymp_cnt = review.getUnsympCnt() - 1;
 		review.setUnsympCnt(unsymp_cnt);
 		reviewrepo.save(review);
 		unsymprepo.delete(unsymp);
@@ -212,7 +212,7 @@ public class ReviewServiceImpl implements IReviewService {
 		Review review = null;
 		for (int i = 0; i < sympList.size(); i++) {
 			review = reviewrepo.findById(sympList.get(i).getReviewId()).get();
-			long symp_cnt = review.getSympCnt()-1;
+			long symp_cnt = review.getSympCnt() - 1;
 			review.setSympCnt(symp_cnt);
 			reviewrepo.save(review);
 		}
@@ -222,7 +222,7 @@ public class ReviewServiceImpl implements IReviewService {
 
 		for (int i = 0; i < unsympList.size(); i++) {
 			review = reviewrepo.findById(unsympList.get(i).getReviewId()).get();
-			long unsymp_cnt = review.getUnsympCnt()-1;
+			long unsymp_cnt = review.getUnsympCnt() - 1;
 			review.setUnsympCnt(unsymp_cnt);
 			reviewrepo.save(review);
 		}

@@ -106,7 +106,7 @@ def start(userId):
     # MySQL 설정
     HOST = '127.0.0.1'
     PORT = 3306
-    USER = 'root'
+    USER = 'ssafy'
     PASSWORD = 'ssafy'
     DB = 'findme'
 
@@ -130,7 +130,7 @@ def start(userId):
     myInfo.columns = ['id', 'job_category', 'tech_stack']
 
     # 공고 데이터 수집
-    sql = "select number, comp_name, job_category, tech_stack from recruit where tech_stack REGEXP 'java|c|python|visual|basic|.NET|php|sql|go|r|assembly|swift|ruby|delphi' and tech_stack REGEXP %s and job_category REGEXP %s"
+    sql = "select id, comp_name, job_category, tech_stack from recruit where tech_stack REGEXP 'java|c|python|visual|basic|.NET|php|sql|go|r|assembly|swift|ruby|delphi' and tech_stack REGEXP %s and job_category REGEXP %s"
 
     # 내 기술 스택 문자열
     myTechStackStr = ""
