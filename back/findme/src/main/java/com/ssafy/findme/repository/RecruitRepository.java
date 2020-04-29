@@ -30,4 +30,7 @@ public interface RecruitRepository extends JpaRepository<Recruit, Long> {
 	@Modifying
 	public List<Recruit> deleteByDueDateBefore(Long now);
 
+	@Query(value = "SELECT MAX(ID) FROM RECRUIT", nativeQuery = true)
+	public long findMaxId();
+
 }
