@@ -113,6 +113,14 @@
               >
                 프로필 수정
               </v-btn>
+              <v-btn
+                outlined
+                color="rgb(14, 22, 112)"
+                class="ma-4 text-center"
+                @click="secessionUser"
+              >
+                회원 탈퇴
+              </v-btn>
             </v-layout>
           </td>
         </tr>
@@ -132,6 +140,7 @@ export default {
     return {
       show: false,
       name: '',
+      prePassword: '',
       newPassword: '',
       newPasswordRules: [
         v => !!v || '비밀번호를 입력해주세요',
@@ -192,6 +201,7 @@ export default {
       baseURL('user/'+cookie.cookieUser()+'/profile')
         .then(res => {
           this.name = res.data.name
+          this.prePassword = res.data.password
           this.langSelect=res.data.techStack.split(',')
           this.firm=res.data.wishHope.split(',')
           this.positionSelect=res.data.wishJob.split(',')
@@ -206,10 +216,15 @@ export default {
       
     },
     updatePassword() {
-      baseURL.put('user/'+cookie.cookieUser()+'/updatepassword?password='+this.newPassword)
+      if (cookie.accessToken() != 'undefined') {
+        alert("카카오 계정은 비밀번호 변경을 할 수 없습니다")
+      } 
+      else {
+      baseURL.put('user/'+cookie.cookieUser()+'/updatepassword?pre_password='+this.prePassword+'&new_password='+this.newPassword)
         .then(() => {
           alert("비밀번호 변경이 완료되었습니다")
         })
+      }
     },
     updateProfile() {
       for (var i=0; i < this.langSelect.length; i++) {
@@ -228,6 +243,23 @@ export default {
         .then(()=>{
           alert("프로필 수정이 완료되었습니다")
         })
+    },
+    secessionUser() {
+      if(confirm("정말 탈퇴하시겠습니까?")) {
+        baseURL.put('user/' + cookie.cookieUser() + '/secession?tmp='+cookie.accessToken())
+          .then(()=> {
+            var date1 = new Date();
+            this.$store.commit('isLogout')
+            this.$store.commit('clearInfo')
+            document.cookie = 'login_user' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'login_id' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'access-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            document.cookie = 'login_name' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
+            alert("탈퇴되셨습니다.")
+            this.$router.push('/')
+          })
+      }
     }
   },
   mounted() {

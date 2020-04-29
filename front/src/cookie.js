@@ -3,6 +3,11 @@ function token() {
   return value = value? value[2] : null
 }
 
+function accessToken() {
+  var value = document.cookie.match('(^|;) ?' + 'access-token' + '=([^;]*)(;|$)');
+  return value = value? value[2] : null
+}
+
 function cookieId() {
   var value = document.cookie.match('(^|;) ?' + 'login_id' + '=([^;]*)(;|$)');
   return value = value? value[2] : null
@@ -28,6 +33,7 @@ function updateCookie() {
       day.setTime(day.getTime() + (60*60*1000));
       var expires = "expires=" + day.toUTCString();
       document.cookie = 'jwt-auth-token' + "=" + value + ";" + expires + ";path=/" + ";";
+      document.cookie = 'access-token' + "=" + accessToken() + ";" + expires + ";path=/" + ";";
       document.cookie = 'login_user' + "=" + cookieUser() + ";" + expires + ";path=/" + ";";
       document.cookie = 'login_id' + "=" + cookieId() + ";" + expires + ";path=/" + ";";
       document.cookie = 'login_name' + "=" + cookieName() + ";" + expires + ";path=/" + ";";
@@ -43,12 +49,14 @@ function cookieCreate(data) {
   let expires = "expires="+ d.toUTCString();
   document.cookie = "login_user=" + data.id + ";" + expires + ";path=/";
   document.cookie = "jwt-auth-token=" + data.token + ";" + expires + ";path=/";
+  document.cookie = "access-token=" + data.accessToken + ";" + expires + ";path=/";
   document.cookie = "login_id=" + data.email + ";" + expires + ";path=/";
   document.cookie = 'login_name' + "=" + data.name + ";" + expires + ";path=/" + ";";
 }
 
 const cookie = {
   token:()=>token(),
+  accessToken:()=>accessToken(),
   updateCookie:()=>updateCookie(),
   cookieId:()=>cookieId(),
   cookieUser:()=>cookieUser(),

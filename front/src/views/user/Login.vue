@@ -37,24 +37,24 @@
             ></v-text-field>
             <v-layout justify-center class="btnParent">
               <span class="box2">
-              <button class="btn1 mr-2" @click="submit">
-                로그인
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-              </button>
-              <button class="btn1" @click="kakaologin">
-                카카오
-                <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-              </button>
+                <a class="btn1" href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message">
+                  카카오 로그인
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                </a>
+                <button class="btn1 mr-2" @click="submit">
+                  로그인
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line"></use>
+                  </svg>
+                </button>
               </span>
               <!-- <span class="frame">
               <button class="BTN mr-2" @click="submit">
@@ -88,9 +88,7 @@
               >
               카카오
               </v-btn>-->
-              <a href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message">
-                카카오
-              </a>
+              
             </v-layout>
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on }">
@@ -148,7 +146,6 @@ import baseURL from '@/base-url.js'
 import * as EmailValidator from 'email-validator'
 import cookie from '@/cookie.js'
 import '@/assets/css/user.css'
-const axios = require('axios').default
 export default {
   data: () => ({
       dialog: false,
@@ -171,7 +168,7 @@ export default {
         v => (EmailValidator.validate(v)) || '이메일 형식이 아닙니다',
       ],
     }),
-
+    
     methods: {
       submit () {
         baseURL.post('user/login?email='+this.id+'&password='+this.password)
@@ -205,19 +202,6 @@ export default {
             this.password = ''
           })
           
-      },
-      kakaologin() {
-        console.log('sdlfsdjkl;dfj;klsd')
-        axios("https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message")
-          .then(() => {
-            // console.log(res)
-            this.$router.push({
-                name: "Main",
-            });
-          })
-          .catch(err => {
-            console.log(err)
-          })
       },
       sendPassword() {
         baseURL.put('user/sendpassword?email='+this.email)
