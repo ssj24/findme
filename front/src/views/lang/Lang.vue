@@ -325,7 +325,6 @@ export default {
       baseURL('review/findAll/'+ language_id+'?user_id='+cookie.cookieUser())
         .then(res => {
           this.reviews = res.data
-          
         })
     },
     updateComment(v, i) {
@@ -418,8 +417,7 @@ export default {
 				}
 			})
     },
-    
-	},
+  },
 
 }
 </script>

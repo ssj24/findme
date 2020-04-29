@@ -18,7 +18,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO findById(Long id) {
-		return modelMapper.map(accountrepo.findById(id), UserDTO.class);
+		return modelMapper.map(accountrepo.findById(id).get(), UserDTO.class);
 	}
 
 	@Override
