@@ -28,7 +28,7 @@ public class CommandLineExecutor {
 		System.out.println("End scheduleTest");
 	}
 
-	@Scheduled(cron = "0 0 4 * * FRI") // 매주 금요일 오전4시 수행
+	@Scheduled(cron = "0 1 20 * * *") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
 		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
