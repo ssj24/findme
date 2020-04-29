@@ -65,7 +65,7 @@ export default {
       menuItems: [
         { title: "Statistics", path: "/statistics", icon: "mdi-chart-bar", forIf: true },
         { title: "User", path: "/account", icon: "mdi-face", forIf: true },
-        { title: "SignIn", path: "/signmerge", icon: "mdd-open-variant-outline", forIf: false },
+        { title: "SignIn", path: "/signmerge", icon: "mdi-lock-open-outline", forIf: false },
         { title: "SignOut", path: "/signmerge", icon: "mdi-lock-outline", forIf: true },
       
       ]
