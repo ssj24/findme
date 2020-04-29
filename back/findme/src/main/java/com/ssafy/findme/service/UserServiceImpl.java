@@ -26,5 +26,5 @@ public class UserServiceImpl implements IUserService {
 		return modelMapper.map(accountrepo.save(modelMapper.map(user, User.class)), UserDTO.class);
 
 	}
-	
+
 }
