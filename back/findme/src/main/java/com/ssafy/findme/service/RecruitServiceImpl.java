@@ -68,7 +68,7 @@ public class RecruitServiceImpl implements IRecruitService {
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
 		String filePath = "C:\\MatchRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
+		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\AppData\\Local\\Programs\\Python\\Python36\\python", filePath,
 				userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();

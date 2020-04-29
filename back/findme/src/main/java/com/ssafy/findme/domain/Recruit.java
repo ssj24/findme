@@ -63,11 +63,6 @@ public class Recruit {
 	@OneToMany(mappedBy = "recruit")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
-	private List<Recommend> recommendList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "recruit")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
 	private List<Pick> pickList = new ArrayList<>();
 
 }

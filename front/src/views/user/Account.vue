@@ -1,14 +1,7 @@
 <template>
   <v-row class="fill-height" no-gutters>
-    <v-navigation-drawer
-      color="indigo darken-3"
-      mini-variant
-      mini-variant-width="100"
-      permanent
-      expand-on-hover
-      absolute
-      left
-    >
+    <v-navigation-drawer color="indigo darken-3" mini-variant mini-variant-width="100" permanent expand-on-hover
+      absolute left>
       <v-list-item>
         <!-- <v-list-item-avatar height="70" width="70" class="ml-n1 pl-1">
           <v-img src="https://randomuser.me/api/portraits/women/75.jpg"></v-img>
@@ -19,30 +12,23 @@
           <br>
         </p>
         <p class="accountIcon text-right">
-        <router-link :to="{ name: 'Setting', params:{id: id}}">
-          <v-icon color="white">mdi-cog</v-icon>
-        </router-link>
-      </p>
+          <router-link :to="{ name: 'Setting', params:{id: id}}">
+            <v-icon color="white">mdi-cog</v-icon>
+          </router-link>
+        </p>
       </v-list-item>
-      
+
       <v-divider color="white"></v-divider>
 
-      <v-list
-        dense
-        nav
-      >
-      
-      
+      <v-list dense nav>
+
         <p class="accountTitle">
           기술 스택
         </p>
         <hr class="hr-divider">
 
         <div>
-          <p class="stacklist px-2 py-1"
-            v-for="(stack,idx) in stacks"
-            :key="idx"
-            @click="clicked">
+          <p class="stacklist px-2 py-1" v-for="(stack,idx) in stacks" :key="idx" @click="clicked">
             {{stack}}
           </p>
         </div>
@@ -51,10 +37,7 @@
         </p>
         <hr class="hr-divider">
         <div>
-          <p class="stacklist px-2 py-1"
-            v-for="(position,idx) in positions"
-            :key="idx"
-            @click="clicked">
+          <p class="stacklist px-2 py-1" v-for="(position,idx) in positions" :key="idx" @click="clicked">
             {{position}}
           </p>
         </div>
@@ -63,107 +46,304 @@
         </p>
         <hr class="hr-divider">
         <div>
-          <p class="stacklist px-2 py-1"
-            v-for="(company,idx) in companies"
-            :key="idx"
-            @click="clicked">
+          <p class="stacklist px-2 py-1" v-for="(company,idx) in companies" :key="idx" @click="clicked">
             {{company}}
           </p>
         </div>
       </v-list>
     </v-navigation-drawer>
-    <v-card width="100%" style="margin-left: 110px;">
-      <account-job name="AccountJob"></account-job>
+
+    <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined>
+      <v-card-title>맞춤 공고</v-card-title>
+      <account-job name="AccountJob" :cards="matchCards"></account-job>
     </v-card>
-    <!-- <v-card width="100%" height="400" style="margin-left: 110px;">
-      <account-stack name="AccountStack"></account-stack>
-    </v-card> -->
+
+    <v-card width="100%" style="margin-left: 110px;" class="my-3" outlined>
+      <v-card-title>이런 공고는 어떠세요?</v-card-title>
+      <account-job name="AccountJob" :cards="recommendCards"></account-job>
+    </v-card>
+
+    <v-card width="100%" height="400" style="margin-left: 110px;" outlined>
+      <v-card-title><span class="font-weight-bold">{{name}}</span> 님께 이런 기술스택을 추천합니다!</v-card-title>
+      <account-stack name="AccountStack" :slides="slides"></account-stack>
+    </v-card>
+
   </v-row>
 </template>
 
 <script>
-import cookie from '@/cookie.js'
-import baseURL from '@/base-url.js'
-import AccountJob from '@/views/user/AccountJob.vue'
-// import AccountStack from '@/views/user/AccountStack.vue'
+  import cookie from '@/cookie.js'
+  import baseURL from '@/base-url.js'
+  import AccountJob from '@/views/user/AccountJob.vue'
+  import AccountStack from '@/views/user/AccountStack.vue'
 
-export default {
-  components: {
-    AccountJob,
-    // AccountStack
-  },
-  mounted() {
-    this.id = cookie.cookieUser()
-    this.profile()
-  },
-  data: () => ({
-    id: 0,
-    name: '',
-    stacks: [],
-    companies: [],
-    positions: [],
-    links: [],
-    mini: true,
-  }),
-  methods: {
-    clicked() {
-      
+  export default {
+    components: {
+      AccountJob,
+      AccountStack
     },
-    profile() {
-      baseURL('user/'+this.id+'/profile')
-        .then(res => {
+    mounted() {
+      this.id = cookie.cookieUser()
+      this.name = cookie.cookieName()
+      this.profile()
+      this.getRecruitData()
+    },
+    data: () => ({
+      id: 0,
+      name: '',
+      stacks: [],
+      companies: [],
+      positions: [],
+      links: [],
+      mini: true,
+      matchCards:[],
+      recommendCards:[],
+      slides: [],
+      langs: [{
+          seq: 1,
+          title: 'Java',
+          color: '#f72047',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png',
+        },
+        {
+          seq: 2,
+          title: 'C',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png',
+        },
+        {
+          seq: 3,
+          title: 'Python',
+          color: '#ffd200',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png',
+        },
+        {
+          seq: 4,
+          title: 'C++',
+          color: '#0000ff',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png',
+        },
+        {
+          seq: 5,
+          title: 'C#',
+          color: '#f72047',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png',
+        },
+        {
+          seq: 6,
+          title: 'VB.NET',
+          color: '#999999',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png',
+        },
+        {
+          seq: 7,
+          title: 'JavaScript',
+          color: '#ffd200',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png',
+        },
+        {
+          seq: 8,
+          title: 'PHP',
+          color: '#0000ff',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png',
+        },
+        {
+          seq: 9,
+          title: 'SQL',
+          color: '#f72047',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png',
+        },
+        {
+          seq: 10,
+          title: 'Go',
+          color: '#999999',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png',
+        },
+        {
+          seq: 11,
+          title: 'R',
+          color: '#ffd200',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png',
+        },
+        {
+          seq: 12,
+          title: 'Assembly',
+          color: '#0000ff',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png',
+        },
+        {
+          seq: 13,
+          title: 'Swift',
+          color: '#f72047',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png',
+        },
+        {
+          seq: 14,
+          title: 'Ruby',
+          color: '#999999',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png',
+        },
+        {
+          seq: 15,
+          title: 'MATLAB',
+          color: '#ffd200',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png',
+        },
+        {
+          seq: 16,
+          title: 'PL/SQL',
+          color: '#0000ff',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png',
+        },
+        {
+          seq: 17,
+          title: 'Perl',
+          color: '#f72047',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png',
+        },
+        {
+          seq: 18,
+          title: 'Visual Basic',
+          color: '#999999',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png',
+        },
+        {
+          seq: 19,
+          title: 'Objective-C',
+          color: '#ffd200',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png',
+        },
+        {
+          seq: 20,
+          title: 'Delphi',
+          color: '#0000ff',
+          bgs: 'https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png',
+        },
+      ]
+    }),
+    methods: {
+      clicked() {
 
-          this.id = res.data.id
-          this.name = res.data.name
-          this.stacks = res.data.techStack.split(',')
-          this.companies = res.data.wishHope.split(',')
-          this.positions = res.data.wishJob.split(',')
-          for (var i=0; i < this.stacks.length; i++) {
-            if (this.stacks[i] == "Cpp") {
-              this.stacks[i] = 'C++'
-            } else if (this.stacks[i] == 'Csharp') {
-              this.stacks[i] = 'C#'
+      },
+      profile() {
+        baseURL('user/' + this.id + '/profile')
+          .then(res => {
+            this.stacks = res.data.techStack.split(',')
+            this.companies = res.data.wishHope.split(',')
+            if (res.data.wishJob != null)
+              this.positions = res.data.wishJob.split(',')
+            for (var i = 0; i < this.stacks.length; i++) {
+              if (this.stacks[i] == "Cpp") {
+                this.stacks[i] = 'C++'
+              } else if (this.stacks[i] == 'Csharp') {
+                this.stacks[i] = 'C#'
+              }
             }
-          }
-        })
-    }
-  },
-  computed: {
-    cols () {
-      const { lg, sm } = this.$vuetify.breakpoint
-      return lg ? ['30%', '70%'] : sm ? ['20%', '80%'] : ['40%', '60%']
+          })
+      },
+      getRecruitData() {
+        baseURL("user/" + this.id + "/recommend")
+          .then(res => {
+            let matchRecruits = res.data.matchRecruitList.slice(0,6)
+            let recommendRecruits = res.data.recommendRecruitList.slice(0,6)
+            var matchCard = {}
+            var recommendCard = {}
+            
+            for (let i = 0; i < matchRecruits.length; i++) {
+              var stack = matchRecruits[i].techStack.split(",").slice(0,3)
+              var stack_rcm = recommendRecruits[i].techStack.split(",").slice(0,3)
+
+              if(matchRecruits[i].imgUrl == "") {
+                matchRecruits[i].imgUrl = "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+              }
+
+              if(recommendRecruits[i].imgUrl == "") {
+                recommendRecruits[i].imgUrl = "https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60"
+              }
+
+              matchCard = {
+                company: matchRecruits[i].compName,
+                position: matchRecruits[i].title,
+                stacks: stack,
+                url : matchRecruits[i].url,
+                imgUrl : matchRecruits[i].imgUrl,
+              }
+
+              recommendCard = {
+                company: recommendRecruits[i].compName,
+                position: recommendRecruits[i].title,
+                stacks: stack_rcm,
+                url : recommendRecruits[i].url,
+                imgUrl : recommendRecruits[i].imgUrl,
+              }
+
+              this.matchCards.push(matchCard)
+              this.recommendCards.push(recommendCard)
+            }
+
+
+            let langDataList = res.data.recommendLanguageList
+            for (let i = 0; i < langDataList.length; i++) {
+              for (let j = 0; j < this.langs.length; j++) {
+                if (langDataList[i] == this.langs[j].title) {
+                  this.slides.push({
+                    title: langDataList[i],
+                    bgs: this.langs[j].bgs
+                  })
+                }
+              }
+            }
+          console.log(this.recommendCards)
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+
+    },
+    computed: {
+      cols() {
+        const {
+          lg,
+          sm
+        } = this.$vuetify.breakpoint
+        return lg ? ['30%', '70%'] : sm ? ['20%', '80%'] : ['40%', '60%']
+      }
     }
   }
-}
 </script>
 
 <style>
-.accountIcon .v-icon::before {
-  color: white;
-}
-.accountName {
-  color: white;
-  display: inline;
-  font-size: 1.3rem;
-  font-weight: 900;
-}
-.accountTitle {
-  color: white;
-  display: inline;
-  font-size: .9rem;
-}
-.accountBasic {
-  font-size: 1.1rem;
-  font-weight: 900;
-}
-.stacklist {
-  color: white;
-  display: inline-block;
-  font-weight: 900;
-}
-.hr-divider {
-  border: none;
-  border-top: dashed 1px white;
-  
-}
+  .accountIcon .v-icon::before {
+    color: white;
+  }
+
+  .accountName {
+    color: white;
+    display: inline;
+    font-size: 1.3rem;
+    font-weight: 900;
+  }
+
+  .accountTitle {
+    color: white;
+    display: inline;
+    font-size: .9rem;
+  }
+
+  .accountBasic {
+    font-size: 1.1rem;
+    font-weight: 900;
+  }
+
+  .stacklist {
+    color: white;
+    display: inline-block;
+    font-weight: 900;
+  }
+
+  .hr-divider {
+    border: none;
+    border-top: dashed 1px white;
+
+  }
 </style>
