@@ -193,7 +193,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public UserDTO findById(Long user_id) {
-		return modelMapper.map(accountrepo.findById(user_id), UserDTO.class);
+		return modelMapper.map(accountrepo.findById(user_id).get(), UserDTO.class);
 	}
 
 	@Override
@@ -206,6 +206,6 @@ public class AccountServiceImpl implements IAccountService {
 	public void deleteUser(UserDTO user) {
 		User userEntity = modelMapper.map(user, User.class);
 		accountrepo.delete(userEntity);
-		
+
 	}
 }

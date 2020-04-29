@@ -2,7 +2,7 @@
   <div>
     <v-container fluid>
       <v-layout wrap justify-center>
-        <v-flex v-for="(card,i) in cards" :key="i" class="ma-2 pa-0" xs12 sm4 md4 lg3>
+        <v-flex v-for="(card,i) in items" :key="i" class="ma-2 pa-0" xs12 sm4 md4 lg3>
           <a :href="card.url" target="blank">
           <v-card class="job-card">
             <v-img
@@ -27,12 +27,11 @@
               </span> -->
               <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
             </v-img>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>mdi-bookmark</v-icon>
+              <span v-if="card"></span>
+              <v-btn icon @click="pick(card)">
+                <v-icon :class="{picked: card.picked}">mdi-bookmark</v-icon>
               </v-btn>
 
               <v-btn icon>
@@ -48,22 +47,69 @@
 </template>
 
 <script>
+import baseURL from '@/base-url.js'
+import cookie from '@/cookie.js'
 export default {
   data: () => ({
+    items: [
+      {
+        id: 25841665,
+        company: 'a',
+        position: '웹'
+      },
+      {
+        id: 25841666,
+        company: 'b',
+        position: '웹'
+      },
+      {
+        id: 25841667,
+        company: 'c',
+        position: '웹'
+      },
+      {
+        id: 25841668,
+        company: 'd',
+        position: '웹'
+      },
+      {
+        company: 'e',
+        id: 25841669,
+        position: '웹'
+      },
+    ],
+    pickList: []
   }),
   props: {
     cards:Array,
   },
   methods: {
-    getUrl() {
-
-    }
+    // pick(card) {
+      
+    // }
+  },
+  mounted() {
+    baseURL('pick/findAll/'+cookie.cookieUser())
+      .then(res => {
+        console.log(res)
+        this.pickList = res.data
+        for (var i=0; i < this.pickList.length; i++) {
+          for (var j=0; j < this.items.length; j++) {
+            if (this.pickList[i].recruitId.id == this.items[j].id) {
+              this.items[j].picked = true;
+            }
+          }
+        }
+      })
   }
 };
 </script>
 
-<style scoped>
-.theme--light.v-card {
+<style>
+.theme--light.job-card {
   box-shadow: 3px 3px 5px #ccc;
+}
+.picked {
+  color: #FF1493 !important;
 }
 </style>
