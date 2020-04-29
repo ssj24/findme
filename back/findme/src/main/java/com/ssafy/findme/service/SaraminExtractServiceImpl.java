@@ -109,29 +109,29 @@ public class SaraminExtractServiceImpl implements ISaraminExtractService {
 		return salary;
 	}
 
-	@Scheduled(cron = "0 30 4 * * *")
+	@Scheduled(cron = "0 39 17 * * *")
 	public void collectSaraminExtractData() {
 		System.out.println("start to collect saramin extract data!! " + new Date());
-		List<SaraminData> assemblys = saraminrepo.findIdByAssmbly();
-		List<SaraminData> cpps = saraminrepo.findIdByCpp();
-		List<SaraminData> cs = saraminrepo.findIdByC();
-		List<SaraminData> csharps = saraminrepo.findIdByCsharp();
-		List<SaraminData> delphis = saraminrepo.findIdByDelphi();
-		List<SaraminData> gos = saraminrepo.findIdByGo();
-		List<SaraminData> javas = saraminrepo.findIdByJava();
-		List<SaraminData> javascripts = saraminrepo.findIdByJavaScript();
-		List<SaraminData> matlabs = saraminrepo.findIdByMatlab();
-		List<SaraminData> objectives = saraminrepo.findIdByObjective();
-		List<SaraminData> perls = saraminrepo.findIdByPearl();
-		List<SaraminData> phps = saraminrepo.findIdByPhp();
-		List<SaraminData> pls = saraminrepo.findIdByPl();
-		List<SaraminData> pythons = saraminrepo.findIdByPython();
-		List<SaraminData> rs = saraminrepo.findIdByR();
-		List<SaraminData> rubys = saraminrepo.findIdByRuby();
-		List<SaraminData> sqls = saraminrepo.findIdBySql();
-		List<SaraminData> swifts = saraminrepo.findIdBySwift();
-		List<SaraminData> vbs = saraminrepo.findIdByVb();
-		List<SaraminData> visuals = saraminrepo.findIdByVisual();
+		List<SaraminData> assemblys = saraminrepo.findByAssemblysTrue();
+		List<SaraminData> cpps = saraminrepo.findByCppsTrue();
+		List<SaraminData> cs = saraminrepo.findByCsTrue();
+		List<SaraminData> csharps = saraminrepo.findByCsharpsTrue();
+		List<SaraminData> delphis = saraminrepo.findByDelphisTrue();
+		List<SaraminData> gos = saraminrepo.findByGosTrue();
+		List<SaraminData> javas = saraminrepo.findByJavasTrue();
+		List<SaraminData> javascripts = saraminrepo.findByJssTrue();
+		List<SaraminData> matlabs = saraminrepo.findByMatlabsTrue();
+		List<SaraminData> objectives = saraminrepo.findByOcsTrue();
+		List<SaraminData> perls = saraminrepo.findByPerlsTrue();
+		List<SaraminData> phps = saraminrepo.findByPhpsTrue();
+		List<SaraminData> pls = saraminrepo.findByPlsTrue();
+		List<SaraminData> pythons = saraminrepo.findByPythonsTrue();
+		List<SaraminData> rs = saraminrepo.findByRsTrue();
+		List<SaraminData> rubys = saraminrepo.findByRubysTrue();
+		List<SaraminData> sqls = saraminrepo.findBySqlsTrue();
+		List<SaraminData> swifts = saraminrepo.findBySwiftsTrue();
+		List<SaraminData> vbs = saraminrepo.findByVbnsTrue();
+		List<SaraminData> visuals = saraminrepo.findByVbs();
 
 		// 많이 사용하는 순
 

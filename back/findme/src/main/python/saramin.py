@@ -131,9 +131,13 @@ while True:
             lang_list = list(set(language)-set(set(language)-set(keyword)))
             mylist=[False]*20
 
+            tech_stack=''
             for l in lang_list:
-                mylist[language.index(l)]=True
-
+                if(mylist[language.index(l)]==False):
+                    mylist[language.index(l)]=True
+                    tech_stack+=l+", "
+            tech_stack=tech_stack[:-2]
+            
             recruit_ids.append(recruit_id)
             comp_names.append(comp_name)
             img_urls.append(img_url)
