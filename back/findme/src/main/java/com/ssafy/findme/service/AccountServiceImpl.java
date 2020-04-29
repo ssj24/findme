@@ -56,6 +56,8 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
+		System.out.println(memberDTO.getAuthKey());
+		System.out.println(memberDTO.getEmail());
 		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
@@ -103,7 +105,7 @@ public class AccountServiceImpl implements IAccountService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String subject = "[본인인증] FindMe 인증메일입니다.";
 		String text = "<h2>안녕하세요 FindMe 입니다!</h2><br><br>" + "<h3>" + name + "님</h3>"
-				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/user/key_alter>인증하기</a></p>"
+				+ "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " + "<a href= " + IP + "/" + email + "/" + key + ">인증하기</a></p>"
 				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {
 			mail.setSubject(subject, "utf-8");
@@ -119,6 +121,8 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	// 인증 메일 확인
 	public void alterUserKey(String email, String key) {
+		System.out.println(email);
+		System.out.println(key);
 		User user = accountrepo.findByEmailAndAuthKey(email, key)
 				.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 인증메일입니다."));
 		user.setAuthKey("Y");
@@ -144,8 +148,8 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public UserDTO info(String email, String password) {
-		return modelMapper.map(accountrepo.findByEmailAndPassword(email, password), UserDTO.class);
+	public UserDTO info(String email) {
+		return modelMapper.map(accountrepo.findByEmail(email).get(), UserDTO.class);
 	}
 
 	@Override
