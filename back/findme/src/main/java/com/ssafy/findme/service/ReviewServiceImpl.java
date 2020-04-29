@@ -39,7 +39,7 @@ public class ReviewServiceImpl implements IReviewService {
 	@Override
 	public void save(Long user_id, String content, Long language_id) {
 		try {
-			User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
+			User user = accountrepo.findById(user_id).get();
 			Review review = new Review();
 			review.setContent(content);
 			review.setUser(user);
@@ -135,7 +135,7 @@ public class ReviewServiceImpl implements IReviewService {
 				review.setSympCnt(symp_cnt + 1);
 				reviewrepo.save(review);
 
-				User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
+				User user = accountrepo.findById(user_id).get();
 				newsymp.setReview(review);
 				newsymp.setUser(user);
 				symprepo.save(newsymp);
@@ -180,7 +180,7 @@ public class ReviewServiceImpl implements IReviewService {
 				long unsymp_cnt = review.getUnsympCnt();
 				review.setUnsympCnt(unsymp_cnt + 1);
 				reviewrepo.save(review);
-				User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));;
+				User user = accountrepo.findById(user_id).get();
 				newunsymp.setReview(review);
 				newunsymp.setUser(user);
 				unsymprepo.save(newunsymp);
