@@ -86,16 +86,6 @@ public class User {
 	@JsonIgnore
 	private List<Survey> surveyList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "parent")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
-	private List<Similar> similarList = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "user")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
-	private List<Recommend> recommendList = new ArrayList<>();
-	
 	@OneToMany(mappedBy = "user")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
