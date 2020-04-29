@@ -73,4 +73,5 @@ public class RecruitController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
 }

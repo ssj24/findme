@@ -27,7 +27,7 @@ import com.ssafy.findme.repository.RecruitRepository;
 @Service
 public class RecruitServiceImpl implements IRecruitService {
 	@Autowired
-	private static RecruitRepository recruitRepo;
+	private RecruitRepository recruitRepo;
 
 	@Autowired
 	private PickRepository pickRepo;
@@ -92,7 +92,9 @@ public class RecruitServiceImpl implements IRecruitService {
 			System.out.println(matchRecruitIdList);
 
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
-				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)));
+				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)))
+						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+				;
 //				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
@@ -115,7 +117,8 @@ public class RecruitServiceImpl implements IRecruitService {
 			List<Pick> tmpPickRecruitList = pickRepo.findByUserId(Long.parseLong(userId));
 
 			for (int i = 0; i < tmpPickRecruitList.size(); i++) {
-				Recruit pickRecruit = recruitRepo.findById(tmpPickRecruitList.get(i).getRecruit().getId());
+				Recruit pickRecruit = recruitRepo.findById(tmpPickRecruitList.get(i).getRecruit().getId())
+						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
 				pickRecruitList.add(modelMapper.map(pickRecruit, RecruitDTO.class));
 			}
 		} catch (Exception e) {
@@ -150,7 +153,9 @@ public class RecruitServiceImpl implements IRecruitService {
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
 
 			for (int i = 0; i < recommendRecruitIdList.size(); i++) {
-				recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)));
+				recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)))
+						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+				;
 //				System.out.println(matchRecruit);
 				recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
 			}
@@ -171,7 +176,9 @@ public class RecruitServiceImpl implements IRecruitService {
 				"R", "Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C",
 				"Delphi/Object" };
 
-		User myInfo = accountRepo.findById(Long.parseLong(userId));
+		User myInfo = accountRepo.findById(Long.parseLong(userId))
+				.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+		;
 		String myTechStack = myInfo.getTechStack();
 		List<String> myTechStackList = Arrays.asList(myTechStack.split(","));
 		int[] countMatchTechStack = new int[20];
@@ -205,17 +212,12 @@ public class RecruitServiceImpl implements IRecruitService {
 		return recommendLanguageList;
 	}
 
-	@Scheduled(cron = "0 57 4 * * *") // 매일 오전 4시 수행
-//	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
-	public static void deleteRecruit() {
+	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
+	public void deleteRecruit() {
 		System.out.println("scheduleDeleteRecruit: " + new Date());
 		// 마감일이 지금보다 이르면 다 지워주자
 		long now = (Calendar.getInstance().getTimeInMillis() / 1000);
-		System.out.println(now);
-		long test=2001164400;
-		List<Recruit> ids = recruitRepo.FindIdByDueDate(test);
-		System.out.println("ㅅㅄㅂ");
-//		recruitRepo.deleteById(id);
+		List<Recruit> ids = recruitRepo.deleteByDueDateBefore(now);
 		System.out.println(ids.size());
 		System.out.println("End DeleteRecruit");
 	}
