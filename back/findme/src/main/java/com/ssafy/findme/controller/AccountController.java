@@ -121,9 +121,9 @@ public class AccountController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@GetMapping("/user/key_alter")
+	@GetMapping("/user/key_alter/{email}/{key}")
 	@ApiOperation(value = "이메일 인증하기")
-	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
+	public void authentication(@PathVariable("email") String email, @PathVariable("key") String key) {
 		accountservice.alterUserKey(email, key);
 	}
 
@@ -155,9 +155,11 @@ public class AccountController {
 			resultMap.put("token", token);
 			status = HttpStatus.ACCEPTED;
 		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		System.out.println(status);
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 

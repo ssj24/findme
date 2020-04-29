@@ -36,6 +36,7 @@ public class RecruitController {
 		HttpStatus status = null;
 
 		try {
+			System.out.println(userId);
 			List<RecruitDTO> matchRecruitList = recruitService.getMatchRecruit(userId);
 			System.out.println("matchRecruitList");
 			System.out.println(matchRecruitList);

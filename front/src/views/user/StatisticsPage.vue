@@ -321,9 +321,10 @@ import TotalGeoChart from "../../components/TotalGeoChart";
 import TotalGeoTable from "../../components/TotalGeoTable";
 import GeoChart from "../../components/GeoChart";
 import GeoTable from "../../components/GeoTable";
+import baseURL from "@/base-url.js";
 
 export default {
-  name: "StaticsPage",
+  name: "StatisticsPage",
   components: {
     BrushChart,
     TotalGeoChart,
@@ -368,7 +369,28 @@ export default {
       thirdComponentKey: 800,
       fourthComponentKey: 1000,
       fifthComponentKey: 1200,
-      languageNameList: ["JAVA", "Python", "C", "C++", "C#", "JavaScript"],
+      languageNameList: [
+        "JAVA",
+        "C",
+        "Python",
+        "C++",
+        "C#",
+        "VB.NET",
+        "JavaScript",
+        "PHP",
+        "SQL",
+        "Go",
+        "R",
+        "Assembly",
+        "Swift",
+        "Ruby",
+        "MATLAB",
+        "PL/SQL",
+        "Perl",
+        "Visual Basic",
+        "Objective-C",
+        "Delphi"
+      ],
       languages: [
         {
           languageId: 0,
@@ -395,324 +417,46 @@ export default {
           languageName: "JavaScript"
         }
       ],
-      javaBrushValue: [
-        ["2019-09-01", 78],
-        ["2019-09-08", 60],
-        ["2019-09-15", 84],
-        ["2019-09-22", 89],
-        ["2019-09-25", 76],
-        ["2019-10-06", 70],
-        ["2019-10-13", 90],
-        ["2019-10-20", 85],
-        ["2019-10-27", 78],
-        ["2019-11-03", 89],
-        ["2019-11-10", 83],
-        ["2019-11-17", 84],
-        ["2019-11-24", 90],
-        ["2019-12-01", 97],
-        ["2019-12-08", 88],
-        ["2019-12-15", 87],
-        ["2019-12-22", 47],
-        ["2019-12-29", 53],
-        ["2020-01-05", 73],
-        ["2020-01-12", 77],
-        ["2020-01-19", 61],
-        ["2020-01-26", 68],
-        ["2020-02-02", 77],
-        ["2020-02-09", 77],
-        ["2020-02-16", 76],
-        ["2020-02-23", 66],
-        ["2020-03-01", 69],
-        ["2020-03-08", 76],
-        ["2020-03-15", 86],
-        ["2020-03-22", 83],
-        ["2020-03-29", 82],
-        ["2020-04-05", 86]
-      ],
-      pythonBrushValue: [
-        ["2019-09-01", 64],
-        ["2019-09-08", 55],
-        ["2019-09-15", 70],
-        ["2019-09-22", 68],
-        ["2019-09-25", 73],
-        ["2019-10-06", 77],
-        ["2019-10-13", 74],
-        ["2019-10-20", 70],
-        ["2019-10-27", 69],
-        ["2019-11-03", 73],
-        ["2019-11-10", 75],
-        ["2019-11-17", 78],
-        ["2019-11-24", 75],
-        ["2019-12-01", 80],
-        ["2019-12-08", 70],
-        ["2019-12-15", 68],
-        ["2019-12-22", 56],
-        ["2019-12-29", 52],
-        ["2020-01-05", 63],
-        ["2020-01-12", 69],
-        ["2020-01-19", 61],
-        ["2020-01-26", 58],
-        ["2020-02-02", 63],
-        ["2020-02-09", 69],
-        ["2020-02-16", 61],
-        ["2020-02-23", 58],
-        ["2020-03-01", 58],
-        ["2020-03-08", 63],
-        ["2020-03-15", 69],
-        ["2020-03-22", 84],
-        ["2020-03-29", 86],
-        ["2020-04-05", 97]
-      ],
-      cBrushValue: [
-        ["2019-09-01", 53],
-        ["2019-09-08", 50],
-        ["2019-09-15", 71],
-        ["2019-09-22", 74],
-        ["2019-09-25", 75],
-        ["2019-10-06", 82],
-        ["2019-10-13", 84],
-        ["2019-10-20", 69],
-        ["2019-10-27", 70],
-        ["2019-11-03", 79],
-        ["2019-11-10", 75],
-        ["2019-11-17", 74],
-        ["2019-11-24", 67],
-        ["2019-12-01", 82],
-        ["2019-12-08", 75],
-        ["2019-12-15", 58],
-        ["2019-12-22", 36],
-        ["2019-12-29", 36],
-        ["2020-01-05", 42],
-        ["2020-01-12", 47],
-        ["2020-01-19", 41],
-        ["2020-01-26", 42],
-        ["2020-02-02", 44],
-        ["2020-02-09", 35],
-        ["2020-02-16", 37],
-        ["2020-02-23", 36],
-        ["2020-03-01", 39],
-        ["2020-03-08", 40],
-        ["2020-03-15", 48],
-        ["2020-03-22", 51],
-        ["2020-03-29", 67],
-        ["2020-04-05", 79]
-      ],
-      cppBrushValue: [
-        ["2019-09-01", 60],
-        ["2019-09-08", 44],
-        ["2019-09-15", 75],
-        ["2019-09-22", 75],
-        ["2019-09-25", 67],
-        ["2019-10-06", 63],
-        ["2019-10-13", 75],
-        ["2019-10-20", 65],
-        ["2019-10-27", 59],
-        ["2019-11-03", 69],
-        ["2019-11-10", 65],
-        ["2019-11-17", 60],
-        ["2019-11-24", 64],
-        ["2019-12-01", 72],
-        ["2019-12-08", 64],
-        ["2019-12-15", 58],
-        ["2019-12-22", 41],
-        ["2019-12-29", 43],
-        ["2020-01-05", 56],
-        ["2020-01-12", 55],
-        ["2020-01-19", 44],
-        ["2020-01-26", 48],
-        ["2020-02-02", 55],
-        ["2020-02-09", 54],
-        ["2020-02-16", 58],
-        ["2020-02-23", 44],
-        ["2020-03-01", 52],
-        ["2020-03-08", 50],
-        ["2020-03-15", 60],
-        ["2020-03-22", 66],
-        ["2020-03-29", 63],
-        ["2020-04-05", 72]
-      ],
-      cSharpBrushValue: [
-        ["2019-09-01", 72],
-        ["2019-09-08", 42],
-        ["2019-09-15", 67],
-        ["2019-09-22", 80],
-        ["2019-09-25", 54],
-        ["2019-10-06", 65],
-        ["2019-10-13", 68],
-        ["2019-10-20", 75],
-        ["2019-10-27", 72],
-        ["2019-11-03", 77],
-        ["2019-11-10", 67],
-        ["2019-11-17", 72],
-        ["2019-11-24", 72],
-        ["2019-12-01", 77],
-        ["2019-12-08", 75],
-        ["2019-12-15", 77],
-        ["2019-12-22", 60],
-        ["2019-12-29", 58],
-        ["2020-01-05", 80],
-        ["2020-01-12", 75],
-        ["2020-01-19", 63],
-        ["2020-01-26", 59],
-        ["2020-02-02", 77],
-        ["2020-02-09", 70],
-        ["2020-02-16", 82],
-        ["2020-02-23", 72],
-        ["2020-03-01", 76],
-        ["2020-03-08", 76],
-        ["2020-03-15", 66],
-        ["2020-03-22", 73],
-        ["2020-03-29", 73],
-        ["2020-04-05", 73]
-      ],
-      jsBrushValue: [
-        ["2019-09-01", 63],
-        ["2019-09-08", 41],
-        ["2019-09-15", 65],
-        ["2019-09-22", 69],
-        ["2019-09-25", 51],
-        ["2019-10-06", 53],
-        ["2019-10-13", 57],
-        ["2019-10-20", 57],
-        ["2019-10-27", 59],
-        ["2019-11-03", 60],
-        ["2019-11-10", 59],
-        ["2019-11-17", 58],
-        ["2019-11-24", 64],
-        ["2019-12-01", 63],
-        ["2019-12-08", 64],
-        ["2019-12-15", 64],
-        ["2019-12-22", 47],
-        ["2019-12-29", 50],
-        ["2020-01-05", 65],
-        ["2020-01-12", 60],
-        ["2020-01-19", 54],
-        ["2020-01-26", 54],
-        ["2020-02-02", 72],
-        ["2020-02-09", 66],
-        ["2020-02-16", 69],
-        ["2020-02-23", 61],
-        ["2020-03-01", 68],
-        ["2020-03-08", 67],
-        ["2020-03-15", 61],
-        ["2020-03-22", 62],
-        ["2020-03-29", 59],
-        ["2020-04-05", 61]
-      ],
-      javaGeoValue: [
-        ["State", "관심도"],
-        ["서울", 100],
-        ["대전광역시", 92],
-        ["경기도", 60],
-        ["광주광역시", 54],
-        ["대구광역시", 51],
-        ["충청남도", 48],
-        ["인천광역시", 47],
-        ["부산광역시", 45],
-        ["강원도", 43],
-        ["충청북도", 41],
-        ["경상북도", 41],
-        ["전라북도", 37],
-        ["울산광역시", 33],
-        ["전라남도", 31],
-        ["제주도", 30],
-        ["경상남도", 30]
-      ],
-      pythonGeoValue: [
-        ["State", "관심도"],
-        ["대전광역시", 100],
-        ["서울", 83],
-        ["경기도", 64],
-        ["경상북도", 54],
-        ["광주광역시", 52],
-        ["충청남도", 49],
-        ["인천광역시", 47],
-        ["울산광역시", 46],
-        ["대구광역시", 44],
-        ["부산광역시", 42],
-        ["강원도", 40],
-        ["제주도", 37],
-        ["충청북도", 36],
-        ["전라북도", 33],
-        ["전라남도", 30],
-        ["경상남도", 28]
-      ],
-      cGeoValue: [
-        ["State", "관심도"],
-        ["대전광역시", 100],
-        ["경기도", 85],
-        ["서울", 82],
-        ["경상북도", 73],
-        ["충청남도", 69],
-        ["대구광역시", 64],
-        ["충청북도", 59],
-        ["강원도", 55],
-        ["부산광역시", 52],
-        ["광주광역시", 50],
-        ["인천광역시", 48],
-        ["전라북도", 42],
-        ["울산광역시", 39],
-        ["경상남도", 37],
-        ["전라남도", 32],
-        ["제주도", 30]
-      ],
-      cppGeoValue: [
-        ["State", "관심도"],
-        ["대전광역시", 100],
-        ["경기도", 98],
-        ["서울", 89],
-        ["경상북도", 57],
-        ["인천광역시", 54],
-        ["충청남도", 52],
-        ["대구광역시", 46],
-        ["부산광역시", 41],
-        ["제주도", 38],
-        ["울산광역시", 37],
-        ["강원도", 36],
-        ["충청북도", 33],
-        ["광주광역시", 28],
-        ["전라북도", 26],
-        ["전라남도", 23],
-        ["경상남도", 21]
-      ],
-      cSharpGeoValue: [
-        ["State", "관심도"],
-        ["경기도", 100],
-        ["대전광역시", 91],
-        ["서울", 89],
-        ["울산광역시", 68],
-        ["충청남도", 57],
-        ["인천광역시", 50],
-        ["경상남도", 49],
-        ["대구광역시", 49],
-        ["전라북도", 49],
-        ["부산광역시", 46],
-        ["경상북도", 45],
-        ["광주광역시", 36],
-        ["충청북도", 35],
-        ["전라남도", 25],
-        ["제주도", 22],
-        ["강원도", 17]
-      ],
-      jsGeoValue: [
-        ["State", "관심도"],
-        ["서울", 100],
-        ["대전광역시", 65],
-        ["경기도", 51],
-        ["대구광역시", 43],
-        ["부산광역시", 40],
-        ["인천광역시", 38],
-        ["광주광역시", 36],
-        ["제주도", 35],
-        ["충청남도", 31],
-        ["충청북도", 28],
-        ["강원도", 26],
-        ["울산광역시", 24],
-        ["전라남도", 23],
-        ["경상북도", 20],
-        ["경상남도", 19],
-        ["전라북도", 19]
-      ]
+      javaBrushValue: [],
+      cBrushValue: [],
+      pythonBrushValue: [],
+      cppBrushValue: [],
+      cSharpBrushValue: [],
+      vbNetBrushValue: [],
+      jsBrushValue: [],
+      phpBrushValue: [],
+      sqlBrushValue: [],
+      goBrushValue: [],
+      rBrushValue: [],
+      assemblyBrushValue: [],
+      swiftBrushValue: [],
+      rubyBrushValue: [],
+      matlabBrushValue: [],
+      psBrushValue: [],
+      perlBrushValue: [],
+      vbBrushValue: [],
+      obcBrushValue: [],
+      delphiBrushValue: [],
+      javaGeoValue: [["State", "관심도"]],
+      cGeoValue: [["State", "관심도"]],
+      pythonGeoValue: [["State", "관심도"]],
+      cppGeoValue: [["State", "관심도"]],
+      cSharpGeoValue: [["State", "관심도"]],
+      vbNetGeoValue: [["State", "관심도"]],
+      jsGeoValue: [["State", "관심도"]],
+      phpGeoValue: [["State", "관심도"]],
+      sqlGeoValue: [["State", "관심도"]],
+      goGeoValue: [["State", "관심도"]],
+      rGeoValue: [["State", "관심도"]],
+      assemblyGeoValue: [["State", "관심도"]],
+      swiftGeoValue: [["State", "관심도"]],
+      rubyGeoValue: [["State", "관심도"]],
+      matlabGeoValue: [["State", "관심도"]],
+      psGeoValue: [["State", "관심도"]],
+      perlGeoValue: [["State", "관심도"]],
+      vbGeoValue: [["State", "관심도"]],
+      obcGeoValue: [["State", "관심도"]],
+      delphiGeoValue: [["State", "관심도"]]
     };
   },
   watch: {
@@ -789,6 +533,14 @@ export default {
             0,
             this.javaBrushValue.length
           );
+        } else if (e == "C") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
+          );
         } else if (e == "Python") {
           this.firstGeoValue = [];
           this.firstGeoValue = this.pythonGeoValue.slice(
@@ -799,14 +551,6 @@ export default {
           this.firstBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
-          );
-        } else if (e == "C") {
-          this.firstGeoValue = [];
-          this.firstGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
-          this.firstBrushValue = [];
-          this.firstBrushValue = this.cBrushValue.slice(
-            0,
-            this.cBrushValue.length
           );
         } else if (e == "C++") {
           this.firstGeoValue = [];
@@ -830,6 +574,17 @@ export default {
             0,
             this.cSharpBrushValue.length
           );
+        } else if (e == "VB.NET") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.vbNetGeoValue.slice(
+            0,
+            this.vbNetGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.vbNetBrushValue.slice(
+            0,
+            this.vbNetBrushValue.length
+          );
         } else if (e == "JavaScript") {
           this.firstGeoValue = [];
           this.firstGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
@@ -838,9 +593,143 @@ export default {
             0,
             this.jsBrushValue.length
           );
+        } else if (e == "PHP") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.phpGeoValue.slice(
+            0,
+            this.phpGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.phpBrushValue.slice(
+            0,
+            this.phpBrushValue.length
+          );
+        } else if (e == "SQL") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.sqlGeoValue.slice(
+            0,
+            this.sqlGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.sqlBrushValue.slice(
+            0,
+            this.sqlBrushValue.length
+          );
+        } else if (e == "Go") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.goGeoValue.slice(0, this.goGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.goBrushValue.slice(
+            0,
+            this.goBrushValue.length
+          );
+        } else if (e == "R") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.rGeoValue.slice(0, this.rGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.rBrushValue.slice(
+            0,
+            this.rBrushValue.length
+          );
+        } else if (e == "Assembly") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.assemblyGeoValue.slice(
+            0,
+            this.assemblyGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.assemblyBrushValue.slice(
+            0,
+            this.assemblyBrushValue.length
+          );
+        } else if (e == "Swift") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.swiftGeoValue.slice(
+            0,
+            this.swiftGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.swiftBrushValue.slice(
+            0,
+            this.swiftBrushValue.length
+          );
+        } else if (e == "Ruby") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.rubyGeoValue.slice(
+            0,
+            this.rubyGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.rubyBrushValue.slice(
+            0,
+            this.rubyBrushValue.length
+          );
+        } else if (e == "MATLAB") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.matlabGeoValue.slice(
+            0,
+            this.matlabGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.matlabBrushValue.slice(
+            0,
+            this.matlabBrushValue.length
+          );
+        } else if (e == "PL/SQL") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.psGeoValue.slice(0, this.psGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.psBrushValue.slice(
+            0,
+            this.psBrushValue.length
+          );
+        } else if (e == "Perl") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.perlGeoValue.slice(
+            0,
+            this.perlGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.perlBrushValue.slice(
+            0,
+            this.perlBrushValue.length
+          );
+        } else if (e == "Visual Basic") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.vbGeoValue.slice(0, this.vbGeoValue.length);
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.vbBrushValue.slice(
+            0,
+            this.vbBrushValue.length
+          );
+        } else if (e == "Objective-C") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.obcGeoValue.slice(
+            0,
+            this.obcGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.obcBrushValue.slice(
+            0,
+            this.obcBrushValue.length
+          );
+        } else if (e == "Delphi") {
+          this.firstGeoValue = [];
+          this.firstGeoValue = this.delphiGeoValue.slice(
+            0,
+            this.delphiGeoValue.length
+          );
+          this.firstBrushValue = [];
+          this.firstBrushValue = this.delphiBrushValue.slice(
+            0,
+            this.delphiBrushValue.length
+          );
         }
         window.sessionStorage.setItem("firstLang", e);
-        window.sessionStorage.setItem("firstGeoValue", this.firstGeoValue);
+        window.sessionStorage.setItem(
+          "firstGeoValue",
+          JSON.stringify(this.firstGeoValue)
+        );
         window.sessionStorage.setItem("firstBrushValue", this.firstBrushValue);
       }
       this.forceRerender();
@@ -871,14 +760,19 @@ export default {
 
         if (e == "JAVA") {
           this.secondGeoValue = [];
-          this.secondGeoValue = this.javaGeoValue.slice(
-            0,
-            this.javaGeoValue.length
-          );
+          this.secondGeoValue = this.javaGeoValue;
           this.secondBrushValue = [];
           this.secondBrushValue = this.javaBrushValue.slice(
             0,
             this.javaBrushValue.length
+          );
+        } else if (e == "C") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
           );
         } else if (e == "Python") {
           this.secondGeoValue = [];
@@ -890,14 +784,6 @@ export default {
           this.secondBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
-          );
-        } else if (e == "C") {
-          this.secondGeoValue = [];
-          this.secondGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
-          this.secondBrushValue = [];
-          this.secondBrushValue = this.cBrushValue.slice(
-            0,
-            this.cBrushValue.length
           );
         } else if (e == "C++") {
           this.secondGeoValue = [];
@@ -921,6 +807,17 @@ export default {
             0,
             this.cSharpBrushValue.length
           );
+        } else if (e == "VB.NET") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.vbNetGeoValue.slice(
+            0,
+            this.vbNetGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.vbNetBrushValue.slice(
+            0,
+            this.vbNetBrushValue.length
+          );
         } else if (e == "JavaScript") {
           this.secondGeoValue = [];
           this.secondGeoValue = this.jsGeoValue.slice(
@@ -931,6 +828,146 @@ export default {
           this.secondBrushValue = this.jsBrushValue.slice(
             0,
             this.jsBrushValue.length
+          );
+        } else if (e == "PHP") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.phpGeoValue.slice(
+            0,
+            this.phpGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.phpBrushValue.slice(
+            0,
+            this.phpBrushValue.length
+          );
+        } else if (e == "SQL") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.sqlGeoValue.slice(
+            0,
+            this.sqlGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.sqlBrushValue.slice(
+            0,
+            this.sqlBrushValue.length
+          );
+        } else if (e == "Go") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.goGeoValue.slice(
+            0,
+            this.goGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.goBrushValue.slice(
+            0,
+            this.goBrushValue.length
+          );
+        } else if (e == "R") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.rGeoValue.slice(0, this.rGeoValue.length);
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.rBrushValue.slice(
+            0,
+            this.rBrushValue.length
+          );
+        } else if (e == "Assembly") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.assemblyGeoValue.slice(
+            0,
+            this.assemblyGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.assemblyBrushValue.slice(
+            0,
+            this.assemblyBrushValue.length
+          );
+        } else if (e == "Swift") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.swiftGeoValue.slice(
+            0,
+            this.swiftGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.swiftBrushValue.slice(
+            0,
+            this.swiftBrushValue.length
+          );
+        } else if (e == "Ruby") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.rubyGeoValue.slice(
+            0,
+            this.rubyGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.rubyBrushValue.slice(
+            0,
+            this.rubyBrushValue.length
+          );
+        } else if (e == "MATLAB") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.matlabGeoValue.slice(
+            0,
+            this.matlabGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.matlabBrushValue.slice(
+            0,
+            this.matlabBrushValue.length
+          );
+        } else if (e == "PL/SQL") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.psGeoValue.slice(
+            0,
+            this.psGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.psBrushValue.slice(
+            0,
+            this.psBrushValue.length
+          );
+        } else if (e == "Perl") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.perlGeoValue.slice(
+            0,
+            this.perlGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.perlBrushValue.slice(
+            0,
+            this.perlBrushValue.length
+          );
+        } else if (e == "Visual Basic") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.vbGeoValue.slice(
+            0,
+            this.vbGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.vbBrushValue.slice(
+            0,
+            this.vbBrushValue.length
+          );
+        } else if (e == "Objective-C") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.obcGeoValue.slice(
+            0,
+            this.obcGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.obcBrushValue.slice(
+            0,
+            this.obcBrushValue.length
+          );
+        } else if (e == "Delphi") {
+          this.secondGeoValue = [];
+          this.secondGeoValue = this.delphiGeoValue.slice(
+            0,
+            this.delphiGeoValue.length
+          );
+          this.secondBrushValue = [];
+          this.secondBrushValue = this.delphiBrushValue.slice(
+            0,
+            this.delphiBrushValue.length
           );
         }
         window.sessionStorage.setItem("secondLang", e);
@@ -968,14 +1005,19 @@ export default {
 
         if (e == "JAVA") {
           this.thirdGeoValue = [];
-          this.thirdGeoValue = this.javaGeoValue.slice(
-            0,
-            this.javaGeoValue.length
-          );
+          this.thirdGeoValue = this.javaGeoValue;
           this.thirdBrushValue = [];
           this.thirdBrushValue = this.javaBrushValue.slice(
             0,
             this.javaBrushValue.length
+          );
+        } else if (e == "C") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
           );
         } else if (e == "Python") {
           this.thirdGeoValue = [];
@@ -987,14 +1029,6 @@ export default {
           this.thirdBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
-          );
-        } else if (e == "C") {
-          this.thirdGeoValue = [];
-          this.thirdGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
-          this.thirdBrushValue = [];
-          this.thirdBrushValue = this.cBrushValue.slice(
-            0,
-            this.cBrushValue.length
           );
         } else if (e == "C++") {
           this.thirdGeoValue = [];
@@ -1018,6 +1052,17 @@ export default {
             0,
             this.cSharpBrushValue.length
           );
+        } else if (e == "VB.NET") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.vbNetGeoValue.slice(
+            0,
+            this.vbNetGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.vbNetBrushValue.slice(
+            0,
+            this.vbNetBrushValue.length
+          );
         } else if (e == "JavaScript") {
           this.thirdGeoValue = [];
           this.thirdGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
@@ -1025,6 +1070,137 @@ export default {
           this.thirdBrushValue = this.jsBrushValue.slice(
             0,
             this.jsBrushValue.length
+          );
+        } else if (e == "PHP") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.phpGeoValue.slice(
+            0,
+            this.phpGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.phpBrushValue.slice(
+            0,
+            this.phpBrushValue.length
+          );
+        } else if (e == "SQL") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.sqlGeoValue.slice(
+            0,
+            this.sqlGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.sqlBrushValue.slice(
+            0,
+            this.sqlBrushValue.length
+          );
+        } else if (e == "Go") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.goGeoValue.slice(0, this.goGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.goBrushValue.slice(
+            0,
+            this.goBrushValue.length
+          );
+        } else if (e == "R") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.rGeoValue.slice(0, this.rGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.rBrushValue.slice(
+            0,
+            this.rBrushValue.length
+          );
+        } else if (e == "Assembly") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.assemblyGeoValue.slice(
+            0,
+            this.assemblyGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.assemblyBrushValue.slice(
+            0,
+            this.assemblyBrushValue.length
+          );
+        } else if (e == "Swift") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.swiftGeoValue.slice(
+            0,
+            this.swiftGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.swiftBrushValue.slice(
+            0,
+            this.swiftBrushValue.length
+          );
+        } else if (e == "Ruby") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.rubyGeoValue.slice(
+            0,
+            this.rubyGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.rubyBrushValue.slice(
+            0,
+            this.rubyBrushValue.length
+          );
+        } else if (e == "MATLAB") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.matlabGeoValue.slice(
+            0,
+            this.matlabGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.matlabBrushValue.slice(
+            0,
+            this.matlabBrushValue.length
+          );
+        } else if (e == "PL/SQL") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.psGeoValue.slice(0, this.psGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.psBrushValue.slice(
+            0,
+            this.psBrushValue.length
+          );
+        } else if (e == "Perl") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.perlGeoValue.slice(
+            0,
+            this.perlGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.perlBrushValue.slice(
+            0,
+            this.perlBrushValue.length
+          );
+        } else if (e == "Visual Basic") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.vbGeoValue.slice(0, this.vbGeoValue.length);
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.vbBrushValue.slice(
+            0,
+            this.vbBrushValue.length
+          );
+        } else if (e == "Objective-C") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.obcGeoValue.slice(
+            0,
+            this.obcGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.obcBrushValue.slice(
+            0,
+            this.obcBrushValue.length
+          );
+        } else if (e == "Delphi") {
+          this.thirdGeoValue = [];
+          this.thirdGeoValue = this.delphiGeoValue.slice(
+            0,
+            this.delphiGeoValue.length
+          );
+          this.thirdBrushValue = [];
+          this.thirdBrushValue = this.delphiBrushValue.slice(
+            0,
+            this.delphiBrushValue.length
           );
         }
         window.sessionStorage.setItem("thirdLang", e);
@@ -1052,14 +1228,19 @@ export default {
 
         if (e == "JAVA") {
           this.fourthGeoValue = [];
-          this.fourthGeoValue = this.javaGeoValue.slice(
-            0,
-            this.javaGeoValue.length
-          );
+          this.fourthGeoValue = this.javaGeoValue;
           this.fourthBrushValue = [];
           this.fourthBrushValue = this.javaBrushValue.slice(
             0,
             this.javaBrushValue.length
+          );
+        } else if (e == "C") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
           );
         } else if (e == "Python") {
           this.fourthGeoValue = [];
@@ -1071,14 +1252,6 @@ export default {
           this.fourthBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
-          );
-        } else if (e == "C") {
-          this.fourthGeoValue = [];
-          this.fourthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
-          this.fourthBrushValue = [];
-          this.fourthBrushValue = this.cBrushValue.slice(
-            0,
-            this.cBrushValue.length
           );
         } else if (e == "C++") {
           this.fourthGeoValue = [];
@@ -1102,6 +1275,17 @@ export default {
             0,
             this.cSharpBrushValue.length
           );
+        } else if (e == "VB.NET") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.vbNetGeoValue.slice(
+            0,
+            this.vbNetGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.vbNetBrushValue.slice(
+            0,
+            this.vbNetBrushValue.length
+          );
         } else if (e == "JavaScript") {
           this.fourthGeoValue = [];
           this.fourthGeoValue = this.jsGeoValue.slice(
@@ -1112,6 +1296,146 @@ export default {
           this.fourthBrushValue = this.jsBrushValue.slice(
             0,
             this.jsBrushValue.length
+          );
+        } else if (e == "PHP") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.phpGeoValue.slice(
+            0,
+            this.phpGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.phpBrushValue.slice(
+            0,
+            this.phpBrushValue.length
+          );
+        } else if (e == "SQL") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.sqlGeoValue.slice(
+            0,
+            this.sqlGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.sqlBrushValue.slice(
+            0,
+            this.sqlBrushValue.length
+          );
+        } else if (e == "Go") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.goGeoValue.slice(
+            0,
+            this.goGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.goBrushValue.slice(
+            0,
+            this.goBrushValue.length
+          );
+        } else if (e == "R") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.rGeoValue.slice(0, this.rGeoValue.length);
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.rBrushValue.slice(
+            0,
+            this.rBrushValue.length
+          );
+        } else if (e == "Assembly") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.assemblyGeoValue.slice(
+            0,
+            this.assemblyGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.assemblyBrushValue.slice(
+            0,
+            this.assemblyBrushValue.length
+          );
+        } else if (e == "Swift") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.swiftGeoValue.slice(
+            0,
+            this.swiftGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.swiftBrushValue.slice(
+            0,
+            this.swiftBrushValue.length
+          );
+        } else if (e == "Ruby") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.rubyGeoValue.slice(
+            0,
+            this.rubyGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.rubyBrushValue.slice(
+            0,
+            this.rubyBrushValue.length
+          );
+        } else if (e == "MATLAB") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.matlabGeoValue.slice(
+            0,
+            this.matlabGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.matlabBrushValue.slice(
+            0,
+            this.matlabBrushValue.length
+          );
+        } else if (e == "PL/SQL") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.psGeoValue.slice(
+            0,
+            this.psGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.psBrushValue.slice(
+            0,
+            this.psBrushValue.length
+          );
+        } else if (e == "Perl") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.perlGeoValue.slice(
+            0,
+            this.perlGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.perlBrushValue.slice(
+            0,
+            this.perlBrushValue.length
+          );
+        } else if (e == "Visual Basic") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.vbGeoValue.slice(
+            0,
+            this.vbGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.vbBrushValue.slice(
+            0,
+            this.vbBrushValue.length
+          );
+        } else if (e == "Objective-C") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.obcGeoValue.slice(
+            0,
+            this.obcGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.obcBrushValue.slice(
+            0,
+            this.obcBrushValue.length
+          );
+        } else if (e == "Delphi") {
+          this.fourthGeoValue = [];
+          this.fourthGeoValue = this.delphiGeoValue.slice(
+            0,
+            this.delphiGeoValue.length
+          );
+          this.fourthBrushValue = [];
+          this.fourthBrushValue = this.delphiBrushValue.slice(
+            0,
+            this.delphiBrushValue.length
           );
         }
         window.sessionStorage.setItem("fourthLang", e);
@@ -1138,14 +1462,19 @@ export default {
 
         if (e == "JAVA") {
           this.fifthGeoValue = [];
-          this.fifthGeoValue = this.javaGeoValue.slice(
-            0,
-            this.javaGeoValue.length
-          );
+          this.fifthGeoValue = this.javaGeoValue;
           this.fifthBrushValue = [];
           this.fifthBrushValue = this.javaBrushValue.slice(
             0,
             this.javaBrushValue.length
+          );
+        } else if (e == "C") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.cBrushValue.slice(
+            0,
+            this.cBrushValue.length
           );
         } else if (e == "Python") {
           this.fifthGeoValue = [];
@@ -1157,14 +1486,6 @@ export default {
           this.fifthBrushValue = this.pythonBrushValue.slice(
             0,
             this.pythonBrushValue.length
-          );
-        } else if (e == "C") {
-          this.fifthGeoValue = [];
-          this.fifthGeoValue = this.cGeoValue.slice(0, this.cGeoValue.length);
-          this.fifthBrushValue = [];
-          this.fifthBrushValue = this.cBrushValue.slice(
-            0,
-            this.cBrushValue.length
           );
         } else if (e == "C++") {
           this.fifthGeoValue = [];
@@ -1188,6 +1509,17 @@ export default {
             0,
             this.cSharpBrushValue.length
           );
+        } else if (e == "VB.NET") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.vbNetGeoValue.slice(
+            0,
+            this.vbNetGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.vbNetBrushValue.slice(
+            0,
+            this.vbNetBrushValue.length
+          );
         } else if (e == "JavaScript") {
           this.fifthGeoValue = [];
           this.fifthGeoValue = this.jsGeoValue.slice(0, this.jsGeoValue.length);
@@ -1195,6 +1527,137 @@ export default {
           this.fifthBrushValue = this.jsBrushValue.slice(
             0,
             this.jsBrushValue.length
+          );
+        } else if (e == "PHP") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.phpGeoValue.slice(
+            0,
+            this.phpGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.phpBrushValue.slice(
+            0,
+            this.phpBrushValue.length
+          );
+        } else if (e == "SQL") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.sqlGeoValue.slice(
+            0,
+            this.sqlGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.sqlBrushValue.slice(
+            0,
+            this.sqlBrushValue.length
+          );
+        } else if (e == "Go") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.goGeoValue.slice(0, this.goGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.goBrushValue.slice(
+            0,
+            this.goBrushValue.length
+          );
+        } else if (e == "R") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.rGeoValue.slice(0, this.rGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.rBrushValue.slice(
+            0,
+            this.rBrushValue.length
+          );
+        } else if (e == "Assembly") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.assemblyGeoValue.slice(
+            0,
+            this.assemblyGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.assemblyBrushValue.slice(
+            0,
+            this.assemblyBrushValue.length
+          );
+        } else if (e == "Swift") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.swiftGeoValue.slice(
+            0,
+            this.swiftGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.swiftBrushValue.slice(
+            0,
+            this.swiftBrushValue.length
+          );
+        } else if (e == "Ruby") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.rubyGeoValue.slice(
+            0,
+            this.rubyGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.rubyBrushValue.slice(
+            0,
+            this.rubyBrushValue.length
+          );
+        } else if (e == "MATLAB") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.matlabGeoValue.slice(
+            0,
+            this.matlabGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.matlabBrushValue.slice(
+            0,
+            this.matlabBrushValue.length
+          );
+        } else if (e == "PL/SQL") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.psGeoValue.slice(0, this.psGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.psBrushValue.slice(
+            0,
+            this.psBrushValue.length
+          );
+        } else if (e == "Perl") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.perlGeoValue.slice(
+            0,
+            this.perlGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.perlBrushValue.slice(
+            0,
+            this.perlBrushValue.length
+          );
+        } else if (e == "Visual Basic") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.vbGeoValue.slice(0, this.vbGeoValue.length);
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.vbBrushValue.slice(
+            0,
+            this.vbBrushValue.length
+          );
+        } else if (e == "Objective-C") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.obcGeoValue.slice(
+            0,
+            this.obcGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.obcBrushValue.slice(
+            0,
+            this.obcBrushValue.length
+          );
+        } else if (e == "Delphi") {
+          this.fifthGeoValue = [];
+          this.fifthGeoValue = this.delphiGeoValue.slice(
+            0,
+            this.delphiGeoValue.length
+          );
+          this.fifthBrushValue = [];
+          this.fifthBrushValue = this.delphiBrushValue.slice(
+            0,
+            this.delphiBrushValue.length
           );
         }
         window.sessionStorage.setItem("fifthLang", e);
@@ -1298,25 +1761,450 @@ export default {
         output[i] = obj[i];
       }
       return output;
+    },
+    getDateData() {
+      baseURL
+        .get("/google/findAll/date")
+        .then(res => {
+          var tmpMap = res.data["Java"];
+          var tmpKeys = Object.keys(tmpMap);
+          var tmpValues = Object.values(tmpMap);
+          var tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.javaBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["C"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Python"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.pythonBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["C++"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cppBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["C#"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cSharpBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["VB.NET"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.vbNetBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["JavaScript"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.jsBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["PHP"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.phpBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["SQL"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.sqlBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Go"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.goBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["R"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.rBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Assembly"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.assemblyBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Swift"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.swiftBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Ruby"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.rubyBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["MATLAB"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.matlabBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["PL/SQL"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.psBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Perl"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.perlBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Visual Basic"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.vbBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Objective-C"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.obcBrushValue = tmpList.sort().slice(0, tmpList.length);
+
+          tmpMap = res.data["Delphi"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+          tmpList = [];
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            tmpList.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.delphiBrushValue = tmpList.sort().slice(0, tmpList.length);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getGeoData() {
+      baseURL
+        .get("/google/findAll/geo")
+        .then(res => {
+          var tmpMap = res.data["Java"];
+          var tmpKeys = Object.keys(tmpMap);
+          var tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.javaGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.javaGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["C"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.cGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Python"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.pythonGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.pythonGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["C++"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.cppGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cppGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["C#"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.cSharpGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.cSharpGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["VB.NET"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.vbNetGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.vbNetGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["JavaScript"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.jsGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.jsGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["PHP"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.phpGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.phpGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["SQL"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.sqlGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.sqlGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Go"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.goGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.goGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["R"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.rGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.rGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Assembly"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.assemblyGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.assemblyGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Swift"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.swiftGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.swiftGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Ruby"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.rubyGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.rubyGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["MATLAB"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.matlabGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.matlabGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["PL/SQL"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.psGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.psGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Perl"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.perlGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.perlGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Visual Basic"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.vbGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.vbGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Objective-C"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.obcGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.obcGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+
+          tmpMap = res.data["Delphi"];
+          tmpKeys = Object.keys(tmpMap);
+          tmpValues = Object.values(tmpMap);
+
+          for (let i = 0; i < tmpKeys.length; i++) {
+            this.delphiGeoValue.push([tmpKeys[i], tmpValues[i]]);
+          }
+          this.delphiGeoValue.sort(function(a, b) {
+            return a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0;
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    init() {
+      this.getDateData();
+      this.getGeoData();
     }
   },
   created() {
-    this.firstLang = window.sessionStorage.getItem("firstLang");
-    this.firstGeoValue = window.sessionStorage.getItem("firstGeoValue");
-    this.firstBrushValue = window.sessionStorage.getItem("firstBrushValue");
-    this.secondLang = window.sessionStorage.getItem("secondLang");
-    this.secondGeoValue = window.sessionStorage.getItem("secondGeoValue");
-    this.secondBrushValue = window.sessionStorage.getItem("secondBrushValue");
-    this.thirdLang = window.sessionStorage.getItem("thirdLang");
-    this.thirdGeoValue = window.sessionStorage.getItem("thirdGeoValue");
-    this.thirdBrushValue = window.sessionStorage.getItem("thirdBrushValue");
-    this.fourthLang = window.sessionStorage.getItem("fourthLang");
-    this.fourthGeoValue = window.sessionStorage.getItem("fourthGeoValue");
-    this.fourthBrushValue = window.sessionStorage.getItem("fourthBrushValue");
-    this.fifthLang = window.sessionStorage.getItem("fifthLang");
-    this.fifthGeoValue = window.sessionStorage.getItem("fifthGeoValue");
-    this.fifthBrushValue = window.sessionStorage.getItem("fifthBrushValue");
-
+    this.init();
     this.brushComponentKey = 0;
     this.totalComponentKey = 200;
     this.firstComponentKey = 400;

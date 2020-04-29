@@ -24,6 +24,7 @@ export default {
       type: String
     }
   },
+  computed: {},
   data() {
     return {
       chartData: [],
@@ -39,41 +40,46 @@ export default {
       }
     };
   },
-  methods: {},
-  mounted() {
-    this.chartData.push(this.value[0]);
-    var minValue = 10000000;
-    var maxValue = 0;
+  methods: {
+    makeData() {
+      this.chartData.push(this.value[0]);
 
-    for (let i = 1; i < this.value.length; i++) {
-      if (minValue > this.value[i][1]) {
-        minValue = this.value[i][1];
-      }
+      var minValue = 10000000;
+      var maxValue = 0;
 
-      if (maxValue < this.value[i][1]) {
-        maxValue = this.value[i][1];
-      }
-
-      this.chartData.push([
-        {
-          v: this.value[i][0],
-          f:
-            this.value[i][0] == "서울"
-              ? "서울특별시"
-              : this.value[i][0] == "제주도"
-              ? "제주특별자치도"
-              : this.value[i][0]
-        },
-        {
-          v: this.value[i][1],
-          f: this.value[i][1]
+      for (let i = 1; i < this.value.length; i++) {
+        if (minValue > this.value[i][1]) {
+          minValue = this.value[i][1];
         }
-      ]);
+
+        if (maxValue < this.value[i][1]) {
+          maxValue = this.value[i][1];
+        }
+
+        this.chartData.push([
+          {
+            v:
+              this.value[i][0] == "서울특별시"
+                ? "서울"
+                : this.value[i][0] == "제주특별자치도"
+                ? "제주도"
+                : this.value[i][0],
+            f: this.value[i][0]
+          },
+          {
+            v: this.value[i][1],
+            f: this.value[i][1]
+          }
+        ]);
+      }
+      // minValue - Math.ceil(minValue / 5)
+      // Math.ceil(maxValue / 2);
+      // this.chartOptions.colorAxis.minValue = minValue;
+      // this.chartOptions.colorAxis.maxValue = maxValue;
     }
-    // minValue - Math.ceil(minValue / 5)
-    // Math.ceil(maxValue / 2);
-    // this.chartOptions.colorAxis.minValue = minValue;
-    // this.chartOptions.colorAxis.maxValue = maxValue;
+  },
+  mounted() {
+    this.makeData();
   }
 };
 </script>

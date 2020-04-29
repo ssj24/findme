@@ -44,10 +44,10 @@ router.beforeEach((to, from, next) => {
     }
     next();
   } else {
-    if (to.meta.loginRequire === true) {
-      alert('로그인 해주세요');
-      return next('/')
-    } 
+    // if (to.meta.loginRequire === true) {
+    //   alert('로그인 해주세요');
+    //   return next('/')
+    // } 
     return next();
   }
 })

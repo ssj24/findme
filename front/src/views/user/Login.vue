@@ -71,8 +71,8 @@
                   <polyline class="o2" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
                 </svg>
               </button>
-              </span> -->
-              <!-- <v-btn
+            </span>-->
+            <!-- <v-btn
                 outlined
                 color="rgb(14, 22, 112)"
                 class="mr-2 text-center"
@@ -113,37 +113,27 @@
                   <v-card-actions class="box1">
                     <v-spacer></v-spacer>
 
-                      <button class="btn1" @click="dialog = false">
-                        닫기
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                      </button>
-                    
-                      <button class="btn1" @click="dialog = false; sendPassword();">
-                        보내기
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                        <svg class="button-stroke" viewBox="0 0 154 13">
-                          <use href="#line"></use>
-                        </svg>
-                      </button>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-          </v-form>
-        </v-col>
-      </v-row>
-    </v-container>
+                <button class="btn1" @click="dialog = false; sendPassword();">
+                  보내기
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line" />
+                  </svg>
+                  <svg class="button-stroke" viewBox="0 0 154 13">
+                    <use href="#line" />
+                  </svg>
+                </button>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
   <!-- </div> -->
 </template>
 <script>
-import baseURL from '@/base-url.js'
-import * as EmailValidator from 'email-validator'
+import baseURL from "@/base-url.js";
+import * as EmailValidator from "email-validator";
 import cookie from '@/cookie.js'
 import '@/assets/css/user.css'
 export default {
@@ -210,71 +200,90 @@ export default {
           })
       }
     },
-}
+    kakaologin() {
+      console.log("sdlfsdjkl;dfj;klsd");
+      axios(
+        "https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message"
+      )
+        .then(() => {
+          // console.log(res)
+          this.$router.push({
+            name: "Main"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    sendPassword() {
+      baseURL.put("user/sendpassword?email=" + this.email).then(res => {
+        console.log(res);
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
 .frame {
   display: flex;
-	justify-content: center;
+  justify-content: center;
   align-items: center;
   // background: #FFA114;
 }
 .frame .BTN {
   display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
   border-radius: 10px;
-	svg {
-		height: 55px;
-		width: 120px;
-		fill: none;
-		stroke-width: 5;
+  svg {
+    height: 55px;
+    width: 120px;
+    fill: none;
+    stroke-width: 5;
 
-		.o1 {
-			stroke: rgba(rgb(2, 0, 129), 0.7);
-			fill: rgb(255, 255, 255);
-			transition: all 1s ease-in-out;
-		}
+    .o1 {
+      stroke: rgba(rgb(2, 0, 129), 0.7);
+      fill: rgb(255, 255, 255);
+      transition: all 1s ease-in-out;
+    }
 
-		.o2 {
-			stroke: rgb(255, 255, 255);
-			stroke-dasharray: 20 420;
-			stroke-dashoffset: 20;
-			transition: all 1s ease-in-out;
-		}
+    .o2 {
+      stroke: rgb(255, 255, 255);
+      stroke-dasharray: 20 420;
+      stroke-dashoffset: 20;
+      transition: all 1s ease-in-out;
+    }
   }
   span {
-		position: absolute;
-		margin: auto 0;
-		text-transform: uppercase;
-		letter-spacing: 3px;
-	}
+    position: absolute;
+    margin: auto 0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
 
-	&:hover {
-		.o1{
+  &:hover {
+    .o1 {
       // fill: rgba(rgb(9, 5, 255), 0.3);
-      
-		}
-		
-		.o2 {
-			stroke-dashoffset: -420;
-		}
-	}
+    }
+
+    .o2 {
+      stroke-dashoffset: -420;
+    }
+  }
 }
 
-
-.box1{
+.box1 {
   // position:absolute;
   // top:50%;
   // left:50%;
   // transform : translate(-50% ,-50%);
   // border: 1px solid red;
-  
+
   display: flex;
-	justify-content: center;
+  justify-content: center;
   align-items: center;
   position: relative;
   top: -30px;
@@ -282,43 +291,43 @@ export default {
 }
 .box2 {
   display: flex;
-	justify-content: center;
+  justify-content: center;
   align-items: center;
 }
 .btn1 {
   display: inline-block;
-	// color: white;
-	min-width: 120px;
-	text-decoration: none;
-	margin: auto 0;
-	padding: 5px;
+  // color: white;
+  min-width: 120px;
+  text-decoration: none;
+  margin: auto 0;
+  padding: 5px;
   position: relative;
   // top: -50px;
-	text-align: center;
-	
-	&:hover {
-		.button-stroke:nth-child(2) {
-			stroke-dashoffset: 0;
-		}
-	}
+  text-align: center;
+
+  &:hover {
+    .button-stroke:nth-child(2) {
+      stroke-dashoffset: 0;
+    }
+  }
 }
 .button-stroke {
-	display: block;
-	width: calc(100% - 40px);
+  display: block;
+  width: calc(100% - 40px);
   height: 20px;
   stroke: darken(#020da8, 10%);
-	position: absolute;
-	left: 20px;
-	bottom: -10px;
-	stroke-width: 4;
-	
-	&:nth-child(2) {
-		stroke-dasharray: 650px;
+  position: absolute;
+  left: 20px;
+  bottom: -10px;
+  stroke-width: 4;
+
+  &:nth-child(2) {
+    stroke-dasharray: 650px;
     stroke-dashoffset: 650px;
     stroke: yellow;
-		stroke-width: 5;
-		transition: stroke-dashoffset 500ms ease-out;
-	}
+    stroke-width: 5;
+    transition: stroke-dashoffset 500ms ease-out;
+  }
 }
 .diyBtn:hover {
   color: #000 !important;

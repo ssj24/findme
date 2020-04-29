@@ -11,17 +11,20 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.8)"
               height="200px"
             >
-              <v-card-title class="font-weight-bold" style="text-shadow: 1px 1px 1px #000;">{{ card.company }}</v-card-title>
+              <v-card-title
+                class="font-weight-bold"
+                style="text-shadow: 1px 1px 1px #000;"
+              >{{ card.company }}</v-card-title>
               <v-card-subtitle
                 class="white--text font-weight-black text-right mb-n6"
               >{{ card.position }}</v-card-subtitle>
-              <span class="d-flex justify-end">
+              <!-- <span class="d-flex justify-end">
                 <v-card-subtitle
                   v-for="stack in card.stacks"
                   :key="stack"
                   class="white--text font-weight-medium d-inline-block mb-n6 pl-1"
                 >{{ stack }}</v-card-subtitle>
-              </span>
+              </span> -->
               <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
             </v-img>
 
@@ -46,6 +49,7 @@
 
 <script>
 export default {
+  props: ["cards"],
   data: () => ({
   }),
   props: {

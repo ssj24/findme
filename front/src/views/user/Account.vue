@@ -6,10 +6,10 @@
         <!-- <v-list-item-avatar height="70" width="70" class="ml-n1 pl-1">
           <v-img src="https://randomuser.me/api/portraits/women/75.jpg"></v-img>
           
-        </v-list-item-avatar> -->
+        </v-list-item-avatar>-->
         <p class="accountName pa-4 mx-auto">
           {{name}}
-          <br>
+          <br />
         </p>
         <p class="accountIcon text-right">
           <router-link :to="{ name: 'Setting', params:{id: id}}">
@@ -32,19 +32,15 @@
             {{stack}}
           </p>
         </div>
-        <p class="accountTitle ">
-          희망 직무
-        </p>
-        <hr class="hr-divider">
+        <p class="accountTitle">희망 직무</p>
+        <hr class="hr-divider" />
         <div>
           <p class="stacklist px-2 py-1" v-for="(position,idx) in positions" :key="idx" @click="clicked">
             {{position}}
           </p>
         </div>
-        <p class="accountTitle ">
-          희망 기업
-        </p>
-        <hr class="hr-divider">
+        <p class="accountTitle">희망 기업</p>
+        <hr class="hr-divider" />
         <div>
           <p class="stacklist px-2 py-1" v-for="(company,idx) in companies" :key="idx" @click="clicked">
             {{company}}
