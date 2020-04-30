@@ -65,7 +65,7 @@ export default {
       menuItems: [
         { title: "Statistics", path: "/statistics", icon: "mdi-chart-bar", forIf: true },
         { title: "User", path: "/account", icon: "mdi-face", forIf: true },
-        { title: "SignIn", path: "/signmerge", icon: "mdd-open-variant-outline", forIf: false },
+        { title: "SignIn", path: "/signmerge", icon: "mdi-lock-open-outline", forIf: false },
         { title: "SignOut", path: "/signmerge", icon: "mdi-lock-outline", forIf: true },
       
       ]
@@ -113,7 +113,6 @@ export default {
 		background-size: auto auto;
 		background-clip: border-box;
 		background-size: 200% auto;
-		color: #fff;
 		background-clip: text;
 		text-fill-color: transparent;
 		-webkit-background-clip: text;
