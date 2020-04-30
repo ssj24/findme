@@ -19,7 +19,7 @@ public interface IKakaoAPI {
 
 	void sendToMe(String access_Token, Long recruit_id);
 
-	void sendToFriends(String access_Token, Long recruit_id, List<String> list);
+	void sendToFriends(String access_Token, String recruit_id, List<String> list);
 
 	void sendMessagejorok(String access_Token);
 

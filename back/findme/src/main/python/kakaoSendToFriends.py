@@ -13,14 +13,14 @@ def main(access_token, recruit_id, receiver_uuids):
         tmp+='"'+i+'",'
     tmp=tmp[:len(tmp)-1]
     
-    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
     curs = conn.cursor()
     # sql = "select * from recruits where recruit_id = (select recruit_id from recommend where user_id = "+user_id+" ) "
     sql = "select * from recruit where id = " + recruit_id
 
     curs.execute(sql)
     rows = curs.fetchall()
-    rows_data = pd.DataFrame(rows)
+    rows_data = pd.DataFrame(list(rows))
     
     like_cnt=100
     title = rows_data[8][0]
