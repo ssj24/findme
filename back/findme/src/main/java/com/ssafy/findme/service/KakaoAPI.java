@@ -118,10 +118,9 @@ public class KakaoAPI implements IKakaoAPI {
 			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
 			userInfo.put("nickname", nickname);
-			userInfo.put("email", email);
+			userInfo.put("email", id);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -230,6 +229,7 @@ public class KakaoAPI implements IKakaoAPI {
 					favorite = true;
 
 				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, favorite, uuid));
+				System.out.println(list.get(i).toString());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
