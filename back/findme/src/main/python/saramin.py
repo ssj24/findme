@@ -16,9 +16,9 @@ def main(max_id):
     engine = create_engine(db_data, encoding='utf-8')
 
     conn = pymysql.connect(host='localhost', 
-                        user='root', 
+                        user='ssafy',
                         password='ssafy',
-                        db='test3', 
+                        db='findme',
                         connect_timeout=1)
     #https://oapi.saramin.co.kr/job-search/?access-key=0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O&start=0&count=110&job_category=4&sort=pd
     access_key="0Q5ESrsPZNoxQPN98JpXKSFYmIHImsAyLfHbS2hUMGQUlxZ5O"
@@ -239,4 +239,4 @@ def main(max_id):
     conn.close()
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(37845311)
