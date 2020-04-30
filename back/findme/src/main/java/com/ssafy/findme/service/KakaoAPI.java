@@ -93,7 +93,7 @@ public class KakaoAPI implements IKakaoAPI {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
-			
+
 			// 요청에 필요한 Header에 포함될 내용
 			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
@@ -118,10 +118,9 @@ public class KakaoAPI implements IKakaoAPI {
 			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
 			userInfo.put("nickname", nickname);
-			userInfo.put("email", email);
+			userInfo.put("email", id);
 
 		} catch (IOException e) {
 			e.printStackTrace();
