@@ -187,7 +187,7 @@ export default {
     }
   },
   mounted() {
-    thsi.pickList()
+    this.pickList()
     this.getFriends()
   },
   
