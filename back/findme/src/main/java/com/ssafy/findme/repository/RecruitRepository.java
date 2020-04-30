@@ -23,9 +23,6 @@ public interface RecruitRepository extends JpaRepository<Recruit, Long> {
 
 	public Optional<Recruit> findById(Long parseLong);
 
-//	@Query(value = "SELECT * FROM Recruit r WHERE r.due_date < :due_date", nativeQuery = true)
-//	public List<Recruit> findByIDExpire(@Param("due_date") Long due_date);
-
 	@Transactional
 	@Modifying
 	public List<Recruit> deleteByDueDateBefore(Long now);
