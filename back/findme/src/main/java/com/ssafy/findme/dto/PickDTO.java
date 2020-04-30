@@ -8,5 +8,6 @@ import lombok.Setter;
 public class PickDTO {
 	private Long id;
 	private Long userId;
-	private RecruitDTO recruitId;
+	private RecruitDTO recruit;
+	private boolean chekcPick;
 }
