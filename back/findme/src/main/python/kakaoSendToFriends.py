@@ -13,7 +13,7 @@ def main(access_token, recruit_id, receiver_uuids):
         tmp+='"'+i+'",'
     tmp=tmp[:len(tmp)-1]
     
-    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test3', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test', charset='utf8')
     curs = conn.cursor()
     # sql = "select * from recruits where recruit_id = (select recruit_id from recommend where user_id = "+user_id+" ) "
     sql = "select * from recruit where id = " + recruit_id
