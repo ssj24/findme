@@ -86,7 +86,6 @@ public class KakaoAPI implements IKakaoAPI {
 	@Override
 	public HashMap<String, Object> getUserInfo(String access_Token) {
 		System.out.println("KaKaoAPIServiceImpl getUserInfo");
-		System.out.println("access_Token"+access_Token);
 		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
 		HashMap<String, Object> userInfo = new HashMap<>();
 		String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -94,7 +93,7 @@ public class KakaoAPI implements IKakaoAPI {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
-			
+
 			// 요청에 필요한 Header에 포함될 내용
 			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
@@ -116,10 +115,9 @@ public class KakaoAPI implements IKakaoAPI {
 
 			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
 			int id = element.getAsJsonObject().get("id").getAsInt();
-//			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-//			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
 			userInfo.put("nickname", nickname);
 			userInfo.put("email", id);
@@ -231,6 +229,7 @@ public class KakaoAPI implements IKakaoAPI {
 					favorite = true;
 
 				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, favorite, uuid));
+				System.out.println(list.get(i).toString());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

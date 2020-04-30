@@ -121,7 +121,7 @@ public class AccountController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PostMapping("/user/key_alter")
+	@GetMapping("/user/key_alter")
 	@ApiOperation(value = "이메일 인증하기")
 	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
 		accountservice.alterUserKey(email, key);
@@ -142,7 +142,7 @@ public class AccountController {
 			HttpServletResponse res) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
-		
+
 		try {
 			UserDTO user = new UserDTO();
 			String encryPassword = UserSha256.encrypt(password);
@@ -182,31 +182,31 @@ public class AccountController {
 		String email = userInfo.get("email").toString();
 		String password = UserSha256.encrypt("kakao");
 
+		System.out.println(name);
+		System.out.println(email);
+		System.out.println(password);
+
 		try {
 			UserDTO user = new UserDTO();
 			user.setName(name);
 			user.setEmail(email);
 			user.setPassword(password);
+			System.out.println(user.getName());
+			System.out.println(user.getEmail());
+			System.out.println(user.getPassword());
 			// db에 이메일이 없으면 singup
-//			res.setHeader("jwt-auth-token", access_Token);
+//            res.setHeader("jwt-auth-token", access_Token);
 
 			if (accountservice.emailDuplicateCheck(email)) {
-				if (accountservice.accountDuplicateCheck(email, password)) { // 로그인
-					user = accountservice.info(email, password);
-					resultMap.put("status", true);
-					resultMap.put("info", user);
-					status = HttpStatus.ACCEPTED;
-				} else { // 일반계정을 카카오 계정으로 전환
-					resultMap.put("status", false);
-					resultMap.put("log", "카카오 계정으로 전환하시겠습니까? > 앞으로 카카오로만 로그인 가능 일반으로 로그인 불가");
-					resultMap.put("info", user);
-					status = HttpStatus.ACCEPTED;
-				}
+				user = accountservice.info(email);
+				resultMap.put("status", true);
+				status = HttpStatus.ACCEPTED;
+				System.out.println("login");
 			} else { // 카카오 계정으로 회원가입
 				resultMap.put("status", false);
 				resultMap.put("log", "회원가입이 필요합니다.");
-				resultMap.put("info", user);
 				status = HttpStatus.ACCEPTED;
+				System.out.println("signup");
 			}
 			String token = accountservice.getToken(user);
 			res.setHeader("jwt-auth-token", token);
@@ -215,8 +215,11 @@ public class AccountController {
 			resultMap.put("info", user);
 			resultMap.put("jwt-auth-token", token);
 			resultMap.put("access-token", access_Token);
-			status = HttpStatus.ACCEPTED;
-		} catch (RuntimeException e) {
+			System.out.println("ㅇㅅㅇ");
+		} catch (
+
+		RuntimeException e) {
+			System.out.println("8ㅅ8");
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -229,6 +232,8 @@ public class AccountController {
 	public ResponseEntity<Map<String, Object>> kakaosignup(@RequestBody UserDTO user, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		String token = req.getHeader("jwt-auth-token");
+		String accessToken = req.getHeader("access-token");
 		try {
 			user.setAuthKey("Y");
 			user.setPassword(UserSha256.encrypt("kakao"));
@@ -240,8 +245,6 @@ public class AccountController {
 				else if (tech.equals("Csharp"))
 					tech[i] = "C#";
 			}
-			System.out.println("===============");
-			System.out.println(tech.toString());
 
 			resultMap.put("status", true);
 			resultMap.put("info", user);
@@ -255,25 +258,4 @@ public class AccountController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	@PutMapping("/user/tokakao")
-	@ApiOperation(value = "카카오 계정으로 전환")
-	public ResponseEntity<Map<String, Object>> tokakao(@RequestParam String email, HttpServletRequest req) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		try {
-			UserDTO user = accountservice.findbyEmail(email);
-			user.setPassword(UserSha256.encrypt("kakao"));
-			user = accountservice.updateProfile(user);
-
-			resultMap.put("status", true);
-			resultMap.put("info", user);
-			status = HttpStatus.ACCEPTED;
-
-		} catch (RuntimeException e) {
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
 }

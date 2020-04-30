@@ -11,8 +11,8 @@ def main(max_id):
     # MySQL Connector using pymysql
     pymysql.install_as_MySQLdb()
     # import MySQLdb
-    db_data = 'mysql+mysqldb://' + 'ssafy' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
-        + 'findme' + '?charset=utf8mb4'
+    db_data = 'mysql+mysqldb://' + 'root' + ':' + 'ssafy' + '@' + 'localhost' + ':3306/' \
+        + 'test3' + '?charset=utf8mb4'
     engine = create_engine(db_data, encoding='utf-8')
 
     conn = pymysql.connect(host='localhost', 

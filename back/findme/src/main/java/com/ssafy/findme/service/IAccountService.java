@@ -19,7 +19,7 @@ public interface IAccountService {
 
 	String getToken(UserDTO user);
 
-	UserDTO info(String email, String password);
+	UserDTO info(String email);
 
 	UserDTO changePassword(String email);
 

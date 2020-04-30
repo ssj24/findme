@@ -265,7 +265,7 @@ export default {
         bgs:
           "https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png"
       }
-    ]
+    ],
   }),
   methods: {
     clicked() {},
@@ -399,7 +399,7 @@ export default {
           this.loading = false;
           console.log(err);
         });
-    }
+    },
   },
   computed: {
     cols() {
@@ -410,7 +410,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .accountIcon .v-icon::before {
   color: white;
 }
@@ -443,4 +443,5 @@ export default {
   border: none;
   border-top: dashed 1px white;
 }
+
 </style>
