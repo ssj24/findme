@@ -52,6 +52,7 @@ public class AccountController {
 	@PostMapping("/user/signup")
 	@ApiOperation(value = "가입하기")
 	public void signup(@RequestBody UserDTO user) throws MessagingException {
+		System.out.println(user.toString());
 		// 비밀번호 암호화
 		String encryPassword = UserSha256.encrypt(user.getPassword());
 		user.setPassword(encryPassword);
