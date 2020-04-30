@@ -62,17 +62,17 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-card width="100%" style="margin-left: 110px;" class="mt-5" outlined>
+    <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined v-if="!loading">
       <v-card-title>맞춤 공고</v-card-title>
       <account-job name="AccountJob" :cards="matchCards"></account-job>
     </v-card>
 
-    <v-card width="100%" style="margin-left: 110px;" class="my-3" outlined>
+    <v-card width="100%" style="margin-left: 110px;" class="my-3" outlined v-if="!loading">
       <v-card-title>이런 공고는 어떠세요?</v-card-title>
       <account-job name="AccountJob" :cards="recommendCards"></account-job>
     </v-card>
 
-    <v-card width="100%" height="400" style="margin-left: 110px;" outlined>
+    <v-card width="100%" height="400" style="margin-left: 110px;" outlined v-if="!loading">
       <v-flex v-if="slides.length > 0">
         <v-card-title>
           <span class="font-weight-bold">{{name}}</span> 님께 이런 기술스택을 추천합니다!
@@ -85,6 +85,13 @@
         </v-card-title>
       </v-flex>
     </v-card>
+    <v-dialog v-model="loading" fullscreen>
+      <v-container fluid fill-height style="background-color: rgba(255, 255, 255, 0.5);">
+        <v-layout justify-center align-center>
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-layout>
+      </v-container>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -102,6 +109,7 @@ export default {
   mounted() {
     this.id = cookie.cookieUser();
     this.name = cookie.cookieName();
+    this.loading = true;
     this.profile();
     this.getRecruitData();
   },
@@ -116,6 +124,7 @@ export default {
     matchCards: [],
     recommendCards: [],
     slides: [],
+    loading: false,
     langs: [
       {
         seq: 1,
@@ -275,9 +284,54 @@ export default {
         }
       });
     },
+    getDate(unixTimeStamp) {
+      var date = "";
+
+      if (unixTimeStamp != "1988118000") {
+        var dueDate = new Date(unixTimeStamp * 1000);
+        var year = dueDate.getFullYear();
+        var month =
+          dueDate.getMonth() / 10 >= 1
+            ? dueDate.getMonth()
+            : "0" + dueDate.getMonth();
+        var day =
+          dueDate.getDate() / 10 >= 1
+            ? dueDate.getDate()
+            : "0" + dueDate.getDate();
+        var hours =
+          dueDate.getHours() / 10 >= 1
+            ? dueDate.getHours()
+            : "0" + dueDate.getHours();
+        var minutes =
+          dueDate.getMinutes() / 10 >= 1
+            ? dueDate.getMinutes()
+            : "0" + dueDate.getMinutes();
+        var seconds =
+          dueDate.getSeconds() / 10 >= 1
+            ? dueDate.getSeconds()
+            : "0" + dueDate.getSeconds();
+
+        date =
+          year +
+          "-" +
+          month +
+          "-" +
+          day +
+          " " +
+          hours +
+          ":" +
+          minutes +
+          ":" +
+          seconds;
+      } else {
+        date = "채용시 마감";
+      }
+      return date;
+    },
     getRecruitData() {
       baseURL("user/" + this.id + "/recommend")
         .then(res => {
+          this.loading = false;
           let matchRecruits = res.data.matchRecruitList.slice(0, 6);
           let recommendRecruits = res.data.recommendRecruitList.slice(0, 6);
           var matchCard = {};
@@ -299,20 +353,26 @@ export default {
                 "https://images.unsplash.com/photo-1542435503-956c469947f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60";
             }
 
+            var date = this.getDate(matchRecruits[i].dueDate);
+
             matchCard = {
               company: matchRecruits[i].compName,
               position: matchRecruits[i].title,
               stacks: stack,
               url: matchRecruits[i].url,
-              imgUrl: matchRecruits[i].imgUrl
+              imgUrl: matchRecruits[i].imgUrl,
+              date: date
             };
+
+            date = this.getDate(recommendRecruits[i].dueDate);
 
             recommendCard = {
               company: recommendRecruits[i].compName,
               position: recommendRecruits[i].title,
               stacks: stack_rcm,
               url: recommendRecruits[i].url,
-              imgUrl: recommendRecruits[i].imgUrl
+              imgUrl: recommendRecruits[i].imgUrl,
+              date: date
             };
 
             this.matchCards.push(matchCard);
@@ -331,10 +391,14 @@ export default {
               }
             }
           }
+          // console.log(this.matchCards);
+          // console.log(this.recommendCards);
+          // console.log(this.slides);
         })
-        // .catch(err => {
-        //   console.log(err);
-        // });
+        .catch(err => {
+          this.loading = false;
+          console.log(err);
+        });
     },
   },
   computed: {

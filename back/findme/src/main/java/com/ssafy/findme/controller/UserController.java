@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 
 	@Autowired
-	private static RecruitRepository recruitrepo;
+	private RecruitRepository recruitrepo;
 
 	@Autowired
 	private IUserService userservice;
@@ -120,7 +120,7 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		try {
-			String token = tmp;
+			String token = req.getHeader("access-token");
 //			String token = req.getHeader("jwt-auth-token");
 			kakao.sendToMe(token, recruit_id);
 
@@ -170,27 +170,6 @@ public class UserController {
 			List<FriendDTO> friendsInfo = kakao.friends(token);
 			resultMap.put("status", true);
 			resultMap.put("info", friendsInfo);
-			status = HttpStatus.ACCEPTED;
-
-		} catch (RuntimeException e) {
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	@GetMapping("/test")
-	@ApiOperation(value = "deleteRecruit")
-	public ResponseEntity<Map<String, Object>> test() {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = null;
-		try {
-			System.out.println("scheduleDeleteRecruit: " + new Date());
-			// 마감일이 지금보다 이르면 다 지워주자
-			long now = (Calendar.getInstance().getTimeInMillis() / 1000);
-			recruitrepo.deleteByDueDate(now);
-			System.out.println("End DeleteRecruit");
 			status = HttpStatus.ACCEPTED;
 
 		} catch (RuntimeException e) {

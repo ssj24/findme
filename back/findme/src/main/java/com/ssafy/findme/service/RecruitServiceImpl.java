@@ -71,8 +71,11 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-		String filePath = "C:\\MatchRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
+		String filePath = "/home/ubuntu/python/MatchRecruit.py";
+//		String filePath = "C:\\MatchRecruit.py";
+//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
+//				userId);
+		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
 				userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();
@@ -90,10 +93,13 @@ public class RecruitServiceImpl implements IRecruitService {
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
+			
+			while ((line = error.readLine()) != null) {
+				sb.append(line);
+			}
 			int exitCode = p.waitFor();
 			String newLine = sb.toString().replace("[", "").replace("]", "").replace(" ", "");
 			matchRecruitIdList = Arrays.asList(newLine.split(","));
-			System.out.println(matchRecruitIdList);
 
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
 				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)))
@@ -132,8 +138,11 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getRecommendRecruit(String userId) {
-		String filePath = "C:\\RecommendRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
+//		String filePath = "C:\\RecommendRecruit.py";
+		String filePath = "/home/ubuntu/python/RecommendRecruit.py";
+//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
+//				userId);
+		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
 				userId);
 		Process p;
 		List<String> recommendRecruitIdList = new ArrayList<>();
@@ -149,6 +158,10 @@ public class RecruitServiceImpl implements IRecruitService {
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			
+			while ((line = error.readLine()) != null) {
 				sb.append(line);
 			}
 			int exitCode = p.waitFor();
@@ -186,18 +199,15 @@ public class RecruitServiceImpl implements IRecruitService {
 		String myTechStack = myInfo.getTechStack();
 		List<String> myTechStackList = Arrays.asList(myTechStack.split(","));
 		int[] countMatchTechStack = new int[20];
-
-		System.out.println("내 기술 스택 : " + myTechStackList);
-
+		
 		for (int i = 0; i < matchRecruitList.size() / 2; i++) {
 			List<String> matchRecruitTechStack = Arrays
 					.asList(matchRecruitList.get(i).getTechStack().replace("·", ",").split(","));
-
-			System.out.println("맞춤 기술 스택: " + matchRecruitTechStack);
-
+			
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
 					String language = LanguageList[j] == "JavaScript" ? "자바스크립트" : LanguageList[j];
+					
 					if (matchRecruitTechStack.get(k).contains(language)) {
 						countMatchTechStack[j]++;
 						break;
@@ -232,12 +242,12 @@ public class RecruitServiceImpl implements IRecruitService {
 		System.out.println("End DeleteRecruit");
 	}
 
-	@Scheduled(cron = "0 5 4 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "40 50 15 * * *") // 매일 오전 4시 수행
 	public void updateRecruit() {
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
-		// recruit table에 있는 id중 가장 큰 값을 가져와서
 		int max_id = (int) (long) recruitRepo.findMaxId();
+		System.out.println("max_id: " + max_id);
 		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
 		CommandLineExecutor.execute("python src/main/python/textmining.py");
 		System.out.println("End Saramin & textMining");

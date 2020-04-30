@@ -9,4 +9,5 @@ public class PickDTO {
 	private Long id;
 	private Long userId;
 	private RecruitDTO recruit;
+	private boolean chekcPick;
 }

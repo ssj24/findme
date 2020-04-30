@@ -28,10 +28,12 @@ public class CommandLineExecutor {
 		System.out.println("End scheduleTest");
 	}
 
-	@Scheduled(cron = "0 1 20 * * *") // 매주 금요일 오전4시 수행
+	@Scheduled(cron = "0 2 12 * * *") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
-		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
+		System.out.println("시발 제발 좀 돼라");
+//		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/google_trend.py");
 	}
 
 	/**

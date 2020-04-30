@@ -36,32 +36,32 @@ public class RecruitController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println(userId);
+//			System.out.println(userId);
 			List<RecruitDTO> matchRecruitList = recruitService.getMatchRecruit(userId);
-			System.out.println("matchRecruitList");
-			System.out.println(matchRecruitList);
-			System.out.println("---------------------------------------------------------");
+//			System.out.println("matchRecruitList");
+//			System.out.println(matchRecruitList);
+//			System.out.println("---------------------------------------------------------");
 			List<RecruitDTO> pickRecruitList = recruitService.getPickRecruit(userId);
-			System.out.println("pickRecruitList");
-			System.out.println(pickRecruitList);
-			System.out.println("---------------------------------------------------------");
+//			System.out.println("pickRecruitList");
+//			System.out.println(pickRecruitList);
+//			System.out.println("---------------------------------------------------------");
 			List<RecruitDTO> recommendRecruitList = new ArrayList<>();
 			List<String> recommendLanguageList = recruitService.getRecommendLanguage(userId, matchRecruitList);
-			System.out.println("recommendLanguageList");
-			System.out.println(recommendLanguageList);
-			System.out.println("---------------------------------------------------------");
+//			System.out.println("recommendLanguageList");
+//			System.out.println(recommendLanguageList);
+//			System.out.println("---------------------------------------------------------");
 
 			if (pickRecruitList.isEmpty() || pickRecruitList.size() == 0 || pickRecruitList == null) {
-				recommendRecruitList = matchRecruitList.subList(30, 59);
+				recommendRecruitList = matchRecruitList.subList(6, 59);
 			} else {
 				recommendRecruitList = recruitService.getRecommendRecruit(userId);
 
 				if (recommendRecruitList.size() < 10) {
-					recommendRecruitList.addAll(matchRecruitList.subList(30, 59));
+					recommendRecruitList.addAll(matchRecruitList.subList(6, 59));
 				}
 			}
-			System.out.println("recommendRecruitList");
-			System.out.println(recommendRecruitList);
+//			System.out.println("recommendRecruitList");
+//			System.out.println(recommendRecruitList);
 			resultMap.put("matchRecruitList", matchRecruitList);
 			resultMap.put("pickRecruitList", pickRecruitList);
 			resultMap.put("recommendRecruitList", recommendRecruitList);
