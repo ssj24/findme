@@ -62,7 +62,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined>
+    <v-card width="100%" style="margin-left: 110px;" class="mt-5" outlined>
       <v-card-title>맞춤 공고</v-card-title>
       <account-job name="AccountJob" :cards="matchCards"></account-job>
     </v-card>

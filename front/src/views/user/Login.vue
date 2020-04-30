@@ -9,7 +9,7 @@
     </svg>
     <v-row align="center" justify="center" style="background-color: white;">
       <v-col justify="center" sm="10">
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
           <p class="form-header">로그인</p>
           <hr class="form-hr">
           <br>
