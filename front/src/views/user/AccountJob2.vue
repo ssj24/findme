@@ -3,10 +3,8 @@
     <v-container fluid>
       <v-layout wrap justify-center>
         <v-flex v-for="(card,i) in items" :key="i" class="ma-2 pa-0" xs12 sm4 md4 lg3>
-          <a :href="card.url" target="blank">
           <v-card class="job-card">
             <v-img
-              :src="card.imgUrl"
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.8)"
               height="200px"
@@ -16,24 +14,16 @@
                 style="text-shadow: 1px 1px 1px #000;"
               >{{ card.company }}</v-card-title>
               <v-card-subtitle
-                class="white--text font-weight-black text-right mb-n6"
+                color="indigo"
+                class="font-weight-black text-right mb-n6"
               >{{ card.position }}</v-card-subtitle>
-              <!-- <span class="d-flex justify-end">
-                <v-card-subtitle
-                  v-for="stack in card.stacks"
-                  :key="stack"
-                  class="white--text font-weight-medium d-inline-block mb-n6 pl-1"
-                >{{ stack }}</v-card-subtitle>
-              </span> -->
               <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
             </v-img>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <span v-if="card"></span>
-              <v-btn icon @click="pick(card)">
-                <v-icon :class="{picked: card.picked}">mdi-bookmark</v-icon>
+              <v-btn icon>
+                <v-icon>mdi-bookmark</v-icon>
               </v-btn>
-
               <v-btn
                 icon
                 @click="shareDialog=true"
@@ -97,8 +87,8 @@
                 </v-card>
               </v-dialog>
             </v-card-actions>
+
           </v-card>
-          </a>
         </v-flex>
       </v-layout>
     </v-container>
@@ -110,6 +100,23 @@ import baseURL from '@/base-url.js'
 import cookie from '@/cookie.js'
 export default {
   data: () => ({
+    shareDialog: false,
+    headers: [
+      {
+        text: '프로필',
+        align: 'start',
+        sortable: false,
+        value: 'profile_thumbnail_image'
+      },
+      {
+        text: '이름',
+        value: 'profile_nickname'
+      },
+      // {
+      //   text: 'uuid',
+      //   value: 'uuid'
+      // },
+    ],
     items: [
       {
         id: 25841665,
@@ -138,24 +145,9 @@ export default {
       },
     ],
     pickList: [],
-    shareDialog: false,
-    headers: [
-      {
-        text: '프로필',
-        align: 'start',
-        sortable: false,
-        value: 'profile_thumbnail_image'
-      },
-      {
-        text: '이름',
-        value: 'profile_nickname'
-      },
-    ],
     friendsList: [],
   }),
-  props: {
-    cards:Array,
-  },
+  
   methods: {
     getFriends() {
       baseURL('user/'+cookie.cookieUser()+'/kakaofriends?tmp='+cookie.accessToken())
@@ -171,20 +163,8 @@ export default {
     }
   },
   mounted() {
-    baseURL('pick/findAll/'+cookie.cookieUser())
-      .then(res => {
-        this.pickList = res.data
-        for (var i=0; i < this.pickList.length; i++) {
-          for (var j=0; j < this.items.length; j++) {
-            if (this.pickList[i].recruitId.id == this.items[j].id) {
-              this.items[j].picked = true;
-            }
-          }
-        }
-      })
     this.getFriends()
-  },
-  
+  }
 };
 </script>
 
@@ -194,6 +174,15 @@ export default {
 }
 .picked {
   color: #FF1493 !important;
+}
+.friendSelect {
+  border: 1px solid red !important;
+}
+.v-data-table__wrapper {
+  border: none;
+}
+.v-data-table__wrapper table tbody tr {
+  border: none;
 }
 $speed: 0.5s;
 
@@ -300,4 +289,6 @@ $speed: 0.5s;
   transform: rotate(45deg) translate(450%, 0);
   transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
+
 </style>
