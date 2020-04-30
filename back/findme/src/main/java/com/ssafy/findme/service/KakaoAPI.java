@@ -86,7 +86,6 @@ public class KakaoAPI implements IKakaoAPI {
 	@Override
 	public HashMap<String, Object> getUserInfo(String access_Token) {
 		System.out.println("KaKaoAPIServiceImpl getUserInfo");
-		System.out.println("access_Token"+access_Token);
 		// 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
 		HashMap<String, Object> userInfo = new HashMap<>();
 		String reqURL = "https://kapi.kakao.com/v2/user/me";
