@@ -39,8 +39,17 @@ public class PickServiceImpl implements IPickService {
 
 	@Override
 	public List<PickDTO> findAllByUserId(Long user_id) {
-		return pickrepo.findByUserId(user_id).stream().map(e->entityMapper.convertToDomain(e, PickDTO.class))
+		List<PickDTO> pickList = pickrepo.findByUserId(user_id).stream().map(e->entityMapper.convertToDomain(e, PickDTO.class))
 				.collect(Collectors.toList());
+		for (int i = 0; i < pickList.size(); i++) {
+			PickDTO pick = pickList.get(i);
+			Pick findPick = pickrepo.findByUserIdAndRecruitId(pick.getUserId(), pick.getRecruit().getId());
+			if(findPick != null)
+				pick.setChekcPick(true);
+			else
+				pick.setChekcPick(false);
+		}
+		return pickList;
 	}
 
 	@Override
