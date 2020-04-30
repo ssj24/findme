@@ -29,17 +29,18 @@
             </v-img>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <span v-if="card"></span>
+              <span v-if="card">{{card.id}}</span>
               <v-btn icon @click="pick(card)">
-                <v-icon :class="{picked: card.picked}">mdi-bookmark</v-icon>
+                <v-icon :color="pickColor">mdi-bookmark</v-icon><!--:class="{picked: card.picked}"-->
               </v-btn>
-
+              <span v-if="kakaoChk">
               <v-btn
                 icon
                 @click="shareDialog=true"
               >
                 <v-icon>mdi-share-variant</v-icon>
               </v-btn>
+              </span>
               <v-dialog
                 v-model="shareDialog"
                 width="500"
@@ -51,7 +52,7 @@
                     class="grey lighten-2"
                     primary-title
                   >
-                    카카오톡으로 공유하기
+                    {{card.id}}카카오톡으로 공유하기
                   </v-card-title>
                   <v-data-table
                     hide-default-header
@@ -63,7 +64,7 @@
                   >
                   <template v-slot:item.profile_nickname="{item}">
                     <v-layout justify-center>
-                      <button class="btn-flip ml-n12" :data-front="item.profile_nickname" data-back="보내기" @click="shareFriend(item)">
+                      <button class="btn-flip ml-n12" :data-front="item.profile_nickname" data-back="보내기" @click="shareFriend(card, item)">
                       </button>
                     </v-layout>
                   </template>
@@ -93,6 +94,7 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+              
             </v-card-actions>
           </v-card>
           </a>
@@ -109,28 +111,18 @@ export default {
   data: () => ({
     items: [
       {
-        id: 25841665,
+        id: 32982567,
         company: 'a',
         position: '웹'
       },
       {
-        id: 25841666,
+        id: 34393991,
         company: 'b',
         position: '웹'
       },
       {
-        id: 25841667,
-        company: 'c',
-        position: '웹'
-      },
-      {
-        id: 25841668,
-        company: 'd',
-        position: '웹'
-      },
-      {
-        company: 'e',
-        id: 25841669,
+        id: 34393992,
+        company: 'b',
         position: '웹'
       },
     ],
@@ -149,6 +141,8 @@ export default {
       },
     ],
     friendsList: [],
+    kakaoChk: false,
+    pickColor: "black",
   }),
   props: {
     cards:Array,
@@ -160,34 +154,59 @@ export default {
           this.friendsList = res.data.info
         })
     },
-    shareFriend(v) {
-      console.log(v)
-      var targetTable = document.querySelector('.v-data-table .v-data-table__wrapper table tbody')
-      targetTable.insertRow(targetTable.rows.length).innerHTML="hi";
+    shareFriend(card, v) {
+      let data = {
+        uuids: [v.uuid]
+      }
+      baseURL.post('user/'+cookie.cookieUser()+'/'+card.id+'/kakao_sendToFriends?tmp='+cookie.accessToken(), data)
+        .then(()=>{
+          alert(v.profile_nickname+'님에게 공유하셨습니다.')
+        })
 
     },
-    pickList() {
+    getPickList() {
       baseURL('pick/findAll/'+cookie.cookieUser())
         .then(res => {
           this.pickList = res.data
           for (var i=0; i < this.pickList.length; i++) {
             for (var j=0; j < this.items.length; j++) {
-              if (this.pickList[i].recruitId.id == this.items[j].id) {
+              if (this.pickList[i].recruit.id == this.items[j].id) {
                 this.items[j].picked = true;
               }
             }
           }
+          console.log(this.items)
       })
     },
     pick(card) {
       if (card.picked) {
-        baseURL.delete()
+        baseURL.delete('pick/delete?user_id='+cookie.cookieUser()+'&recruit_id='+card.id)
+          .then(() => {
+            delete card.picked;
+            this.getPickList()
+          })
+        
+      } else {
+        baseURL.post('pick/save/'+cookie.cookieUser()+'?recruit_id='+card.id)
+          .then(() => {
+            this.getPickList()
+          })
+
       }
       
+    },
+    changeColor(pickValue) {
+      if(pickValue) {
+        return "red"
+      } else
+        return "black"
     }
   },
   mounted() {
-    this.pickList()
+    if (cookie.accessToken() != 'undefined') {
+      this.kakaoChk = true
+    }
+    this.getPickList()
     this.getFriends()
   },
   

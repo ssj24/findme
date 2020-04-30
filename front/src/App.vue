@@ -91,6 +91,7 @@ export default {
       document.cookie = 'login_user' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
       document.cookie = 'login_id' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
       document.cookie = 'jwt-auth-token' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
+      document.cookie = 'access-token' + "= " + "; expires=" + date1.toUTCString() + "; path=/";
       document.cookie = 'login_name' + "= " + "; expires=" + date2.toUTCString() + "; path=/";
       this.$router.push('/signmerge')
       }

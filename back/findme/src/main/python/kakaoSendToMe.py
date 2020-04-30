@@ -7,15 +7,16 @@ import sys
 def main(access_token, recruit_id):
     print(access_token)
     print(recruit_id)
-    conn = pymysql.connect(host='localhost', user='ssafy', password='ssafy', db='findme', charset='utf8')
+    conn = pymysql.connect(host='localhost', user='root', password='ssafy', db='test', charset='utf8')
     curs = conn.cursor()
+
     # sql = "select * from recruits where recruit_id = (select recruit_id from recommend where user_id = "+user_id+" ) "
     sql = "select * from recruit where id = " + recruit_id
 
     curs.execute(sql)
     rows = curs.fetchall()
     rows_data = pd.DataFrame(rows)
-    
+
     like_cnt=100
     title = rows_data[8][0]
     image_url=rows_data[3][0]
@@ -74,9 +75,8 @@ def main(access_token, recruit_id):
 
     params = {}
     params['template_object'] = template_object
-    
+
     response = requests.request(method="POST", url=kakao_to_me_uri, params=params, headers=headers)
     print(response.json())
-
-if __name__ == "__main__":
+if __name__ == "main":
     main(sys.argv[1] , sys.argv[2])

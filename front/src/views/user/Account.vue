@@ -331,12 +331,10 @@ export default {
               }
             }
           }
-          console.log(this.recommendCards);
-          console.log(this.slides)
         })
-        .catch(err => {
-          console.log(err);
-        });
+        // .catch(err => {
+        //   console.log(err);
+        // });
     },
   },
   computed: {
