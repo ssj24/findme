@@ -232,6 +232,8 @@ public class AccountController {
 	public ResponseEntity<Map<String, Object>> kakaosignup(@RequestBody UserDTO user, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		String token = req.getHeader("jwt-auth-token");
+		String accessToken = req.getHeader("access-token");
 		try {
 			user.setAuthKey("Y");
 			user.setPassword(UserSha256.encrypt("kakao"));

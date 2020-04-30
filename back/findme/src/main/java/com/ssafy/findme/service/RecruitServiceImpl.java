@@ -242,16 +242,14 @@ public class RecruitServiceImpl implements IRecruitService {
 		System.out.println("End DeleteRecruit");
 	}
 
-	@Scheduled(cron = "0 5 4 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "40 50 15 * * *") // 매일 오전 4시 수행
 	public void updateRecruit() {
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
-		// recruit table에 있는 id중 가장 큰 값을 가져와서
 		int max_id = (int) (long) recruitRepo.findMaxId();
-//		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
-		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/saramin.py " + max_id);
-// 		CommandLineExecutor.execute("python src/main/python/textmining.py");
-		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/textmining.py");
+		System.out.println("max_id: " + max_id);
+		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
+		CommandLineExecutor.execute("python src/main/python/textmining.py");
 		System.out.println("End Saramin & textMining");
 	}
 }

@@ -229,6 +229,7 @@ public class KakaoAPI implements IKakaoAPI {
 					favorite = true;
 
 				list.add(new FriendDTO(profile_nickname, profile_thumbnail_image, id, favorite, uuid));
+				System.out.println(list.get(i).toString());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
