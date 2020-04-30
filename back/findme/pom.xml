@@ -35,6 +35,10 @@
 					<groupId>org.junit.vintage</groupId>
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -110,11 +114,8 @@
 		</dependency>
 
 		<!-- json 데이터 처리 -->
-		<!-- <dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.googlecode.json-simple</groupId> <artifactId>json-simple</artifactId> 
+			<version>1.1.1</version> </dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
@@ -131,6 +132,11 @@
 			<artifactId>jython-standalone</artifactId>
 			<version>2.7.2</version>
 		</dependency>
+
+
+
+
+
 
 	</dependencies>
 
