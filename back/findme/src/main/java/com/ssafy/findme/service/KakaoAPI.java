@@ -184,6 +184,7 @@ public class KakaoAPI implements IKakaoAPI {
 	@Override
 	// 친구목록받기
 	public List<FriendDTO> friends(String access_Token) {
+		System.out.println("여기 오나");
 		String reqURL = "https://kapi.kakao.com/v1/api/talk/friends";
 		List<FriendDTO> list = new ArrayList<FriendDTO>();
 		try {

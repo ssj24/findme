@@ -71,12 +71,12 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-		String filePath = "/home/ubuntu/python/MatchRecruit.py";
-//		String filePath = "C:\\MatchRecruit.py";
-//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
-//				userId);
-		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+//		String filePath = "/home/ubuntu/python/MatchRecruit.py";
+		String filePath = "C:\\MatchRecruit.py";
+		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
+//		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+//				userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();
 		Recruit matchRecruit = new Recruit();
@@ -94,9 +94,9 @@ public class RecruitServiceImpl implements IRecruitService {
 				sb.append(line);
 			}
 			
-			while ((line = error.readLine()) != null) {
-				sb.append(line);
-			}
+//			while ((line = error.readLine()) != null) {
+//				sb.append(line);
+//			}
 			int exitCode = p.waitFor();
 			String newLine = sb.toString().replace("[", "").replace("]", "").replace(" ", "");
 			matchRecruitIdList = Arrays.asList(newLine.split(","));
@@ -104,7 +104,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			for (int i = 0; i < matchRecruitIdList.size(); i++) {
 				matchRecruit = recruitRepo.findById(Long.parseLong(matchRecruitIdList.get(i)))
 						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
-//				System.out.println(matchRecruit);
+				System.out.println(matchRecruit);
 				matchRecruitList.add(modelMapper.map(matchRecruit, RecruitDTO.class));
 			}
 			br.close();
@@ -138,12 +138,12 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getRecommendRecruit(String userId) {
-//		String filePath = "C:\\RecommendRecruit.py";
-		String filePath = "/home/ubuntu/python/RecommendRecruit.py";
-//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
-//				userId);
-		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+		String filePath = "C:\\RecommendRecruit.py";
+//		String filePath = "/home/ubuntu/python/RecommendRecruit.py";
+		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 				userId);
+//		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+//				userId);
 		Process p;
 		List<String> recommendRecruitIdList = new ArrayList<>();
 		Recruit recommendRecruit = new Recruit();
@@ -242,7 +242,7 @@ public class RecruitServiceImpl implements IRecruitService {
 		System.out.println("End DeleteRecruit");
 	}
 
-	@Scheduled(cron = "40 50 15 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "0 8 16 * * *") // 매일 오전 4시 수행
 	public void updateRecruit() {
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
