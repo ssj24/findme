@@ -124,7 +124,6 @@ public class AccountController {
 	@GetMapping("/user/key_alter")
 	@ApiOperation(value = "이메일 인증하기")
 	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
-		System.out.println("sibal");
 		accountservice.alterUserKey(email, key);
 	}
 
