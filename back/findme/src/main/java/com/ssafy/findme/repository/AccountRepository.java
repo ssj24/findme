@@ -21,7 +21,5 @@ public interface AccountRepository extends JpaRepository<User, Long> {
 
 	public int countByEmailAndPassword(String email, String password);
 
-	public User findByEmailAndPassword(String email, String password);
-	
 	public Optional<User> findById(Long user_id);
 }

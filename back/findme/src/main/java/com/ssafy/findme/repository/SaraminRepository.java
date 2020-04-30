@@ -52,4 +52,6 @@ public interface SaraminRepository extends JpaRepository<SaraminData, Long> {
 
 	List<SaraminData> findByVbsTrue();
 
+	void deleteByDueDateBefore(long now);
+
 }

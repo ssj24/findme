@@ -23,11 +23,15 @@ import com.ssafy.findme.dto.RecruitDTO;
 import com.ssafy.findme.repository.AccountRepository;
 import com.ssafy.findme.repository.PickRepository;
 import com.ssafy.findme.repository.RecruitRepository;
+import com.ssafy.findme.repository.SaraminRepository;
 
 @Service
 public class RecruitServiceImpl implements IRecruitService {
 	@Autowired
 	private RecruitRepository recruitRepo;
+
+	@Autowired
+	private SaraminRepository saraminRepo;
 
 	@Autowired
 	private PickRepository pickRepo;
@@ -187,9 +191,9 @@ public class RecruitServiceImpl implements IRecruitService {
 		String[] LanguageList = { "Java", "Python", "C", "C++", "C#", "Visual Basic .NET", "JavaScript", "PHP", "SQL",
 				"Go", "R", "Assembly", "Swift", "Ruby", "MATLAB", "PL/SQL", "Perl", "Visual Basic", "Objective-C",
 				"Delphi/Object" };
-		
+
 		System.out.println(userId);
-		
+
 		User myInfo = accountRepo.findById(Long.parseLong(userId))
 				.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
 		String myTechStack = myInfo.getTechStack();
@@ -212,7 +216,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			}
 		}
 		List<String> recommendLanguageList = new ArrayList<>();
-		
+
 		for (int i = 0; i < 20; i++) {
 			if (countMatchTechStack[i] > 10) {
 				recommendLanguageList.add(LanguageList[i]);
@@ -227,20 +231,18 @@ public class RecruitServiceImpl implements IRecruitService {
 		return recommendLanguageList;
 	}
 
-	@Scheduled(cron = "0 56 14 * * *") // 매일 0시부터 1시간마다 수행
-//	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
+	@Scheduled(cron = "0 0 0/1 * * *") // 매일 0시부터 1시간마다 수행
 	public void deleteRecruit() {
 		System.out.println("scheduleDeleteRecruit: " + new Date());
 		// 마감일이 지금보다 이르면 다 지워주자
 		long now = (Calendar.getInstance().getTimeInMillis() / 1000);
-		List<Recruit> ids = recruitRepo.deleteByDueDateBefore(now);
+		recruitRepo.deleteByDueDateBefore(now);
+		saraminRepo.deleteByDueDateBefore(now);
 
-		System.out.println(ids.size());
 		System.out.println("End DeleteRecruit");
 	}
 
-	@Scheduled(cron = "0 20 22 * * *") // 매일 오전 4시 수행
-//	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "0 5 4 * * *") // 매일 오전 4시 수행
 	public void updateRecruit() {
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
@@ -248,7 +250,8 @@ public class RecruitServiceImpl implements IRecruitService {
 		int max_id = (int) (long) recruitRepo.findMaxId();
 //		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
 		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/saramin.py " + max_id);
-//		CommandLineExecutor.execute("python src/main/python/textmining.py");
+// 		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/textmining.py");
 		System.out.println("End Saramin & textMining");
 	}
 }

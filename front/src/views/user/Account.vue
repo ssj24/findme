@@ -62,7 +62,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined>
+    <v-card width="100%" style="margin-left: 110px;" class="mt-5" outlined>
       <v-card-title>맞춤 공고</v-card-title>
       <account-job name="AccountJob" :cards="matchCards"></account-job>
     </v-card>
@@ -256,7 +256,7 @@ export default {
         bgs:
           "https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png"
       }
-    ]
+    ],
   }),
   methods: {
     clicked() {},
@@ -388,7 +388,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
   },
   computed: {
     cols() {
@@ -399,7 +399,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .accountIcon .v-icon::before {
   color: white;
 }
@@ -432,4 +432,5 @@ export default {
   border: none;
   border-top: dashed 1px white;
 }
+
 </style>

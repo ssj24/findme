@@ -39,9 +39,9 @@ public class PickController {
 		return pickservice.findAllByUserId(user_id);
 	}
 	
-	@DeleteMapping("/pick/delete/{id}")
+	@DeleteMapping("/pick/delete")
 	@ApiOperation(value = "공고 찜 해제")
-	public void deletePick(@PathVariable Long id) {
-		pickservice.deletePick(id);
+	public void deletePick(@RequestParam Long user_id, @RequestParam Long recruit_id) {
+		pickservice.deletePick(user_id, recruit_id);
 	}
 }
