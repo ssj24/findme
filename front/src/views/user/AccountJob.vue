@@ -18,13 +18,6 @@
                 <v-card-subtitle
                   class="white--text font-weight-black text-right mb-n6"
                 >{{ card.company }}</v-card-subtitle>
-                <!-- <span class="d-flex justify-end">
-                <v-card-subtitle
-                  v-for="stack in card.stacks"
-                  :key="stack"
-                  class="white--text font-weight-medium d-inline-block mb-n6 pl-1"
-                >{{ stack }}</v-card-subtitle>
-                </span>-->
                 <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
               </v-img>
             </a>
@@ -32,58 +25,65 @@
               <v-spacer></v-spacer>
               <span v-if="card">{{card.id}}</span>
               <v-btn icon @click="pick(card)">
-                <v-icon :color="pickColor">mdi-bookmark</v-icon>
-                <!--:class="{picked: card.picked}"-->
+                <v-icon :class="'card'+card.id">mdi-bookmark</v-icon><!--:class="{picked: card.picked}"-->
               </v-btn>
               <span v-if="kakaoChk">
-                <v-btn icon @click="shareDialog=true">
-                  <v-icon>mdi-share-variant</v-icon>
-                </v-btn>
+              <v-btn
+                icon
+                @click="showDialog(card)"
+              >
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
               </span>
-              <v-dialog v-model="shareDialog" width="500">
-                <v-card>
-                  <v-card-title class="grey lighten-2" primary-title>{{card.id}}카카오톡으로 공유하기</v-card-title>
-                  <v-data-table
-                    hide-default-header
-                    hide-default-footer
-                    :headers="headers"
-                    :items="friendsList"
-                    :items-per-page="5"
-                    class="elevation-1 ma-4"
-                  >
-                    <template v-slot:item.profile_nickname="{item}">
-                      <v-layout justify-center>
-                        <button
-                          class="btn-flip ml-n12"
-                          :data-front="item.profile_nickname"
-                          data-back="보내기"
-                          @click="shareFriend(card, item)"
-                        ></button>
-                      </v-layout>
-                    </template>
-                    <template v-slot:item.profile_thumbnail_image="{item}">
-                      <v-layout justify-center>
-                        <div class="pa-2 photo mr-n12">
-                          <v-img :src="item.profile_thumbnail_image" width="100px"></v-img>
-                          <div class="glow-wrap">
-                            <i class="glow"></i>
-                          </div>
-                        </div>
-                      </v-layout>
-                    </template>
-                  </v-data-table>
-
-                  <v-divider></v-divider>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="indigo darken-3" text @click="shareDialog = false">I 닫기 I</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              
             </v-card-actions>
           </v-card>
         </v-flex>
+        <v-dialog
+          v-model="shareDialog"
+          width="500"
+        >
+          <v-card>
+            <v-card-title
+              class="indigo darken-3"
+              primary-title
+            >
+              카카오톡으로 공유하기
+            </v-card-title>
+            <v-data-table
+              hide-default-header
+              hide-default-footer
+              :headers="headers"
+              :items="friendsList"
+              :items-per-page="5"
+              class="elevation-1 ma-4"
+            >
+            <template v-slot:item.profile_nickname="{item}">
+              <v-layout justify-center>
+                <button class="btn-flip ml-n12" :data-front="item.profile_nickname" data-back="보내기" @click="shareFriend(Data.id, item)">
+                </button>
+              </v-layout>
+            </template>
+            <template v-slot:item.profile_thumbnail_image="{item}">
+              <v-layout justify-center>
+                <div class="pa-2 photo mr-n12">
+                  <v-img :src="item.profile_thumbnail_image" width="100px"></v-img>
+                  <div class="glow-wrap">
+                    <i class="glow"></i>
+                  </div>
+                </div>
+                </v-layout>
+              </template>
+            </v-data-table>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="indigo darken-3" text @click="shareDialog = false">I 닫기 I</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </div>
@@ -94,23 +94,11 @@ import baseURL from "@/base-url.js";
 import cookie from "@/cookie.js";
 export default {
   data: () => ({
-    items: [
-      {
-        id: 32982567,
-        company: "a",
-        position: "웹"
-      },
-      {
-        id: 34393991,
-        company: "b",
-        position: "웹"
-      },
-      {
-        id: 34393992,
-        company: "b",
-        position: "웹"
-      }
-    ],
+    Data: {
+      id: 0,
+      company: '',
+      position: ''
+    },
     pickList: [],
     shareDialog: false,
     headers: [
@@ -133,6 +121,10 @@ export default {
     cards: Array
   },
   methods: {
+    showDialog(card) {
+      this.exampleData = card
+      this.shareDialog = true
+    },
     getFriends() {
       baseURL(
         "user/" +
@@ -156,38 +148,27 @@ export default {
       console.log(v);
       let data = {
         uuids: [v.uuid]
-      };
-      baseURL
-        .post(
-          "user/" +
-            cookie.cookieUser() +
-            "/" +
-            card.id +
-            "/kakao_sendToFriends?tmp=" +
-            cookie.accessToken(),
-          data
-        )
-        .then(res => {
-          console.log("kakao_sendToFreiends");
-          console.log(res);
-          alert(v.profile_nickname + "님에게 공유하셨습니다.");
+      }
+      baseURL.post('user/'+cookie.cookieUser()+'/'+card+'/kakao_sendToFriends?tmp='+cookie.accessToken(), data)
+        .then(()=>{
+          alert(v.profile_nickname+'님에게 공유하셨습니다.')
         })
         .catch(err => {
           console.log(err);
         });
     },
     getPickList() {
-      baseURL("pick/findAll/" + cookie.cookieUser()).then(res => {
-        this.pickList = res.data;
-        for (var i = 0; i < this.pickList.length; i++) {
-          for (var j = 0; j < this.items.length; j++) {
-            if (this.pickList[i].recruit.id == this.items[j].id) {
-              this.items[j].picked = true;
+      baseURL('pick/findAll/'+cookie.cookieUser())
+        .then(res => {
+          this.pickList = res.data
+          for (var i=0; i < this.pickList.length; i++) {
+            for (var j=0; j < this.cards.length; j++) {
+              if (this.pickList[i].recruit.id == this.cards[j].id) {
+                this.cards[j].picked = this.pickList[i].chekcPick;
+              }
             }
           }
-        }
-        console.log(this.items);
-      });
+      })
     },
     pick(card) {
       if (card.picked) {
@@ -199,30 +180,29 @@ export default {
               card.id
           )
           .then(() => {
-            delete card.picked;
-            this.getPickList();
-          });
+            var icon = document.querySelector('.card'+card.id)
+            icon.classList.remove('picked')
+            card.picked = !card.picked;
+          })
+        
       } else {
         baseURL
           .post("pick/save/" + cookie.cookieUser() + "?recruit_id=" + card.id)
           .then(() => {
-            this.getPickList();
-          });
+            var icon = document.querySelector('.card'+card.id)
+            icon.classList.add('picked')
+            card.picked = !card.picked;
+          })
       }
     },
-    changeColor(pickValue) {
-      if (pickValue) {
-        return "red";
-      } else return "black";
-    }
   },
   mounted() {
     if (cookie.accessToken() != "undefined") {
       this.kakaoChk = true;
     }
-    this.getPickList();
-    this.getFriends();
-  }
+    this.getPickList()
+    this.getFriends()
+  },
 };
 </script>
 

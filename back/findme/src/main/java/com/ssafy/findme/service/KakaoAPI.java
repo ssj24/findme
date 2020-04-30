@@ -241,9 +241,8 @@ public class KakaoAPI implements IKakaoAPI {
 
 	@Override
 	public void sendToMe(String access_Token, Long recruit_id) {
-//		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
-		CommandLineExecutor
-				.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+//		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
 	}
 
 	@Override
@@ -268,14 +267,9 @@ public class KakaoAPI implements IKakaoAPI {
 			break;
 
 		}
-		System.out.println("access_Token: " + access_Token);
-		System.out.println("uuids:" + tmp);
-		try {
-			CommandLineExecutor.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " "
-					+ Long.parseLong(recruit_id) + " " + tmp);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		System.out.println(tmp);
+		CommandLineExecutor
+				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 //		CommandLineExecutor
 //		.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 	}
