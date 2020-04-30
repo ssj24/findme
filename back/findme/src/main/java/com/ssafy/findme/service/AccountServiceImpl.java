@@ -210,6 +210,6 @@ public class AccountServiceImpl implements IAccountService {
 	public void deleteUser(UserDTO user) {
 		User userEntity = modelMapper.map(user, User.class);
 		accountrepo.delete(userEntity);
-
+		
 	}
 }
