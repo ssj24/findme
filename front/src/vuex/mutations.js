@@ -1,11 +1,9 @@
 export default {
   isLogin: state => {
-    console.log(state)
     state.isLogin = true
   },
   isLogout: state => {
     state.isLogin = false
-    // console.log(state)
   },
 
   passwordChange(state, info) {

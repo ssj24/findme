@@ -19,7 +19,6 @@ export default [
     path: "/signmerge",
     name: "SignMerge",
     component: SignMerge,
-    meta: { loginRequire: false },
   },
   {
     path: "/account",

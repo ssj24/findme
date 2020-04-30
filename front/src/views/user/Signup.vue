@@ -105,7 +105,7 @@
                   <use href="#line"></use>
                 </svg>
               </button>
-              <button class="btn1 mr-2" @click="submit">
+              <button class="btn1 mr-2" @click="signUp">
                 회원가입
                 <svg class="button-stroke" viewBox="0 0 154 13">
                   <use href="#line"></use>
@@ -215,9 +215,37 @@ export default {
         this.langSelect = [];
         this.positionSelect = [];
       },
-      submit () {
+      signUp () {
         if (this.enableSwitch == true) {
           alert("이메일 중복 확인을 해 주세요.")
+          } else if (this.$route.params.data && this.langSelect.length > 0 && this.positionSelect.length > 0 && this.valid) {
+            for (var i=0; i < this.langSelect.length; i++) {
+              if (this.langSelect[i] == "C++") {
+                this.langSelect[i] = 'Cpp'
+              } else if (this.langSelect[i] == 'C#') {
+                this.langSelect[i] = 'Csharp'
+              }
+            }
+            let Stacks = this.langSelect.join()
+            let wishPositions = this.positionSelect.join()
+            let data = {
+              email: this.id,
+              name: this.name,
+              password: this.password,
+              techStack: Stacks,
+              wishHope: this.firm,
+              wishJob: wishPositions
+            }
+            baseURL.post('user/kakao_signup', data)
+              .then(() => {
+                this.$router.push({
+                  name: "/",
+                });
+              })
+              .catch(() => {
+                alert("잘못된 시도입니다.")
+              })
+          
         } else if (this.id && this.name && this.password && this.passwordConfirm && this.langSelect && this.positionSelect && this.valid) {
             for (var j=0; j < this.langSelect.length; j++) {
               if (this.langSelect[j] == "C++") {
@@ -247,34 +275,6 @@ export default {
                 alert("잘못된 시도입니다.")
                 this.reset()
               })
-        } else if (this.$route.params.data && this.langSelect && this.positionSelect && this.valid) {
-          for (var i=0; i < this.langSelect.length; i++) {
-            if (this.langSelect[i] == "C++") {
-              this.langSelect[i] = 'Cpp'
-            } else if (this.langSelect[i] == 'C#') {
-              this.langSelect[i] = 'Csharp'
-            }
-          }
-          let Stacks = this.langSelect.join()
-          let wishPositions = this.positionSelect.join()
-          let data = {
-            email: this.id,
-            name: this.name,
-            password: this.password,
-            techStack: Stacks,
-            wishHope: this.firm,
-            wishJob: wishPositions
-          }
-          baseURL.post('user/kakao_signup', data)
-            .then(() => {
-              this.$router.push({
-                name: "/",
-              });
-            })
-            .catch(() => {
-              alert("잘못된 시도입니다.")
-            })
-
         }
       },
       emailCheck() {
@@ -287,8 +287,10 @@ export default {
             else {
               alert("이미 등록된 이메일입니다.")
               this.id = '';
-
             }
+          })
+          .catch(() => {
+            alert("비정상적인 접근입니다.")
           })
       },
       

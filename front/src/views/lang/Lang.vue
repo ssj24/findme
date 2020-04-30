@@ -63,7 +63,7 @@
               <span class="reviewCnt">
                 {{review.sympCnt}}
               </span>
-              <span v-if="review.user.id != cookieId">
+              <span>
                 <v-icon 
                   @click="symComment(review)"
                   :class="{upup: review.user.checkSymp}"
@@ -77,18 +77,18 @@
                   mdi-thumb-down-outline
                 </v-icon>
               </span>
-              <span v-else>
+              
+              <span class="reviewCnt">
+                {{review.unsympCnt}}
+              </span>
+              <span v-if="review.user.id == cookieId">
                 <v-btn color="#e0cc18" small text @click="updateComment(review, index)">
                   수정
                 </v-btn>
                 <v-btn color="#a50404" small text @click="deleteComment(review.id)">
                   삭제
                 </v-btn>
-              </span>
-              <span class="reviewCnt">
-                {{review.unsympCnt}}
-              </span>
-
+              </span>   
               <span class="username">
             {{review.name}}
             ({{review.trans_updatedAt}})
@@ -365,37 +365,46 @@ export default {
       })
     },
     symComment(v) {
-      if (!v.user.checkUnsymp) {
-        if (v.user.checkSymp) {
-          baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
-            .then(() => {
-              this.getReviews()
-            })
-        } else {
-          baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
-            .then(() => {
-              this.getReviews()
-            })
-        }
+      if (v.user.id == this.cookieId) {
+        alert("본인의 댓글은 공감 및 비공감할 수 없습니다.")
       } else {
-        alert("리뷰에 공감하신다면 비공감을 해제하고 다시 클릭해주세요.")
+        if (!v.user.checkUnsymp) {
+          if (v.user.checkSymp) {
+            baseURL.delete('review/symp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+              .then(() => {
+                this.getReviews()
+              })
+          } else {
+            baseURL.post('review/symp/save/'+v.id+'?user_id='+cookie.cookieUser())
+              .then(() => {
+                this.getReviews()
+              })
+          }
+        } else {
+          alert("리뷰에 공감하신다면 비공감을 해제하고 다시 클릭해주세요.")
+        }
       }
+      
     },
     UnsymComment(v) {
-      if (!v.user.checkSymp) {
-        if (v.user.checkUnsymp) {
-          baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
-            .then(() => {
-              this.getReviews()
-            })
-        } else {
-          baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
-            .then(() => {
-              this.getReviews()
-            })
-        }
+      if (v.user.id == this.cookieId) {
+        alert("본인의 댓글은 공감 및 비공감할 수 없습니다.")
       } else {
-        alert("리뷰에 비공감하신다면 공감을 해제하고 다시 클릭해주세요.")
+        if (!v.user.checkSymp) {
+          if (v.user.checkUnsymp) {
+            baseURL.delete('review/unsymp/delete?review_id='+v.id+'&user_id='+cookie.cookieUser())
+              .then(() => {
+                this.getReviews()
+              })
+          } else {
+            baseURL.post('review/unsymp/save/'+v.id+'?user_id='+cookie.cookieUser())
+              .then(() => {
+                this.getReviews()
+              })
+          }
+        } else {
+          alert("리뷰에 비공감하신다면 공감을 해제하고 다시 클릭해주세요.")
+        }
       }
     },
     getTextMiningData() {

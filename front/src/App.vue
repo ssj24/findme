@@ -113,7 +113,6 @@ export default {
 		background-size: auto auto;
 		background-clip: border-box;
 		background-size: 200% auto;
-		color: #fff;
 		background-clip: text;
 		text-fill-color: transparent;
 		-webkit-background-clip: text;
