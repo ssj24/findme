@@ -38,18 +38,18 @@ public class RecruitController {
 		try {
 //			System.out.println(userId);
 			List<RecruitDTO> matchRecruitList = recruitService.getMatchRecruit(userId);
-//			System.out.println("matchRecruitList");
-//			System.out.println(matchRecruitList);
-//			System.out.println("---------------------------------------------------------");
+			System.out.println("matchRecruitList");
+			System.out.println(matchRecruitList);
+			System.out.println("---------------------------------------------------------");
 			List<RecruitDTO> pickRecruitList = recruitService.getPickRecruit(userId);
-//			System.out.println("pickRecruitList");
-//			System.out.println(pickRecruitList);
-//			System.out.println("---------------------------------------------------------");
+			System.out.println("pickRecruitList");
+			System.out.println(pickRecruitList);
+			System.out.println("---------------------------------------------------------");
 			List<RecruitDTO> recommendRecruitList = new ArrayList<>();
 			List<String> recommendLanguageList = recruitService.getRecommendLanguage(userId, matchRecruitList);
-//			System.out.println("recommendLanguageList");
-//			System.out.println(recommendLanguageList);
-//			System.out.println("---------------------------------------------------------");
+			System.out.println("recommendLanguageList");
+			System.out.println(recommendLanguageList);
+			System.out.println("---------------------------------------------------------");
 
 			if (pickRecruitList.isEmpty() || pickRecruitList.size() == 0 || pickRecruitList == null) {
 				recommendRecruitList = matchRecruitList.subList(6, 59);

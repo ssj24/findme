@@ -239,4 +239,4 @@ def main(max_id):
     conn.close()
 
 if __name__ == "__main__":
-    main(37845311)
+    main(sys.argv[1])
