@@ -283,6 +283,7 @@ const gradients = [
       if (this.$route.query.code) {
         baseURL('user/kakao_oauth?code='+this.$route.query.code)
           .then(res => {
+            console.log(res.data.log)
             if (res.data.log == "회원가입이 필요합니다.") {
               alert("처음 카카오 로그인을 하셨습니다. " + res.data.info.name + "님, 회원가입을 해 주세요.")
               this.$router.push({

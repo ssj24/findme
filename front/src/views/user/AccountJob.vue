@@ -78,9 +78,6 @@
                     </v-layout>
                   </template>
                   </v-data-table>
-                  <v-card-text>
-                    {{friendsList}}
-                  </v-card-text>
 
                   <v-divider></v-divider>
 
@@ -168,20 +165,29 @@ export default {
       var targetTable = document.querySelector('.v-data-table .v-data-table__wrapper table tbody')
       targetTable.insertRow(targetTable.rows.length).innerHTML="hi";
 
+    },
+    pickList() {
+      baseURL('pick/findAll/'+cookie.cookieUser())
+        .then(res => {
+          this.pickList = res.data
+          for (var i=0; i < this.pickList.length; i++) {
+            for (var j=0; j < this.items.length; j++) {
+              if (this.pickList[i].recruitId.id == this.items[j].id) {
+                this.items[j].picked = true;
+              }
+            }
+          }
+      })
+    },
+    pick(card) {
+      if (card.picked) {
+        baseURL.delete()
+      }
+      
     }
   },
   mounted() {
-    baseURL('pick/findAll/'+cookie.cookieUser())
-      .then(res => {
-        this.pickList = res.data
-        for (var i=0; i < this.pickList.length; i++) {
-          for (var j=0; j < this.items.length; j++) {
-            if (this.pickList[i].recruitId.id == this.items[j].id) {
-              this.items[j].picked = true;
-            }
-          }
-        }
-      })
+    thsi.pickList()
     this.getFriends()
   },
   
