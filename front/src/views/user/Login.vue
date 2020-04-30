@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="signup"> -->
   <v-container fill-height class="justify-center">
     <svg id="stroke" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
       <defs>
@@ -39,39 +38,6 @@
                 </svg>
               </button>
             </span>
-            <!-- <span class="frame">
-              <button class="BTN mr-2" @click="submit">
-                <span>로그인</span>
-                <svg>
-                  <polyline class="o1" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
-                  <polyline class="o2" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
-                </svg>
-              </button>
-              <button class="BTN" @click="kakaologin">
-                <span>카카오</span>
-                <svg>
-                  <polyline class="o1" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
-                  <polyline class="o2" points="0 0, 120 0, 120 55, 0 55, 0 0"></polyline>
-                </svg>
-              </button>
-            </span>-->
-            <!-- <v-btn
-                outlined
-                color="rgb(14, 22, 112)"
-                class="mr-2 text-center"
-                @click="submit"
-              >
-                로그인
-              </v-btn>
-              <v-btn
-                outlined
-                color="rgb(14, 22, 112)"
-                class="mr-2 text-center"
-                @click="kakaologin"
-              >
-              카카오
-              </v-btn>-->
-
           </v-layout>
           <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-slot:activator="{ on }">
@@ -108,7 +74,6 @@
       </v-col>
     </v-row>
   </v-container>
-  <!-- </div> -->
 </template>
 <script>
   import baseURL from "@/base-url.js";
@@ -174,8 +139,8 @@
       },
       sendPassword() {
         baseURL.put('user/sendpassword?email=' + this.email)
-          .then(res => {
-            console.log(res)
+          .then(() => {
+            alert("입력하신 이메일 주소로 임시 비밀번호를 전송했습니다.")
           })
       }
     },

@@ -18,15 +18,9 @@
                 <v-card-subtitle
                   class="white--text font-weight-black text-right mb-n6"
                 >{{ card.company }}</v-card-subtitle>
-                <!-- <span class="d-flex justify-end">
-                <v-card-subtitle
-                  v-for="stack in card.stacks"
-                  :key="stack"
-                  class="white--text font-weight-medium d-inline-block mb-n6 pl-1"
-                >{{ stack }}</v-card-subtitle>
-              </span> -->
-              <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
-            </v-img>
+                <v-card-subtitle class="white--text font-weight-medium text-right">~{{ card.date }}</v-card-subtitle>
+              </v-img>
+            </a>
             <v-card-actions>
               <v-spacer></v-spacer>
               <span v-if="card">{{card.id}}</span>
@@ -44,52 +38,52 @@
               
             </v-card-actions>
           </v-card>
-          </a>
         </v-flex>
-              <v-dialog
-                v-model="shareDialog"
-                width="500"
-              >
-                <v-card>
-                  <v-card-title
-                    class="indigo darken-3"
-                    primary-title
-                  >
-                    카카오톡으로 공유하기
-                  </v-card-title>
-                  <v-data-table
-                    hide-default-header
-                    hide-default-footer
-                    :headers="headers"
-                    :items="friendsList"
-                    :items-per-page="5"
-                    class="elevation-1 ma-4"
-                  >
-                  <template v-slot:item.profile_nickname="{item}">
-                    <v-layout justify-center>
-                      <button class="btn-flip ml-n12" :data-front="item.profile_nickname" data-back="보내기" @click="shareFriend(Data.id, item)">
-                      </button>
-                    </v-layout>
-                  </template>
-                  <template v-slot:item.profile_thumbnail_image="{item}">
-                    <v-layout justify-center>
-                      <div class="pa-2 photo mr-n12">
-                        <v-img :src="item.profile_thumbnail_image" width="100px"></v-img>
-                        <div class="glow-wrap">
-                          <i class="glow"></i>
-                        </div>
-                      </v-layout>
-                    </template>
-                  </v-data-table>
+        <v-dialog
+          v-model="shareDialog"
+          width="500"
+        >
+          <v-card>
+            <v-card-title
+              class="indigo darken-3"
+              primary-title
+            >
+              카카오톡으로 공유하기
+            </v-card-title>
+            <v-data-table
+              hide-default-header
+              hide-default-footer
+              :headers="headers"
+              :items="friendsList"
+              :items-per-page="5"
+              class="elevation-1 ma-4"
+            >
+            <template v-slot:item.profile_nickname="{item}">
+              <v-layout justify-center>
+                <button class="btn-flip ml-n12" :data-front="item.profile_nickname" data-back="보내기" @click="shareFriend(Data.id, item)">
+                </button>
+              </v-layout>
+            </template>
+            <template v-slot:item.profile_thumbnail_image="{item}">
+              <v-layout justify-center>
+                <div class="pa-2 photo mr-n12">
+                  <v-img :src="item.profile_thumbnail_image" width="100px"></v-img>
+                  <div class="glow-wrap">
+                    <i class="glow"></i>
+                  </div>
+                </div>
+                </v-layout>
+              </template>
+            </v-data-table>
 
-                  <v-divider></v-divider>
+            <v-divider></v-divider>
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="indigo darken-3" text @click="shareDialog = false">I 닫기 I</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="indigo darken-3" text @click="shareDialog = false">I 닫기 I</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </div>
@@ -180,16 +174,8 @@ export default {
             icon.classList.add('picked')
             card.picked = !card.picked;
           })
-
       }
-      
     },
-    changeColor(pickValue) {
-      if(pickValue) {
-        return "red"
-      } else
-        return "black"
-    }
   },
   mounted() {
     if (cookie.accessToken() != 'undefined') {
@@ -198,7 +184,6 @@ export default {
     this.getPickList()
     this.getFriends()
   },
-  
 };
 </script>
 
