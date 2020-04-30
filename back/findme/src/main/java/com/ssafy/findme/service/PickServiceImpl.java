@@ -30,9 +30,9 @@ public class PickServiceImpl implements IPickService {
 	@Override
 	public void savePick(Long user_id, Long recruit_id) {
 		Pick pick = new Pick();
-		User user = accountrepo.findById(user_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+		User user = accountrepo.findById(user_id).get();
 		pick.setUser(user);
-		Recruit recruit = recruitrepo.findById(recruit_id).orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+		Recruit recruit = recruitrepo.findById(recruit_id).get();
 		pick.setRecruit(recruit);
 		pickrepo.save(pick);
 	}
@@ -44,12 +44,15 @@ public class PickServiceImpl implements IPickService {
 	}
 
 	@Override
-	public void deletePick(Long id) {
+	public void deletePick(Long user_id, Long recruit_id) {
+		Pick pick = pickrepo.findByUserIdAndRecruitId(user_id, recruit_id);
 		try {
-			pickrepo.delete(pickrepo.findById(id).get());
+			if(pick != null)
+				pickrepo.delete(pick);
+			else
+				System.out.println("찜 해제 실패");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

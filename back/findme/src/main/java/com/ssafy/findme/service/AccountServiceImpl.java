@@ -32,7 +32,8 @@ public class AccountServiceImpl implements IAccountService {
 	@Autowired
 	private EntityMapper entityMapper;
 
-	private String IP = "http://localhost:8081";
+//	private String IP = "http://localhost:8081";
+	private String IP = "https://i02b204.p.ssafy.io/api";
 
 	@Override
 	public boolean emailDuplicateCheck(String email) {
@@ -56,9 +57,8 @@ public class AccountServiceImpl implements IAccountService {
 	public UserDTO signUp(UserDTO user) {
 		User member = modelMapper.map(user, User.class);
 		UserDTO memberDTO = modelMapper.map(accountrepo.save(member), UserDTO.class);
-		System.out.println(memberDTO.getAuthKey());
-		System.out.println(memberDTO.getEmail());
-		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+//		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/similarAnalysis.py " + memberDTO.getId() + "");
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/similarAnalysis.py " + memberDTO.getId() + "");
 		return memberDTO;
 	}
 

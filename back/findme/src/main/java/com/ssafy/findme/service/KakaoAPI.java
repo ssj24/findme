@@ -93,7 +93,7 @@ public class KakaoAPI implements IKakaoAPI {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
-			
+
 			// 요청에 필요한 Header에 포함될 내용
 			conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
@@ -239,7 +239,8 @@ public class KakaoAPI implements IKakaoAPI {
 
 	@Override
 	public void sendToMe(String access_Token, Long recruit_id) {
-		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+//		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
 	}
 
 	@Override
@@ -262,8 +263,10 @@ public class KakaoAPI implements IKakaoAPI {
 
 		}
 		System.out.println(tmp);
+//		CommandLineExecutor
+//				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 		CommandLineExecutor
-				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
+		.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
 	}
 
 	@Override

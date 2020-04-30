@@ -124,7 +124,6 @@ public class AccountController {
 	@GetMapping("/user/key_alter")
 	@ApiOperation(value = "이메일 인증하기")
 	public void authentication(@RequestParam("email") String email, @RequestParam("key") String key) {
-		System.out.println("sibal");
 		accountservice.alterUserKey(email, key);
 	}
 
@@ -196,7 +195,7 @@ public class AccountController {
 			System.out.println(user.getEmail());
 			System.out.println(user.getPassword());
 			// db에 이메일이 없으면 singup
-//			res.setHeader("jwt-auth-token", access_Token);
+//            res.setHeader("jwt-auth-token", access_Token);
 
 			if (accountservice.emailDuplicateCheck(email)) {
 				user = accountservice.info(email);

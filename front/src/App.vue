@@ -67,7 +67,6 @@ export default {
         { title: "User", path: "/account", icon: "mdi-face", forIf: true },
         { title: "SignIn", path: "/signmerge", icon: "mdi-lock-open-outline", forIf: false },
         { title: "SignOut", path: "/signmerge", icon: "mdi-lock-outline", forIf: true },
-      
       ]
     }
   },
