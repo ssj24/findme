@@ -46,7 +46,7 @@
               <div style="color: #000;">~{{ slide.date }}</div>
             </v-col>
             <v-col cols="12">
-              <div style="color: #000;"><a :href="slide.page" style="color: #000;">>>>채용공고 보러가기</a></div>
+              <div style="color: #000;"><a :href="slide.page" style="color: #000;">>>> 채용공고 보러가기</a></div>
             </v-col>
           </v-row>
         </v-sheet>
@@ -60,10 +60,10 @@
       style="height: 200px;"
     >
       <router-link 
-        :to="{name:'Lang', params:{langId:i}}"
+        :to="{name:'Lang', params:{langId:i, langImg: lang.bgs}}"
         >
         <div
-          :style="'background:'+lang.bgs"
+          :style="'background: url('+lang.bgs+')'"
           class="toLang"
         >
           <div class="dimmer"></div>
@@ -159,131 +159,129 @@ const gradients = [
             seq: 1,
             title: 'Java',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png",
           },
           {
             seq: 2,
             title: 'C',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png",
           },
           {
             seq: 3,
             title: 'Python',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png",
           },
           {
             seq: 4,
             title: 'C++',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png",
           },
           {
             seq: 5,
             title: 'C#',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png",
           },
           {
             seq: 6,
             title: 'VB.NET',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png",
           },
           {
             seq: 7,
             title: 'JavaScript',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png",
           },
           {
             seq: 8,
             title: 'PHP',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png",
           },
           {
             seq: 9,
             title: 'SQL',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png",
           },
           {
             seq: 10,
             title: 'Go',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png",
           },
           {
             seq: 11,
             title: 'R',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png",
           },
           {
             seq: 12,
             title: 'Assembly',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png",
           },
           {
             seq: 13,
             title: 'Swift',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png",
           },
           {
             seq: 14,
             title: 'Ruby',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png",
           },
           {
             seq: 15,
             title: 'MATLAB',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png",
           },
           {
             seq: 16,
             title: 'PL/SQL',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png",
           },
           {
             seq: 17,
             title: 'Perl',
             color: '#f72047',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png",
           },
           {
             seq: 18,
             title: 'Visual Basic',
             color: '#999999',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png",
           },
           {
             seq: 19,
             title: 'Objective-C',
             color: '#ffd200',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png",
           },
           {
             seq: 20,
             title: 'Delphi',
             color: '#0000ff',
-            bgs: 'url("https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png")',
+            bgs: "https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png",
           },
         ]
       }
     },
     mounted() {
-      console.log(cookie.accessToken())
       this.userId = cookie.cookieUser()
       if (this.$route.query.code) {
         baseURL('user/kakao_oauth?code='+this.$route.query.code)
           .then(res => {
-            console.log(res.data.log)
             if (res.data.log == "회원가입이 필요합니다.") {
               alert("처음 카카오 로그인을 하셨습니다. " + res.data.info.name + "님, 회원가입을 해 주세요.")
               this.$router.push({
@@ -307,12 +305,9 @@ const gradients = [
               this.$store.commit('isLogin')
               cookie.cookieCreate(loginData)
               this.$router.push('/')
-              
-
             }
           })
       }
-      
     },
     methods: {
       

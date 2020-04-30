@@ -26,8 +26,8 @@
             :colors="colors"
             :coloring="coloring"
             />
-          <v-img v-else class="text-center pa-auto"
-          src="https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png" width="500" height="500">
+          <v-img v-else class="text-center mx-auto"
+            :src="backImg" width="500" height="500">
           <v-card-text >통계치가 부족합니다</v-card-text>
           </v-img>
         </v-card>
@@ -170,6 +170,7 @@ export default {
     return {
       cookieId: 0,
       langSeq: 1,
+      backImg: '',
       langName: '',
       chk: false,
       langs: [
@@ -275,6 +276,7 @@ export default {
   },
   mounted() {
     this.langSeq = this.$route.params.langId;
+    this.backImg = this.$route.params.langImg;
     this.langName = this.langs[this.langSeq].title;
     this.cookieId = cookie.cookieUser();
     let language_id = Number(this.langSeq) + 1
