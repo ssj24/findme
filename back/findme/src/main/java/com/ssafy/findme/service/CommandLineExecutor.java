@@ -28,7 +28,7 @@ public class CommandLineExecutor {
 		System.out.println("End scheduleTest");
 	}
 
-	@Scheduled(cron = "0 02 12 * * *") // 매주 금요일 오전4시 수행
+	@Scheduled(cron = "0 2 12 * * *") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
 		System.out.println("시발 제발 좀 돼라");
