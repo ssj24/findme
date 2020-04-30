@@ -137,7 +137,7 @@ public class UserController {
 
 	@PostMapping("/user/{user_id}/{recruit_id}/kakao_sendToFriends")
 	@ApiOperation(value = "카카오 메세지 친구에게 보내기")
-	public ResponseEntity<Map<String, Object>> sendToFriend(@PathVariable Long user_id, @PathVariable Long recruit_id,
+	public ResponseEntity<Map<String, Object>> sendToFriend(@PathVariable Long user_id, @PathVariable String recruit_id,
 			@RequestParam String tmp, @RequestBody FriendDTO friends, HttpServletRequest req) throws IOException {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;

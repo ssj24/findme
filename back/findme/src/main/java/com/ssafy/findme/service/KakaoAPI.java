@@ -67,9 +67,11 @@ public class KakaoAPI implements IKakaoAPI {
 			// Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(result);
-
+			System.out.println("laskdjfl;askjdf;klasdjfkl;");
 			access_Token = element.getAsJsonObject().get("access_token").getAsString();
+			System.out.println("sibal");
 			refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+			System.out.println("jiral");
 
 			System.out.println("access_token : " + access_Token);
 			System.out.println("refresh_token : " + refresh_Token);
@@ -184,7 +186,6 @@ public class KakaoAPI implements IKakaoAPI {
 	@Override
 	// 친구목록받기
 	public List<FriendDTO> friends(String access_Token) {
-		System.out.println("여기 오나");
 		String reqURL = "https://kapi.kakao.com/v1/api/talk/friends";
 		List<FriendDTO> list = new ArrayList<FriendDTO>();
 		try {
@@ -245,7 +246,10 @@ public class KakaoAPI implements IKakaoAPI {
 	}
 
 	@Override
-	public void sendToFriends(String access_Token, Long recruit_id, List<String> list) {
+	public void sendToFriends(String access_Token, String recruit_id, List<String> list) {
+//		long tmp1 = 0L;
+//		tmp1 = Long.parseLong(recruit_id);
+		System.out.println("여기오나요");
 		int num = list.size();
 		String tmp = "";
 		switch (num) {

@@ -115,7 +115,7 @@ export default {
     ],
     friendsList: [],
     kakaoChk: false,
-    pickColor: "black",
+    pickColor: "black"
   }),
   props: {
     cards: Array
@@ -131,11 +131,21 @@ export default {
           cookie.cookieUser() +
           "/kakaofriends?tmp=" +
           cookie.accessToken()
-      ).then(res => {
-        this.friendsList = res.data.info;
-      });
+      )
+        .then(res => {
+          console.log("kakaofriedns");
+          console.log(res);
+          this.friendsList = res.data.info;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     shareFriend(card, v) {
+      console.log("card");
+      console.log(card);
+      console.log("v");
+      console.log(v);
       let data = {
         uuids: [v.uuid]
       }
@@ -143,7 +153,9 @@ export default {
         .then(()=>{
           alert(v.profile_nickname+'님에게 공유하셨습니다.')
         })
-
+        .catch(err => {
+          console.log(err);
+        });
     },
     getPickList() {
       baseURL('pick/findAll/'+cookie.cookieUser())
@@ -160,7 +172,13 @@ export default {
     },
     pick(card) {
       if (card.picked) {
-        baseURL.delete('pick/delete?user_id='+cookie.cookieUser()+'&recruit_id='+card.id)
+        baseURL
+          .delete(
+            "pick/delete?user_id=" +
+              cookie.cookieUser() +
+              "&recruit_id=" +
+              card.id
+          )
           .then(() => {
             var icon = document.querySelector('.card'+card.id)
             icon.classList.remove('picked')
@@ -168,7 +186,8 @@ export default {
           })
         
       } else {
-        baseURL.post('pick/save/'+cookie.cookieUser()+'?recruit_id='+card.id)
+        baseURL
+          .post("pick/save/" + cookie.cookieUser() + "?recruit_id=" + card.id)
           .then(() => {
             var icon = document.querySelector('.card'+card.id)
             icon.classList.add('picked')
@@ -178,8 +197,8 @@ export default {
     },
   },
   mounted() {
-    if (cookie.accessToken() != 'undefined') {
-      this.kakaoChk = true
+    if (cookie.accessToken() != "undefined") {
+      this.kakaoChk = true;
     }
     this.getPickList()
     this.getFriends()
