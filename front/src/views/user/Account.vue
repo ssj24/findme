@@ -59,32 +59,44 @@
             @click="clicked"
           >{{company}}</p>
         </div>
+        <p class="accountTitle" @click="recChk = !recChk">
+          <span v-if="recChk">찜한 공고</span>
+          <span v-else>맞춤 공고</span>
+        </p>
+        <hr class="hr-divider" />
       </v-list>
     </v-navigation-drawer>
+    <span v-if="recChk">
+      <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined v-if="!loading">
+        <v-card-title>맞춤 공고</v-card-title>
+        <account-job name="AccountJob" :cards="matchCards"></account-job>
+      </v-card>
 
-    <v-card width="100%" style="margin-left: 110px;" class="mt-2" outlined v-if="!loading">
-      <v-card-title>맞춤 공고</v-card-title>
-      <account-job name="AccountJob" :cards="matchCards"></account-job>
-    </v-card>
+      <v-card width="100%" style="margin-left: 110px;" class="my-3" outlined v-if="!loading">
+        <v-card-title>이런 공고는 어떠세요?</v-card-title>
+        <account-job name="AccountJob" :cards="recommendCards"></account-job>
+      </v-card>
 
-    <v-card width="100%" style="margin-left: 110px;" class="my-3" outlined v-if="!loading">
-      <v-card-title>이런 공고는 어떠세요?</v-card-title>
-      <account-job name="AccountJob" :cards="recommendCards"></account-job>
-    </v-card>
-
-    <v-card width="100%" height="400" style="margin-left: 110px;" outlined v-if="!loading">
-      <v-flex v-if="slides.length > 0">
-        <v-card-title>
-          <span class="font-weight-bold">{{name}}</span> 님께 이런 기술스택을 추천합니다!
-        </v-card-title>
-        <account-stack name="AccountStack" :slides="slides"></account-stack>
-      </v-flex>
-      <v-flex v-if="slides.length == 0">
-        <v-card-title>
-          <span class="font-weight-bold">{{name}}</span> 님은 희망 직무에 필요한 기술스택을 모두 가지고 계시네요!!!
-        </v-card-title>
-      </v-flex>
-    </v-card>
+      <v-card width="100%" height="400" style="margin-left: 110px;" outlined v-if="!loading">
+        <v-flex v-if="slides.length > 0">
+          <v-card-title>
+            <span class="font-weight-bold">{{name}}</span> 님께 이런 기술스택을 추천합니다!
+          </v-card-title>
+          <account-stack name="AccountStack" :slides="slides"></account-stack>
+        </v-flex>
+        <v-flex v-if="slides.length == 0">
+          <v-card-title>
+            <span class="font-weight-bold">{{name}}</span> 님은 희망 직무에 필요한 기술스택을 모두 가지고 계시네요!!!
+          </v-card-title>
+        </v-flex>
+      </v-card>
+    </span>
+    <span v-else>
+      <v-card style="width: 100vw; margin-left: 110px;" class="mt-2" outlined v-if="!loading">
+        <v-card-title>내가 찜한 공고</v-card-title>
+        <account-rec></account-rec>
+      </v-card>
+    </span>
     <v-dialog v-model="loading" fullscreen>
       <v-container fluid fill-height style="background-color: rgba(255, 255, 255, 0.5);">
         <v-layout justify-center align-center>
@@ -100,11 +112,13 @@ import cookie from "@/cookie.js";
 import baseURL from "@/base-url.js";
 import AccountJob from "@/views/user/AccountJob.vue";
 import AccountStack from "@/views/user/AccountStack.vue";
+import AccountRec from "@/views/user/AccountRec.vue";
 
 export default {
   components: {
     AccountJob,
-    AccountStack
+    AccountStack,
+    AccountRec
   },
   mounted() {
     this.id = cookie.cookieUser();
@@ -266,6 +280,7 @@ export default {
           "https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png"
       }
     ],
+    recChk: true
   }),
   methods: {
     clicked() {},
@@ -287,7 +302,7 @@ export default {
     getDate(unixTimeStamp) {
       var date = "";
 
-      if (unixTimeStamp != "1988118000") {
+      if (unixTimeStamp != "1988118000" && unixTimeStamp != "2019567600") {
         var dueDate = new Date(unixTimeStamp * 1000);
         var year = dueDate.getFullYear();
         var month =
@@ -336,6 +351,11 @@ export default {
           let recommendRecruits = res.data.recommendRecruitList.slice(0, 6);
           var matchCard = {};
           var recommendCard = {};
+          let pickRecruits = res.data.pickRecruitList.slice(
+            0,
+            res.data.pickRecruitList.length
+          );
+          console.log(pickRecruits);
 
           for (let i = 0; i < matchRecruits.length; i++) {
             var stack = matchRecruits[i].techStack.split(",").slice(0, 3);
@@ -354,25 +374,46 @@ export default {
             }
 
             var date = this.getDate(matchRecruits[i].dueDate);
+            var isPick = false;
+
+            for (let j = 0; j < pickRecruits.length; j++) {
+              if (pickRecruits[j].id == matchRecruits[i].id) {
+                isPick = true;
+                break;
+              }
+            }
 
             matchCard = {
+              id: matchRecruits[i].id,
               company: matchRecruits[i].compName,
               position: matchRecruits[i].title,
               stacks: stack,
               url: matchRecruits[i].url,
               imgUrl: matchRecruits[i].imgUrl,
-              date: date
+              date: date,
+              isPick: isPick
             };
 
             date = this.getDate(recommendRecruits[i].dueDate);
 
+            isPick = false;
+
+            for (let j = 0; j < pickRecruits.length; j++) {
+              if (pickRecruits[j].id == recommendRecruits[i].id) {
+                isPick = true;
+                break;
+              }
+            }
+
             recommendCard = {
+              id: recommendRecruits[i].id,
               company: recommendRecruits[i].compName,
               position: recommendRecruits[i].title,
               stacks: stack_rcm,
               url: recommendRecruits[i].url,
               imgUrl: recommendRecruits[i].imgUrl,
-              date: date
+              date: date,
+              isPick: isPick
             };
 
             this.matchCards.push(matchCard);
@@ -386,20 +427,21 @@ export default {
               if (langDataList[i] == this.langs[j].title) {
                 this.slides.push({
                   title: langDataList[i],
-                  bgs: this.langs[j].bgs
+                  bgs: this.langs[j].bgs,
+                  id: this.langs[j].seq - 1
                 });
               }
             }
           }
-          // console.log(this.matchCards);
-          // console.log(this.recommendCards);
+          console.log(this.matchCards);
+          console.log(this.recommendCards);
           // console.log(this.slides);
         })
         .catch(err => {
           this.loading = false;
           console.log(err);
         });
-    },
+    }
   },
   computed: {
     cols() {
@@ -443,5 +485,4 @@ export default {
   border: none;
   border-top: dashed 1px white;
 }
-
 </style>

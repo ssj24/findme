@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
@@ -22,9 +23,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ssafy.findme.dto.FriendDTO;
+import com.ssafy.findme.repository.PickRepository;
 
 @Service
 public class KakaoAPI implements IKakaoAPI {
+
+	@Autowired
+	private PickRepository pickRepo;
 
 	@Override
 	public String getAccessToken(String authorize_code) {
@@ -45,7 +50,8 @@ public class KakaoAPI implements IKakaoAPI {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=df3683c5354024c47b509ecad955f714");
-			sb.append("&redirect_uri=http://localhost:8081");
+//			sb.append("&redirect_uri=http://localhost:8081");
+			sb.append("&redirect_uri=https://i02b204.p.ssafy.io");
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();
@@ -69,9 +75,7 @@ public class KakaoAPI implements IKakaoAPI {
 			JsonElement element = parser.parse(result);
 			System.out.println("laskdjfl;askjdf;klasdjfkl;");
 			access_Token = element.getAsJsonObject().get("access_token").getAsString();
-			System.out.println("sibal");
 			refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-			System.out.println("jiral");
 
 			System.out.println("access_token : " + access_Token);
 			System.out.println("refresh_token : " + refresh_Token);
@@ -241,15 +245,13 @@ public class KakaoAPI implements IKakaoAPI {
 
 	@Override
 	public void sendToMe(String access_Token, Long recruit_id) {
-		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
-//		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+//		CommandLineExecutor.execute("python src/main/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
+		CommandLineExecutor
+				.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToMe.py " + access_Token + " " + recruit_id);
 	}
 
 	@Override
 	public void sendToFriends(String access_Token, String recruit_id, List<String> list) {
-//		long tmp1 = 0L;
-//		tmp1 = Long.parseLong(recruit_id);
-		System.out.println("여기오나요");
 		int num = list.size();
 		String tmp = "";
 		switch (num) {
@@ -267,11 +269,24 @@ public class KakaoAPI implements IKakaoAPI {
 			break;
 
 		}
-		System.out.println(tmp);
-		CommandLineExecutor
-				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
+		System.out.println("recruit_id: " + recruit_id);
+		System.out.println("access_Token: " + access_Token);
+		System.out.println("friends_token: " + tmp);
+
+		String pythonPath = "";
+		String filePath = "";
+		String str = "";
+
+		if (System.getProperty("os.name").indexOf("Windows") > -1) {
+			str = "python src/main/python/kakaoSendToFriends.py";
+		} else {
+			str = "/usr/bin/python3 /home/ubuntu/python/kakaoSendToFriends.py";
+		}
 //		CommandLineExecutor
-//		.execute("/usr/bin/python3 /home/ubuntu/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
+//				.execute("python src/main/python/kakaoSendToFriends.py " + access_Token + " " + recruit_id + " " + tmp);
+		int pick_cnt = (int) (long) pickRepo.countByRecruitId(Long.parseLong(recruit_id));
+		System.out.println(pick_cnt);
+		CommandLineExecutor.execute(str + " " + access_Token + " " + recruit_id + " " + tmp + " " + pick_cnt);
 	}
 
 	@Override

@@ -109,9 +109,10 @@ def start(userId):
     USER = 'ssafy'
     PASSWORD = 'ssafy'
     DB = 'findme'
+    CHARSET = 'utf8'
 
     # MySQL Connection 연결
-    conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, db=DB)
+    conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, db=DB, charset=CHARSET)
 
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()
@@ -126,21 +127,33 @@ def start(userId):
     # 데이터 Fetch
     userRows = curs.fetchall()
     # 데이터 프레임 생성
-    myInfo = pd.DataFrame(userRows)
+    myInfo = pd.DataFrame(list(userRows))
     myInfo.columns = ['id', 'job_category', 'tech_stack']
 
     # 공고 데이터 수집
-    sql = "select id, comp_name, job_category, tech_stack from recruit where tech_stack REGEXP 'java|c|python|visual|basic|.NET|php|sql|go|r|assembly|swift|ruby|delphi' and tech_stack REGEXP %s and job_category REGEXP %s"
+    # sql = "select id, comp_name, job_category, tech_stack from recruit where tech_stack REGEXP 'java|c|python|visual|basic|.NET|php|sql|go|r|assembly|swift|ruby|delphi' and tech_stack REGEXP %s and job_category REGEXP %s"
+    sql = "select id, comp_name, job_category, tech_stack from recruit where id not in (select id from recruit where (title like '%경력%' and title not like '%신입%') or (title like '%sr.%' and title not like '%jr.%')) and id not in (select id from recruit where (title like '%과정%') or (title like '%교육%') or (title like '%과정%') or (title like '%대리%') or (title like '%과장%'))"
 
     # 내 기술 스택 문자열
     myTechStackStr = ""
     myTechStackList = myInfo['tech_stack'][0].split(',')
 
+    addedSQL = ""
+
     for i in range(0, len(myTechStackList)):
-        if i != len(myTechStackList) - 1:
-            myTechStackStr += myTechStackList[i] + "|"
+        tmpStr = myTechStackList[i].strip()
+
+        if tmpStr == 'JavaScript':
+            tmpStr = "자바스크립트"
+        if i == 0:
+            sql += " and (tech_stack like '%" + tmpStr + "%'"
+        elif i != len(myTechStackList) - 1:
+            sql += " or tech_stack like '%" + tmpStr + "%'"
+            myTechStackStr += myTechStackList[i].strip() + "|"
         else:
-            myTechStackStr += myTechStackList[i]
+            sql += " or tech_stack like '%" + tmpStr + "%'"
+            myTechStackStr += myTechStackList[i].strip()
+    sql += ")"
 
 
     # 내 희망 업무 문자열
@@ -148,20 +161,33 @@ def start(userId):
     myJobCateList = myInfo['job_category'][0].split(',')
 
     for i in range(0, len(myJobCateList)):
-        if i != len(myJobCateList) - 1:
+        if i == 0:
+            sql += " and (job_category like '%" + myJobCateList[i].strip() + "%'"
+        elif i != len(myJobCateList) - 1:
+            sql += " or job_category like '%" + myJobCateList[i].strip() + "%'"
             myJobCateStr += myJobCateList[i] + "|"
         else:
+            sql += " or job_category like '%" + myJobCateList[i].strip() + "%'"
             myJobCateStr += myJobCateList[i]
+            
+    sql += ")"
 
-    val = (myTechStackStr, myJobCateStr)
+    # val = (myTechStackStr, myJobCateStr)
+    # val = (myTechStackStr)
+    # print(val)
     #  and `number` not in (select `number` from tmp_findme.recruit where (title like '%경력%' and title not like '%신입%') or (title like '%sr.%' and title not like '%jr.%')) and job_category REGEXP '웹개발'
-    curs.execute(sql, val)
+    # curs.execute(sql, val)
+    # sql += addedSQL
+    # print(sql)
+    curs.execute(sql)
 
     # 데이터 Fetch
     recruitRows = curs.fetchall()
 
+    # print(recruitRows)
+
     # 데이터 프레임 생성
-    recruitInfo = pd.DataFrame(recruitRows)
+    recruitInfo = pd.DataFrame(list(recruitRows))
     recruitInfo.columns = ['id', 'comp_name', 'job_category', 'tech_stack']
 
     # 데이터 전처리

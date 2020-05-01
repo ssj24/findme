@@ -4,7 +4,7 @@ import requests
 import json
 import sys
 
-def main(access_token, recruit_id, receiver_uuids):
+def main(access_token, recruit_id, receiver_uuids, pick_cnt):
     print(receiver_uuids)
     uuids=receiver_uuids.split('*')
     
@@ -20,15 +20,17 @@ def main(access_token, recruit_id, receiver_uuids):
 
     curs.execute(sql)
     rows = curs.fetchall()
-    rows_data = pd.DataFrame(list(rows))
+    rows_data = pd.DataFrame(rows)
     
-    like_cnt=100
+    like_cnt=pick_cnt
     title = rows_data[8][0]
     image_url=rows_data[3][0]
     if(image_url == ''):
-        image_url="http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg"
+        image_url="https://user-images.githubusercontent.com/52478972/80742610-a03caa00-8b56-11ea-8cd7-4cbcffd061b2.jpg"
     description = rows_data[7][0]
     recruit_url=rows_data[9][0]
+
+    print(recruit_url)
     
     print(title)
     print(description)
@@ -40,8 +42,8 @@ def main(access_token, recruit_id, receiver_uuids):
             "title": title,
             "description": description,
             "image_url": image_url,
-            "image_width": 640,
-            "image_height": 640,
+            "image_width": '30',
+            "image_height": '30',
             "link": {
                 "web_url": recruit_url,
                 "mobile_web_url": recruit_url,
@@ -54,17 +56,10 @@ def main(access_token, recruit_id, receiver_uuids):
         },
         "buttons": [
             {
-                "title": "웹으로 이동",
+                "title": "보러가기",
                 "link": {
                     "web_url": recruit_url,
                     "mobile_web_url": recruit_url
-                }
-            },
-            {
-                "title": "앱으로 이동",
-                "link": {
-                    "android_execution_params": recruit_url,
-                    "ios_execution_params": recruit_url
                 }
             }
         ]
@@ -90,4 +85,4 @@ def main(access_token, recruit_id, receiver_uuids):
     print(response.json())
 
 if __name__ == "__main__":
-    main(sys.argv[1] , sys.argv[2] , sys.argv[3])
+    main(sys.argv[1] , sys.argv[2] , sys.argv[3], sys.argv[4])

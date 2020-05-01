@@ -27,7 +27,7 @@
             :coloring="coloring"
             />
           <v-img v-else class="text-center mx-auto"
-            :src="backImg" width="500" height="500">
+            :src="langs[langSeq].bgs" width="500" height="500">
           <v-card-text >통계치가 부족합니다</v-card-text>
           </v-img>
         </v-card>
@@ -173,88 +173,107 @@ export default {
       backImg: '',
       langName: '',
       chk: false,
-      langs: [
-          {
-            title: 'Java',
-            detail: '플랫폼에 독립적인 언어. 대중성. 높은 안정성'
-          },
-          {
-            title: 'C',
-            detail: '가장 많이 쓰이는 프로그래밍 언어. 지원 기능이 적음. 빠른 속도.'
-          },
-          {
-            title: 'Python',
-            detail: '배우기 쉬움. 풍부한 라이브러리. 생산성이 높음.'
-          },
-          {
-            title: 'C++',
-            detail: 'C언어에 객체 지향을 더하면 C++'
-          },
-          {
-            title: 'C#',
-            detail: '.NET 프레임워크에서 동작하는 프로그래밍 언어.'
-          },
-          {
-            title: 'VB.NET',
-            detail: 'Visual Basic .NET. 대소문자를 구분하지 않음. 여러줄 주석 불가'
-          },
-          {
-            title: 'JavaScript',
-            detail: '인터프리터 언어. 객체지향. 웹페이지의 동작을 담당.'
-          },
-          {
-            title: 'PHP',
-            detail: '동적으로 html 데이터를 생성. 서버측 스크립트 언어.'
-          },
-          {
-            title: 'SQL',
-            detail: '데이터베이스에 접근할 수 있는 데이터베이스 하부 언어'
-          },
-          {
-            title: 'Go',
-            detail: '멀티코어 지원. 프로그램 생상성 향상을 목적으로 구글에서 개발한 범용 프로그래밍 언어'
-          },
-          {
-            title: 'R',
-            detail: '통계 및 데이터 분석을 위한 프로그래밍 언어. 오픈 소스.'
-          },
-          {
-            title: 'Assembly',
-            detail: '기계어 작성의 불편함을 개선한 기호언어.'
-          },
-          {
-            title: 'Swift',
-            detail: '애플의 iOS와 macOS를 위한 프로그래밍 언어.'
-          },
-          {
-            title: 'Ruby',
-            detail: '인터프리터 방식. 객체 지향 스크립트 언어.'
-          },
-          {
-            title: 'MATLAB',
-            detail: '수치 해석 및 프로그래밍 환경을 제공하는 공학용 소프트웨어.'
-          },
-          {
-            title: 'PL/SQL',
-            detail: 'SQL 언어를 확장하기 위해 사용.'
-          },
-          {
-            title: 'Perl',
-            detail: '웹 서버 애플리케이션을 작성하는 프로그래밍 언어.'
-          },
-          {
-            title: 'Visual Basic',
-            detail: '윈도우용 응용 프로그램 개발 언어. 데이터베이스 프로그래밍 가능'
-          },
-          {
-            title: 'Objective-C',
-            detail: 'C언어에 스몰토크 스타일의 메시지 구문을 추가한 객체 지향 언어.'
-          },
-          {
-            title: 'Delphi',
-            detail: '오브젝트 파스칼 개선. 일반 응용 프로그램 개발 언어.'
-          },
-        ],
+          langs: [{
+        title: 'Java',
+        detail: '플랫폼에 독립적인 언어. 대중성. 높은 안정성',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270237-40c34200-86f1-11ea-869c-225d6b60f4db.png"
+      },
+      {
+        title: 'C',
+        detail: '가장 많이 쓰이는 프로그래밍 언어. 지원 기능이 적음. 빠른 속도.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270230-3ef97e80-86f1-11ea-9663-c456c0d9210c.png",
+      },
+      {
+        title: 'Python',
+        detail: '배우기 쉬움. 풍부한 라이브러리. 생산성이 높음.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270245-43259c00-86f1-11ea-802f-2a06e05f0b77.png",
+      },
+      {
+        title: 'C++',
+        detail: 'C언어에 객체 지향을 더하면 C++',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270231-3f921500-86f1-11ea-945e-a3a2a80ed97f.png"
+      },
+      {
+        title: 'C#',
+        detail: '.NET 프레임워크에서 동작하는 프로그래밍 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270232-402aab80-86f1-11ea-8c62-2f5ff64ccff2.png"
+      },
+      {
+        title: 'VB.NET',
+        detail: 'Visual Basic .NET. 대소문자를 구분하지 않음. 여러줄 주석 불가',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270229-3ef97e80-86f1-11ea-930a-fe7546979521.png"
+      },
+      {
+        title: 'JavaScript',
+        detail: '인터프리터 언어. 객체지향. 웹페이지의 동작을 담당.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270238-415bd880-86f1-11ea-870c-687709473154.png"
+      },
+      {
+        title: 'PHP',
+        detail: '동적으로 html 데이터를 생성. 서버측 스크립트 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270244-428d0580-86f1-11ea-933d-36a8f494e46b.png"
+      },
+      {
+        title: 'SQL',
+        detail: '데이터베이스에 접근할 수 있는 데이터베이스 하부 언어',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270226-3dc85180-86f1-11ea-9233-5a91868ee495.png"
+      },
+      {
+        title: 'Go',
+        detail: '멀티코어 지원. 프로그램 생상성 향상을 목적으로 구글에서 개발한 범용 프로그래밍 언어',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270236-40c34200-86f1-11ea-8c07-132aca1616d5.png"
+      },
+      {
+        title: 'R',
+        detail: '통계 및 데이터 분석을 위한 프로그래밍 언어. 오픈 소스.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270224-3c972480-86f1-11ea-9f97-24301669fa9c.png"
+      },
+      {
+        title: 'Assembly',
+        detail: '기계어 작성의 불편함을 개선한 기호언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80269858-597e2880-86ee-11ea-9c38-ef32b9e0d193.png"
+      },
+      {
+        title: 'Swift',
+        detail: '애플의 iOS와 macOS를 위한 프로그래밍 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80269028-3603af80-86e7-11ea-9f61-a6610fb28a5b.png"
+      },
+      {
+        title: 'Ruby',
+        detail: '인터프리터 방식. 객체 지향 스크립트 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270225-3dc85180-86f1-11ea-9c75-50b3e2d51fe2.png"
+      },
+      {
+        title: 'MATLAB',
+        detail: '수치 해석 및 프로그래밍 환경을 제공하는 공학용 소프트웨어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270239-415bd880-86f1-11ea-9046-d3a6268b2a25.png"
+      },
+      {
+        title: 'PL/SQL',
+        detail: 'SQL 언어를 확장하기 위해 사용.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80269663-aa8d1d00-86ec-11ea-9f77-7e7afc117352.png"
+      },
+      {
+        title: 'Perl',
+        detail: '웹 서버 애플리케이션을 작성하는 프로그래밍 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270243-428d0580-86f1-11ea-88eb-3d3e876b3edc.png"
+      },
+      {
+        title: 'Visual Basic',
+        detail: '윈도우용 응용 프로그램 개발 언어. 데이터베이스 프로그래밍 가능',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270228-3e60e800-86f1-11ea-98ab-4b1fe35fad4e.png"
+      },
+      {
+        title: 'Objective-C',
+        detail: 'C언어에 스몰토크 스타일의 메시지 구문을 추가한 객체 지향 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270242-41f46f00-86f1-11ea-851b-9976976be9f6.png"
+      },
+      {
+        title: 'Delphi',
+        detail: '오브젝트 파스칼 개선. 일반 응용 프로그램 개발 언어.',
+        bgs: "https://user-images.githubusercontent.com/52478972/80270235-402aab80-86f1-11ea-80b1-b41576992e06.png"
+      },
+    ],
       min: 0,
 			max: 10,
       padding: 10,
@@ -275,7 +294,7 @@ export default {
     }
   },
   mounted() {
-    this.langSeq = this.$route.params.langId;
+    this.langSeq = Number(this.$route.params.langId);
     this.backImg = this.$route.params.langImg;
     this.langName = this.langs[this.langSeq].title;
     this.cookieId = cookie.cookieUser();
@@ -328,7 +347,7 @@ export default {
         })
     },
     getReviews() {
-      let language_id = this.langSeq + 1
+      let language_id = Number(this.langSeq) + 1
       baseURL('review/findAll/'+ language_id+'?user_id='+cookie.cookieUser())
         .then(res => {
           this.reviews = res.data

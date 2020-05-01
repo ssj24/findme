@@ -18,8 +18,10 @@
           </v-text-field>
           <v-layout justify-center class="btnParent">
             <span class="box2">
-              <a class="btn1"
-                href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message,friends">
+              <!-- <a class="btn1"
+                href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=http://localhost:8081&response_type=code&scope=talk_message,friends"> -->
+                <a class="btn1"
+                href="https://kauth.kakao.com/oauth/authorize?client_id=df3683c5354024c47b509ecad955f714&redirect_uri=https://i02b204.p.ssafy.io&response_type=code&scope=talk_message,friends">
                 카카오 로그인
                 <svg class="button-stroke" viewBox="0 0 154 13">
                   <use href="#line"></use>

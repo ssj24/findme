@@ -10,5 +10,8 @@ import com.ssafy.findme.domain.Pick;
 @Repository
 public interface PickRepository extends JpaRepository<Pick, Long> {
 	public List<Pick> findByUserId(Long userId);
+
 	Pick findByUserIdAndRecruitId(Long user_id, Long recruit_id);
+
+	public long countByRecruitId(long l);
 }

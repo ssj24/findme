@@ -59,7 +59,22 @@ public class UserController {
 		HttpStatus status = null;
 		try {
 			UserDTO user = userservice.findById(id);
-			user.setTechStack(techStack);
+
+			String[] tech = techStack.split(",");
+			for (int i = 0; i < tech.length; i++) {
+				if (tech[i].contains("Cpp"))
+					tech[i] = "C++";
+				else if (tech[i].contains("Csharp"))
+					tech[i] = "C#";
+			}
+			String tech_stack = "";
+			for (int i = 0; i < tech.length; i++) {
+				tech_stack += tech[i] + ",";
+			}
+			tech_stack = tech_stack.substring(0, tech_stack.length() - 1);
+			System.out.println(tech_stack);
+			user.setTechStack(tech_stack);
+
 			user.setWishHope(wishHope);
 			user.setWishJob(wishJob);
 			UserDTO member = userservice.updateProfile(user);
@@ -82,16 +97,24 @@ public class UserController {
 			@RequestParam String new_password, HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
+		System.out.println("id: " + id);
+		System.out.println("pre_password: " + pre_password);
+		System.out.println("new_password: " + new_password);
+
 		try {
 			UserDTO user = userservice.findById(id);
+
 			if (user.getPassword().equals(UserSha256.encrypt("kakao"))) {
 				resultMap.put("status", false);
 				resultMap.put("log", "카카오 계정이므로 비밀번호 변경이 불가능합니다.");
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			String encryPrePassword = UserSha256.encrypt(pre_password);
-			if (user.getPassword().equals(encryPrePassword)) {
+//			String encryPrePassword = UserSha256.encrypt(pre_password);
+//			System.out.println("user.getPassword(): " + user.getPassword());
+//			System.out.println(encryPrePassword);
+
+			if (user.getPassword().equals(pre_password)) {
 				String encryNewPassword = UserSha256.encrypt(new_password);
 				user.setPassword(encryNewPassword);
 				UserDTO member = userservice.updateProfile(user);

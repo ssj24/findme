@@ -60,8 +60,8 @@ public class RecruitController {
 					recommendRecruitList.addAll(matchRecruitList.subList(6, 59));
 				}
 			}
-//			System.out.println("recommendRecruitList");
-//			System.out.println(recommendRecruitList);
+			System.out.println("recommendRecruitList");
+			System.out.println(recommendRecruitList);
 			resultMap.put("matchRecruitList", matchRecruitList);
 			resultMap.put("pickRecruitList", pickRecruitList);
 			resultMap.put("recommendRecruitList", recommendRecruitList);
