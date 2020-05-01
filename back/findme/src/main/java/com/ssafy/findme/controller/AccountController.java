@@ -50,33 +50,32 @@ public class AccountController {
 	}
 
 	@PostMapping("/user/signup")
-	@ApiOperation(value = "가입하기")
-	public void signup(@RequestBody UserDTO user) throws MessagingException {
-		System.out.println(user.toString());
-		// 비밀번호 암호화
-		String encryPassword = UserSha256.encrypt(user.getPassword());
-		user.setPassword(encryPassword);
-		user.setRoleType(RoleType.USER);
-		user.setCreatedAt(new Date());
-		String[] tech = user.getTechStack().split(",");
-		for (int i = 0; i < tech.length; i++) {
-			if (tech[i].equals("Cpp"))
-				tech[i] = "C++";
-			else if (tech[i].equals("Csharp"))
-				tech[i] = "C#";
-		}
-		String tech_stack = "";
-		for (int i = 0; i < tech.length; i++) {
-			tech_stack += tech[i] + ", ";
-		}
-		tech_stack = tech_stack.substring(0, tech_stack.length() - 2);
-		System.out.println(tech_stack);
-		user.setTechStack(tech_stack);
-		// 회원가입
-		accountservice.signUp(user);
-		// 인증메일
-		accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
-	}
+    @ApiOperation(value = "가입하기")
+    public void signup(@RequestBody UserDTO user) throws MessagingException {
+        // 비밀번호 암호화
+        String encryPassword = UserSha256.encrypt(user.getPassword());
+        user.setPassword(encryPassword);
+        user.setRoleType(RoleType.USER);
+        user.setCreatedAt(new Date());
+        String[] tech = user.getTechStack().split(",");
+        for (int i = 0; i < tech.length; i++) {
+            if (tech[i].contains("Cpp"))
+                tech[i] = "C++";
+            else if (tech[i].contains("Csharp"))
+                tech[i] = "C#";
+        }
+        String tech_stack = "";
+        for (int i = 0; i < tech.length; i++) {
+            tech_stack += tech[i] + ",";
+        }
+        tech_stack = tech_stack.substring(0, tech_stack.length() - 1);
+        System.out.println(tech_stack);
+        user.setTechStack(tech_stack);
+        // 회원가입
+        accountservice.signUp(user);
+        // 인증메일
+        accountservice.mailSendWithUserKey(user.getEmail(), user.getName());
+    }
 
 	@PutMapping("/user/{user_id}/secession")
 	@ApiOperation(value = "회원 탈퇴")

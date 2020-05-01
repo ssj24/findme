@@ -33,7 +33,7 @@ public class AccountServiceImpl implements IAccountService {
 	private EntityMapper entityMapper;
 
 //	private String IP = "http://localhost:8081";
-	private String IP = "https://i02b204.p.ssafy.io/api";
+	private String IP = "https://i02b204.p.ssafy.io";
 
 	@Override
 	public boolean emailDuplicateCheck(String email) {

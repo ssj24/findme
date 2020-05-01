@@ -71,12 +71,20 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getMatchRecruit(String userId) {
-//		String filePath = "/home/ubuntu/python/MatchRecruit.py";
-		String filePath = "C:\\MatchRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
-				userId);
-//		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+		String pythonPath = "";
+		String filePath = "";
+
+		if (System.getProperty("os.name").indexOf("Windows") > -1) {
+			pythonPath = "C:\\Users\\multicampus\\Python\\Scripts\\python";
+			filePath = "C:\\MatchRecruit.py";
+		} else {
+			pythonPath = "/usr/bin/python3";
+			filePath = "/home/ubuntu/python/MatchRecruit.py";
+		}
+//		String filePath = "C:\\MatchRecruit.py";
+//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 //				userId);
+		ProcessBuilder pb = new ProcessBuilder().command(pythonPath, filePath, userId);
 		Process p;
 		List<String> matchRecruitIdList = new ArrayList<>();
 		Recruit matchRecruit = new Recruit();
@@ -93,7 +101,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
-			
+
 //			while ((line = error.readLine()) != null) {
 //				sb.append(line);
 //			}
@@ -138,12 +146,21 @@ public class RecruitServiceImpl implements IRecruitService {
 
 	@Override
 	public List<RecruitDTO> getRecommendRecruit(String userId) {
-		String filePath = "C:\\RecommendRecruit.py";
+		String pythonPath = "";
+		String filePath = "";
+
+		if (System.getProperty("os.name").indexOf("Windows") > -1) {
+			pythonPath = "C:\\Users\\multicampus\\Python\\Scripts\\python";
+			filePath = "C:\\RecommendRecruit.py";
+		} else {
+			pythonPath = "/usr/bin/python3";
+			filePath = "/home/ubuntu/python/RecommendRecruit.py";
+		}
+//		String filePath = "C:\\RecommendRecruit.py";
 //		String filePath = "/home/ubuntu/python/RecommendRecruit.py";
-		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
-				userId);
-//		ProcessBuilder pb = new ProcessBuilder().command("/usr/bin/python3", filePath,
+//		ProcessBuilder pb = new ProcessBuilder().command("C:\\Users\\multicampus\\Python\\Scripts\\python", filePath,
 //				userId);
+		ProcessBuilder pb = new ProcessBuilder().command(pythonPath, filePath, userId);
 		Process p;
 		List<String> recommendRecruitIdList = new ArrayList<>();
 		Recruit recommendRecruit = new Recruit();
@@ -160,20 +177,32 @@ public class RecruitServiceImpl implements IRecruitService {
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
-			
-			while ((line = error.readLine()) != null) {
-				sb.append(line);
-			}
+
+//			while ((line = error.readLine()) != null) {
+//				sb.append(line);
+//			}
 			int exitCode = p.waitFor();
 			String newLine = sb.toString().replace("[", "").replace("]", "").replace(" ", "");
 			recommendRecruitIdList = Arrays.asList(newLine.split(","));
+			System.out.println("recommendRecruitIdList: " + recommendRecruitIdList);
 
-			for (int i = 0; i < recommendRecruitIdList.size(); i++) {
-				recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)))
-						.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
-				;
+			System.out.println(recommendRecruitIdList.isEmpty());
+			System.out.println(recommendRecruitIdList.size());
+			System.out.println("recommendRecruitIdList: " + recommendRecruitIdList.get(0));
+
+			if (recommendRecruitIdList.get(0).equals(" ") || recommendRecruitIdList.get(0).equals("")
+					|| recommendRecruitIdList == null) {
+				br.close();
+				return recommendRecruitList;
+			} else {
+				for (int i = 0; i < recommendRecruitIdList.size(); i++) {
+					System.out.println("여기 옴?");
+					recommendRecruit = recruitRepo.findById(Long.parseLong(recommendRecruitIdList.get(i)))
+							.orElseThrow(() -> new IllegalArgumentException("없는 id입니다."));
+
 //				System.out.println(matchRecruit);
-				recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
+					recommendRecruitList.add(modelMapper.map(recommendRecruit, RecruitDTO.class));
+				}
 			}
 			br.close();
 		} catch (IOException e) {
@@ -183,6 +212,7 @@ public class RecruitServiceImpl implements IRecruitService {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		System.out.println("recommendRecruitList: " + recommendRecruitList);
 		return recommendRecruitList;
 	}
 
@@ -199,15 +229,15 @@ public class RecruitServiceImpl implements IRecruitService {
 		String myTechStack = myInfo.getTechStack();
 		List<String> myTechStackList = Arrays.asList(myTechStack.split(","));
 		int[] countMatchTechStack = new int[20];
-		
+
 		for (int i = 0; i < matchRecruitList.size() / 2; i++) {
 			List<String> matchRecruitTechStack = Arrays
 					.asList(matchRecruitList.get(i).getTechStack().replace("·", ",").split(","));
-			
+
 			for (int j = 0; j < LanguageList.length; j++) {
 				for (int k = 0; k < matchRecruitTechStack.size(); k++) {
 					String language = LanguageList[j] == "JavaScript" ? "자바스크립트" : LanguageList[j];
-					
+
 					if (matchRecruitTechStack.get(k).contains(language)) {
 						countMatchTechStack[j]++;
 						break;
@@ -218,7 +248,7 @@ public class RecruitServiceImpl implements IRecruitService {
 		List<String> recommendLanguageList = new ArrayList<>();
 
 		for (int i = 0; i < 20; i++) {
-			if (countMatchTechStack[i] > 10) {
+			if (countMatchTechStack[i] > 5) {
 				recommendLanguageList.add(LanguageList[i]);
 			}
 		}
@@ -242,14 +272,27 @@ public class RecruitServiceImpl implements IRecruitService {
 		System.out.println("End DeleteRecruit");
 	}
 
-	@Scheduled(cron = "0 8 16 * * *") // 매일 오전 4시 수행
+	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
 	public void updateRecruit() {
+		String saraminStr = "";
+		String textMiningStr = "";
+
+		if (System.getProperty("os.name").indexOf("Windows") > -1) {
+			saraminStr = "C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/saramin.py ";
+			textMiningStr = "C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/textmining.py";
+		} else {
+			saraminStr = "/usr/bin/python3 /home/ubuntu/python/saramin.py ";
+			textMiningStr = "/usr/bin/python3 /home/ubuntu/python/textmining.py";
+		}
 		// 실행
 		System.out.println("scheduleSaramin & textMining: " + new Date());
 		int max_id = (int) (long) recruitRepo.findMaxId();
+//		int max_id = 1;
 		System.out.println("max_id: " + max_id);
-		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
-		CommandLineExecutor.execute("python src/main/python/textmining.py");
+//		CommandLineExecutor.execute("python src/main/python/saramin.py " + max_id);
+		CommandLineExecutor.execute(saraminStr + max_id);
+//		CommandLineExecutor.execute("python src/main/python/textmining.py");
+		CommandLineExecutor.execute(textMiningStr);
 		System.out.println("End Saramin & textMining");
 	}
 }

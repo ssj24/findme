@@ -60,7 +60,7 @@
       style="height: 200px;"
     >
       <router-link 
-        :to="{name:'Lang', params:{langId:i, langImg: lang.bgs}}"
+        :to="{name:'Lang', params:{langId:i}}"
         >
         <div
           :style="'background: url('+lang.bgs+')'"

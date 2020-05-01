@@ -1,5 +1,9 @@
 package com.ssafy.findme;
 
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +21,11 @@ import com.ssafy.findme.security.JwtInterceptor;
 public class FindmeApplication extends SpringBootServletInitializer implements WebMvcConfigurer {
 	@Autowired
 	private JwtInterceptor jwtInterceptor;
+
+	@PostConstruct
+	void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(FindmeApplication.class, args);

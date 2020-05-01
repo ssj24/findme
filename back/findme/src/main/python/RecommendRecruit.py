@@ -149,18 +149,19 @@ def start(userId):
     # MySQL 설정
     HOST = '127.0.0.1'
     PORT = 3306
-    USER = 'root'
+    USER = 'ssafy'
     PASSWORD = 'ssafy'
     DB = 'findme'
+    CHARSET = 'utf8'
 
     # MySQL Connection 연결
-    conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, db=DB)
+    conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, db=DB, charset=CHARSET)
 
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()
 
     # 찜 데이터 수집
-    sql = "select user_id, recruit_id from tmppick order by user_id"
+    sql = "select user_id, recruit_id from pick order by user_id"
 
     # SQL 문 실행
     curs.execute(sql)
@@ -168,8 +169,10 @@ def start(userId):
     # Fetch
     pickRows = curs.fetchall()
 
+    #print(pickRows)
+
     # 전체 공고 아이디 수집
-    sql = "select number from recruit"
+    sql = "select id from recruit"
 
     # SQL 문 실행
     curs.execute(sql)
@@ -229,8 +232,17 @@ def start(userId):
     dataFrame = pd.DataFrame(data=data)
     dataFrame.columns = ['id'] + recruitIdList
     dataDict = dataFrame.set_index('id').T.to_dict('dict')
-    list = getRecommendation(dataDict, userId)
 
+    keys = dataDict.keys()
+
+    #for key in keys:
+    #    if dataDict[key] == 1:
+    #        print(dataDict[key])
+
+
+
+    list = getRecommendation(dataDict, userId)
+    
     recommendRecruitList = []
 
     for recruitId in list:

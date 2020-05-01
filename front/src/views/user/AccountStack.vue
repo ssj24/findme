@@ -4,9 +4,9 @@
       <swiper class="swiper" :options="swiperOption">
         <swiper-slide v-for="(slide,i) in slides" :key="i" class="toLang"
           style="font-size: 2rem; font-weight: 900; text-shadow: 1px 1px #000; box-shadow: 5px 5px 10px #ccc; border: 5px outset white;">
-          <router-link :to="'/lang/'+i">
+          <a :href="'https://i02b204.p.ssafy.io/lang/' + slide.id">
             <v-img :src="slide.bgs" />
-          </router-link>
+          </a>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>

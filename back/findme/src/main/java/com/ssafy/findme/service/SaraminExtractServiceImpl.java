@@ -109,7 +109,7 @@ public class SaraminExtractServiceImpl implements ISaraminExtractService {
 		return salary;
 	}
 
-	@Scheduled(cron = "50 43 16 * * *")
+	@Scheduled(cron = "0 48 4 * * *")
 	public void collectSaraminExtractData() {
 		System.out.println("start to collect saramin extract data!! " + new Date());
 		List<SaraminData> assemblys = saraminrepo.findByAssemblysTrue();

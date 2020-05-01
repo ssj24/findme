@@ -18,7 +18,7 @@ import com.ssafy.findme.repository.RecruitRepository;
 public class CommandLineExecutor {
 
 //	@Scheduled(cron = "0 15 20 * * *") // 매일 오전 4시 수행
-//	@Scheduled(cron = "0 0 4 * * *") // 매일 오전 4시 수행
+//	@Scheduled(cron = "0 46 4 * * *") // 매일 오전 4시 수행
 	public static void scheduleTest() {
 		// 실행
 		System.out.println("scheduleTest: " + new Date());
@@ -28,10 +28,9 @@ public class CommandLineExecutor {
 		System.out.println("End scheduleTest");
 	}
 
-	@Scheduled(cron = "0 2 12 * * *") // 매주 금요일 오전4시 수행
+	@Scheduled(cron = "0 0 16 * * FRI") // 매주 금요일 오전4시 수행
 	public static void scheduleGoogle() {
 		System.out.println("scheduleGoogle: " + new Date());
-		System.out.println("시발 제발 좀 돼라");
 //		CommandLineExecutor.execute("C:\\Users\\multicampus\\Python\\Scripts\\python src/main/python/google_trend.py");
 		CommandLineExecutor.execute("/usr/bin/python3 /home/ubuntu/python/google_trend.py");
 	}
