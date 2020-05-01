@@ -7,7 +7,7 @@
             v-for="(interestPerState, index) in showInterestPerStateList"
             :key="interestPerState.state"
           >
-            <td class="text-left">{{ (index + 1) + (nowPage - 1)  * 4}}</td>
+            <td class="text-left">{{ (index + 1) + (nowPage - 1) * 6}}</td>
             <td class="text-left">{{ interestPerState.state }}</td>
             <td class="text-right">{{ interestPerState.interest }}</td>
           </tr>
@@ -15,7 +15,7 @@
       </template>
     </v-simple-table>
     <v-divider />
-    <v-pagination v-model="nowPage" class="mt-7 mb-0 pb-0" :length="endPage"></v-pagination>
+    <v-pagination v-model="nowPage" class="mt-5 mb-0 pb-0" :length="endPage"></v-pagination>
   </v-card>
 </template>
 
@@ -41,11 +41,11 @@ export default {
   },
   watch: {
     nowPage(e) {
-      const nowStart = (e - 1) * 4
+      const nowStart = (e - 1) * 6;
 
       this.showInterestPerStateList = this.interestPerStateList.slice(
         nowStart,
-        nowStart + 4
+        nowStart + 6
       );
     }
   },
@@ -70,18 +70,18 @@ export default {
         }
       }
       this.showInterestPerStateList = this.interestPerStateList.slice(
-        (this.startPage - 1) * 4,
-        4
+        (this.startPage - 1) * 6,
+        5
       );
     },
     paginationInit() {
       this.startPage = 1;
       this.nowPage = 1;
-      this.totalPage = Math.ceil(this.interestPerStateList.length / 4);
+      this.totalPage = Math.ceil(this.interestPerStateList.length / 6);
       this.endPage =
-        this.totalPage >= 5 * this.startPage
-          ? 5 * this.startPage
-          : 4 * this.startPage;
+        this.totalPage >= 4 * this.startPage
+          ? 4 * this.startPage
+          : 3 * this.startPage;
     }
   },
   mounted() {

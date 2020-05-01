@@ -19,44 +19,6 @@ export default {
   components: {
     apexchart: VueApexCharts
   },
-  // props: {
-  //   firstLang: {
-  //     type: String
-  //   },
-  //   firstValue: {
-  //     type: String
-  //   },
-  //   secondLang: {
-  //     type: String
-  //   },
-  //   secondValue: {
-  //     type: String
-  //   },
-  //   thirdLang: {
-  //     type: String
-  //   },
-  //   thirdValue: {
-  //     type: String
-  //   },
-  //   fourthLang: {
-  //     type: String
-  //   },
-  //   fourthValue: {
-  //     type: String
-  //   },
-  //   fifthLang: {
-  //     type: String
-  //   },
-  //   fifthValue: {
-  //     type: String
-  //   },
-  //   totalCnt: {
-  //     type: Number
-  //   },
-  //   colors: {
-  //     type: Array
-  //   }
-  // },
   props: [
     "firstLang",
     "firstValue",
@@ -73,7 +35,6 @@ export default {
   computed: {},
   data() {
     return {
-      tmpSeries: [],
       series: [],
       chartOptions: {
         chart: {
@@ -81,10 +42,15 @@ export default {
           type: "line",
           toolbar: {
             autoSelected: "pan",
-            show: true
+            show: false
           },
-          mounted: {
-            series: this.series,
+          animations: {
+            enabled: false
+          },
+          events: {
+            // beforeMount: () => {
+            //   this.makeSeries();
+            // }
           }
         },
         noData: {
@@ -121,6 +87,9 @@ export default {
           id: "chart1",
           height: 130,
           type: "area",
+          animations: {
+            enabled: false
+          },
           brush: {
             target: "chart2",
             enabled: true
@@ -161,8 +130,67 @@ export default {
       }
     };
   },
-  methods: {},
-  mounted() {
+  methods: {
+    makeSeries() {
+      if (
+        this.firstLang != "" &&
+        this.firstLang != null &&
+        this.firstLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.firstLang,
+          data: this.firstValue
+        });
+      }
+
+      if (
+        this.secondLang != "" &&
+        this.secondLang != null &&
+        this.secondLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.secondLang,
+          data: this.secondValue
+        });
+      }
+
+      if (
+        this.thirdLang != "" &&
+        this.thirdLang != null &&
+        this.thirdLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.thirdLang,
+          data: this.thirdValue
+        });
+      }
+
+      if (
+        this.fourthLang != "" &&
+        this.fourthLang != null &&
+        this.fourthLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.fourthLang,
+          data: this.fourthValue
+        });
+      }
+
+      if (
+        this.fifthLang != "" &&
+        this.fifthLang != null &&
+        this.fifthLang != "undefined"
+      ) {
+        this.series.push({
+          name: this.fifthLang,
+          data: this.fifthValue
+        });
+      }
+      this.seriesLine = this.series;
+    }
+  },
+  created() {
+    // this.makeSeries();
     if (
       this.firstLang != "" &&
       this.firstLang != null &&
@@ -173,7 +201,6 @@ export default {
         data: this.firstValue
       });
     }
-
     if (
       this.secondLang != "" &&
       this.secondLang != null &&
@@ -184,7 +211,6 @@ export default {
         data: this.secondValue
       });
     }
-
     if (
       this.thirdLang != "" &&
       this.thirdLang != null &&
@@ -195,7 +221,6 @@ export default {
         data: this.thirdValue
       });
     }
-
     if (
       this.fourthLang != "" &&
       this.fourthLang != null &&
@@ -206,7 +231,6 @@ export default {
         data: this.fourthValue
       });
     }
-
     if (
       this.fifthLang != "" &&
       this.fifthLang != null &&
@@ -218,8 +242,7 @@ export default {
       });
     }
     this.seriesLine = this.series;
-    console.log(this.firstValue[0][0]);
-    console.log(this.firstValue[this.firstValue.length - 1][0]);
+    console.log("hello");
   }
 };
 </script>
